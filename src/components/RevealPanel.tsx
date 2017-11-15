@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
-import ThemeInterface from '../theme';
 import {
     Icon,
 } from 'antd';
@@ -74,11 +73,9 @@ const MainContainer = styled.div`
 `;
 
 const HeaderContainer = styled.div`
-    color: ${(props: { isVisible: Boolean, theme: ThemeInterface}) => props.theme.labelColor};
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: ${(props: { isVisible: Boolean, theme: ThemeInterface }) => props.theme.primary};
     font-size: 1.4em;
     padding-left: 10px;
     overflow: hidden;
