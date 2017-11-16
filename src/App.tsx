@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Table
-} from 'antd';
+// import {
+//   Badge
+// } from 'antd';
 import './App.css';
 import styled from 'styled-components';
 
@@ -31,7 +31,7 @@ import styled from 'styled-components';
 //   key: 'address',
 // }];
 
-const CustomTable = styled(Table) `
+const CustomTable = styled.div `
   color: orange;
   margin: 50px;
 `;

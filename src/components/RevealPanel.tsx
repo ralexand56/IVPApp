@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import {
     Icon,
 } from 'antd';
 
-const shadowIn = (props: {startColor: string, endColor: string}) => keyframes`
+const shadowIn = (props: { startColor: string, endColor: string }) => keyframes`
     0% {
         box-shadow: 0px 0px rgba(0,0,0,0.3);
         background: ${props.startColor};
@@ -55,14 +55,16 @@ const headerScaleOut = () => keyframes`
 
 interface Props {
     endColor?: string;
-    heading: string;
-    isVisible: boolean;
-    close: Function;
+    heading?: string;
+    isVisible?: boolean;
+    close?: Function;
+    headerStyle?: string;
     startColor?: string;
-    children?: JSX.Element;
+    children?: React.ReactChild;
 }
 
 const MainContainer = styled.div`
+    margin: 10px;
     display: flex;
     flex-direction: column;
     width: 320px;
@@ -72,15 +74,31 @@ const MainContainer = styled.div`
         props.isVisible ? shadowIn : shadowOut} 0.5s ease-in-out both;
 `;
 
-const HeaderContainer = styled.div`
+interface HeaderProps {
+    headerBackground?: string;
+    isVisible?: boolean;
+    className?: string;
+}
+
+const Header: StatelessComponent<HeaderProps> = props => (
+    <div className={props.className}>
+        {props.children}
+    </div>   
+);
+
+const StyledHeader = styled(Header) `
+    color: white;
+    background: ${props => props.headerBackground || 'darkgray'};
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 1.4em;
+    font-style: italic;
+    font-weight: bold;
     padding-left: 10px;
     overflow: hidden;
     margin: 10px 0px 5px 0px;
-    animation: ${(props: { isVisible: Boolean }) =>
+    animation: ${props =>
         props.isVisible ? headerScaleIn : headerScaleOut} 0.5s ease-in-out both;
 `;
 
@@ -102,7 +120,7 @@ const CloseIcon = styled(Icon) `
     font-size: 1em;
 `;
 
-export const RevealPanel = (props: Props) => {
+export const RevealPanel: StatelessComponent<Props> = (props) => {
     const {
         children,
         endColor,
@@ -111,27 +129,25 @@ export const RevealPanel = (props: Props) => {
         close,
         startColor,
     } = props;
-    const start = startColor || 'white';
-    const end = endColor || 'white';
 
     return (
         <MainContainer
-            endColor={end}
-            isVisible={isVisible}
-            startColor={start}
+            endColor={endColor || 'white'}
+            isVisible={isVisible || true}
+            startColor={startColor || 'white'}
         >
-            <HeaderContainer
-                isVisible={isVisible}
+            <StyledHeader
+                isVisible={isVisible || true}
             >
-                {heading}
-                <CloseButton onClick={() => close()}>
+                {heading || 'Insert Heading'}
+                <CloseButton onClick={() => close || null}>
                     <CloseIcon
                         type="close"
                     />
                 </CloseButton>
-            </HeaderContainer>
+            </StyledHeader>
             <BodyContainer
-                isVisible={isVisible}
+                isVisible={isVisible || true}
             >
                 {
                     children
