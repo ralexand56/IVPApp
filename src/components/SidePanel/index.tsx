@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { StatelessComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Header from './Header';
+import actionCreators from '../../actions/ClientActions';
 
 const defaultStartColor: string = 'white';
 const defaultEndColor: string = '#fff';
@@ -11,6 +12,7 @@ const shadowIn = (props: Props) => keyframes`
     box-shadow: 0px 0px rgba(0,0,0,0.3);
     background: ${props.startColor || defaultStartColor};
     width: 0;
+    padding: 0px;
 }
 25% {
     box-shadow: 0px 0px rgba(0,0,0,0.3);
@@ -41,6 +43,7 @@ const shadowOut = (props: Props) => keyframes`
     background: ${props.startColor || defaultStartColor};
     box-shadow: 0px 0px rgba(0,0,0,0.3);
     width: 0px;
+    padding: 0px;
 }
 `;
 
@@ -52,31 +55,23 @@ interface Props {
     startColor?: string;
     endColor?: string;
     width?: string;
+    toggle: typeof actionCreators.setSearchResultsVisibility;
 }
 
-interface AppState {
-    isOpen: boolean;
-}
+const SidePanel: StatelessComponent<Props> = ({isOpen, className, children, toggle}) => {
 
-class SidePanel extends Component<Props, AppState> {
-
-    constructor() {
-        super();
-
-        this.state = { isOpen: this.props.isOpen || true };
-    }
-
-    render() {
-        return (
-            <div
-                className={this.props.className}
-            >
-                <Header isOpen={this.state.isOpen} />
-                {this.props.children}
-            </div>
-        );
-    }
-}
+    return (
+        <div
+            className={className}
+        >
+            <Header
+                isOpen={isOpen}
+                close={toggle}
+            />
+            {children}
+        </div>
+    );
+};
 
 const StyledSidePanel = styled(SidePanel) `
     border: 0px solid;
@@ -84,6 +79,7 @@ const StyledSidePanel = styled(SidePanel) `
     overflow: hidden;
     padding: 50px 0 0 20px;
     position: absolute;
+    z-index: 1;
     right: 0;
     transition: all 0.7s ease-in-out;
     animation: ${props => props.isOpen ? shadowIn : shadowOut} 0.5s ease-in-out both;

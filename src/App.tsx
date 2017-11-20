@@ -1,52 +1,33 @@
 import React, { Component } from 'react';
 // import {
-//   Badge
+//   Card
 // } from 'antd';
 import './App.css';
 import styled from 'styled-components';
+import AppHeaderContainer from './components/AppHeaderContainer';
+import SidePanelContainer from './components/SidePanel/SidePanelContainer';
 
-// const dataSource = [{
-//   key: '1',
-//   name: 'Mike',
-//   age: 32,
-//   address: '10 Downing Street'
-// }, {
-//   key: '2',
-//   name: 'John',
-//   age: 42,
-//   address: '10 Downing Street'
-// }];
-
-// const columns = [{
-//   title: 'Name',
-//   dataIndex: 'name',
-//   key: 'name',
-// }, {
-//   title: 'Age',
-//   dataIndex: 'age',
-//   key: 'age',
-// }, {
-//   title: 'Address',
-//   dataIndex: 'address',
-//   key: 'address',
-// }];
-
-const CustomTable = styled.div `
-  color: orange;
-  margin: 50px;
+const MainContainer = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid;
 `;
 
-const Btn = styled.button`
-  color: blue;
-`;
+// const StyledCard = styled(Card) `
+//   color: orange;
+//   margin: 50px;
+//   width: 300px;
+//   background: #ECECEC;
+// `;
 
 export default class App extends Component<{}, {}> {
   render() {
     return (
-      [
-        <Btn key="a" />,
-        <CustomTable key="b" />
-      ]
+      <MainContainer>
+        <AppHeaderContainer />
+        <SidePanelContainer />
+      </MainContainer>
     );
   }
 }
