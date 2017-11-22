@@ -9,16 +9,20 @@ import { AppContainer } from 'react-hot-loader';
 import './index.css';
 import 'antd/dist/antd.css';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from './styled-components';
 import './index.css';
 import configureStore from './configureStore';
+import { theme } from './datatypes';
 
 const store = configureStore();
 
 ReactDOM.render(
   <AppContainer>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
   </AppContainer>
   ,
   document.getElementById('root') as HTMLElement

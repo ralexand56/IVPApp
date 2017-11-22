@@ -1,13 +1,11 @@
 export default interface ThemeInterface {
-  animDelay?: number;
-  primary: string;
-  secondary: string;
-  tertiary: string;
-  contentColor: string;
-  labelColor: string;
-  textColor: string;
-  isSelected?: boolean;
-  active?: boolean;
-  isOn?: boolean;
-  width?: number;
+  headingBackground1?: string;
+  headingForeground1?: string;
+  headingBackground2?: string;
+  headingForeground2?: string;
+  bodyBackground?: string;
+  bodyForeground?: string;
+  contentColor?: string;
+  labelColor?: string;
+  textColor?: string;
 }

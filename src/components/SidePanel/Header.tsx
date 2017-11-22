@@ -4,6 +4,7 @@ import actionCreators from '../../actions/ClientActions';
 import { Icon } from 'antd';
 
 interface Props {
+    backgroundColor?: string;
     children?: React.ReactChild;
     className?: string;
     close: typeof actionCreators.setSearchResultsVisibility;
@@ -40,7 +41,7 @@ const Header: StatelessComponent<Props> = ({ header, children, close, className,
 
 const StyledHeader = styled(Header) `
     align-items: center;
-    background: salmon;
+    background: ${props => props.backgroundColor || 'gray'};
     color: white;
     display: flex;
     font-weight: normal;

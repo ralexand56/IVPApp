@@ -8,6 +8,7 @@ import {
     ClientState,
 } from '../datatypes';
 import AppHeader from './AppHeader';
+import { theme } from '../datatypes';
 
 type Props = ClientState &
     typeof actionCreators;
@@ -22,6 +23,7 @@ class ContainerTemplate extends Component<Props, {}> {
 
         return (
             <AppHeader
+                backgroundColor={theme.headingBackground1}    
                 extractPanelIsShowing={searchResultsIsVisible}
                 setPanelVisibility={setSearchResultsVisibility}
             />);

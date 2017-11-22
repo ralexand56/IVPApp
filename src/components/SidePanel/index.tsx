@@ -2,6 +2,7 @@ import React, { StatelessComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Header from './Header';
 import actionCreators from '../../actions/ClientActions';
+import { theme } from '../../datatypes';
 
 const defaultStartColor: string = 'white';
 const defaultEndColor: string = '#fff';
@@ -65,6 +66,7 @@ const SidePanel: StatelessComponent<Props> = ({isOpen, className, children, togg
             className={className}
         >
             <Header
+                backgroundColor={theme.headingBackground2}    
                 isOpen={isOpen}
                 close={toggle}
             />

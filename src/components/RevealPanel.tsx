@@ -1,9 +1,10 @@
 import React, { StatelessComponent } from 'react';
-import styled from 'styled-components';
+import styled from '../styled-components';
 import { keyframes } from 'styled-components';
 import {
     Icon,
 } from 'antd';
+import { theme } from '../datatypes';
 
 const shadowIn = (props: { startColor: string, endColor: string }) => keyframes`
     0% {
@@ -54,25 +55,17 @@ const headerScaleOut = () => keyframes`
 `;
 
 interface Props {
+    className?: string;
     endColor?: string;
     heading?: string;
+    height?: string;
     isVisible?: boolean;
     close?: Function;
     headerStyle?: string;
     startColor?: string;
     children?: React.ReactChild;
+    width?: string;
 }
-
-const MainContainer = styled.div`
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    width: 320px;
-    height: 250px;
-    border-radius: 5px;
-    animation: ${(props: { isVisible: Boolean, endColor: string, startColor: string }) =>
-        props.isVisible ? shadowIn : shadowOut} 0.5s ease-in-out both;
-`;
 
 interface HeaderProps {
     headerBackground?: string;
@@ -83,7 +76,7 @@ interface HeaderProps {
 const Header: StatelessComponent<HeaderProps> = props => (
     <div className={props.className}>
         {props.children}
-    </div>   
+    </div>
 );
 
 const StyledHeader = styled(Header) `
@@ -94,7 +87,7 @@ const StyledHeader = styled(Header) `
     align-items: center;
     font-size: 1.4em;
     font-style: italic;
-    font-weight: bold;
+    font-weight: normal;
     padding-left: 10px;
     overflow: hidden;
     margin: 10px 0px 5px 0px;
@@ -120,23 +113,21 @@ const CloseIcon = styled(Icon) `
     font-size: 1em;
 `;
 
-export const RevealPanel: StatelessComponent<Props> = (props) => {
+const RevealPanel: StatelessComponent<Props> = (props) => {
     const {
         children,
-        endColor,
+        className,
         heading,
         isVisible,
         close,
-        startColor,
     } = props;
 
     return (
-        <MainContainer
-            endColor={endColor || 'white'}
-            isVisible={isVisible || true}
-            startColor={startColor || 'white'}
+        <div
+            className={className}
         >
             <StyledHeader
+                headerBackground={theme.headingBackground2}
                 isVisible={isVisible || true}
             >
                 {heading || 'Insert Heading'}
@@ -153,8 +144,22 @@ export const RevealPanel: StatelessComponent<Props> = (props) => {
                     children
                 }
             </BodyContainer>
-        </MainContainer>
+        </div>
     );
 };
 
-export default RevealPanel;
+const StyledRevealPanel = styled(RevealPanel) `
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    width: ${props => props.width || '70%'};
+    height: ${props => props.height || '90%'};
+    border-radius: 5px;
+    animation: ${props =>
+    props.isVisible
+        ? shadowIn({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })
+        : shadowOut({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })} 
+        0.5s ease-in-out both;
+`;
+
+export default StyledRevealPanel;
