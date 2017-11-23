@@ -4,6 +4,7 @@ import {
     Icon,
 } from 'antd';
 import actionCreators from '../actions/ClientActions';
+import { fadeIn } from '../datatypes';
 // import ThemeInterface from '../theme';
 
 const LogoHeader = styled.span`
@@ -52,6 +53,7 @@ const StyledAppHeader = styled(AppHeader) `
   width: 100%;
   z-index: 2;
   box-shadow: 0px 0px 10px #666;
+  animation: ${fadeIn} 0.7s;
 `;
 
 export default StyledAppHeader;

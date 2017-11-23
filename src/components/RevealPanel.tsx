@@ -57,7 +57,7 @@ const headerScaleOut = () => keyframes`
 interface Props {
     className?: string;
     endColor?: string;
-    heading?: string;
+    heading?: React.ReactChild;
     height?: string;
     isVisible?: boolean;
     close?: Function;
@@ -85,8 +85,8 @@ const StyledHeader = styled(Header) `
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.4em;
-    font-style: italic;
+    font-size: 1.2em;
+    font-style: normal;
     font-weight: normal;
     padding-left: 10px;
     overflow: hidden;

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppMainContainer from './AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
 
@@ -20,7 +20,7 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <AppMainContainer />
       </Provider>
     </ThemeProvider>
   </AppContainer>
