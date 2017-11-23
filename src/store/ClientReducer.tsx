@@ -1,11 +1,14 @@
 import { Reducer } from 'redux';
 import {
+    sampleClients,
     ClientState,
     KnownAction
 } from '../datatypes';
 
 const unloadedState: ClientState = {
     searchResultsIsVisible: true,
+    clients: sampleClients,
+    currentClientId: 2,
 };
 
 const reducer: Reducer<ClientState> = (state: ClientState, action: KnownAction) => {
@@ -14,6 +17,12 @@ const reducer: Reducer<ClientState> = (state: ClientState, action: KnownAction) 
             return {
                 ...state,
                 searchResultsIsVisible: action.isVisible,
+            };
+
+        case 'SET_CURRENT_CLIENT':
+            return {
+                ...state,
+                currentClientId: action.clientId,
             };
             
         default:
