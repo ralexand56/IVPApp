@@ -1,9 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../styled-components';
 import { keyframes } from 'styled-components';
-import {
-    Icon,
-} from 'antd';
 import { theme } from '../datatypes';
 
 const shadowIn = (props: { startColor: string, endColor: string }) => keyframes`
@@ -55,9 +52,10 @@ const headerScaleOut = () => keyframes`
 `;
 
 interface Props {
+    actions?: JSX.Element[] | undefined;
     className?: string;
     endColor?: string;
-    heading?: React.ReactChild;
+    header?: React.ReactChild;
     height?: string;
     isVisible?: boolean;
     close?: Function;
@@ -68,9 +66,13 @@ interface Props {
 }
 
 interface HeaderProps {
+    className?: string;
+}
+
+interface PanelHeaderProps {
+    className?: string;
     headerBackground?: string;
     isVisible?: boolean;
-    className?: string;
 }
 
 const Header: StatelessComponent<HeaderProps> = props => (
@@ -79,9 +81,34 @@ const Header: StatelessComponent<HeaderProps> = props => (
     </div>
 );
 
+const ActionHeader = styled.span`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const PanelHeader: StatelessComponent<PanelHeaderProps> = ({ className, children }) => (
+    <span className={className}>
+        {
+            children
+        }
+    </span>
+);
+
+const StyledPanelHeader = styled(PanelHeader) `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;    
+    overflow: hidden;
+    margin: 20px 0px 5px 0px;
+    background: ${props => props.headerBackground || 'darkgray'};
+    animation: ${props =>
+        props.isVisible ? headerScaleIn : headerScaleOut} 0.5s ease-in-out both;
+`;
+
 const StyledHeader = styled(Header) `
     color: white;
-    background: ${props => props.headerBackground || 'darkgray'};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,10 +116,6 @@ const StyledHeader = styled(Header) `
     font-style: normal;
     font-weight: normal;
     padding-left: 10px;
-    overflow: hidden;
-    margin: 10px 0px 5px 0px;
-    animation: ${props =>
-        props.isVisible ? headerScaleIn : headerScaleOut} 0.5s ease-in-out both;
 `;
 
 const BodyContainer = styled.div`
@@ -103,40 +126,49 @@ const BodyContainer = styled.div`
         props.isVisible ? headerScaleIn : headerScaleOut} 0.5s ease-in-out both;
 `;
 
-const CloseButton = styled.div`
-    padding: 3px;
-    margin: 3px;
-`;
+// const CloseButton = styled.div`
+//     padding: 3px;
+//     margin: 3px;
+// `;
 
-const CloseIcon = styled(Icon) `
-    font-weight: bold;
-    font-size: 1em;
-`;
+// const CloseIcon = styled(Icon) `
+//     font-weight: bold;
+//     font-size: 1em;
+// `;
 
 const RevealPanel: StatelessComponent<Props> = (props) => {
     const {
+        actions,
         children,
         className,
-        heading,
+        header,
         isVisible,
-        close,
     } = props;
 
     return (
         <div
             className={className}
         >
-            <StyledHeader
-                headerBackground={theme.headingBackground2}
+            <StyledPanelHeader
+                headerBackground={theme.headingBackground1}
                 isVisible={isVisible || true}
             >
-                {heading || 'Insert Heading'}
-                <CloseButton onClick={() => close || null}>
-                    <CloseIcon
-                        type="close"
-                    />
-                </CloseButton>
-            </StyledHeader>
+                {
+                    header &&
+                    <StyledHeader>
+                        {header || 'Insert Heading'}
+                    </StyledHeader>
+                }
+                {
+                    actions &&
+                    <ActionHeader>
+                        {
+                            actions
+                        }
+                    </ActionHeader>
+                }
+
+            </StyledPanelHeader>
             <BodyContainer
                 isVisible={isVisible || true}
             >
@@ -156,9 +188,9 @@ const StyledRevealPanel = styled(RevealPanel) `
     height: ${props => props.height || '90%'};
     border-radius: 5px;
     animation: ${props =>
-    props.isVisible
-        ? shadowIn({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })
-        : shadowOut({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })} 
+        props.isVisible
+            ? shadowIn({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })
+            : shadowOut({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })} 
         0.5s ease-in-out both;
 `;
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
 
@@ -19,6 +19,8 @@ interface Props {
 
 interface AppState {
     selectedStateId: number;
+    activeLeft: number;
+    activeWidth: number;
 }
 
 interface NameId {
@@ -88,20 +90,24 @@ export default class Radio extends Component<Props, AppState> {
     constructor(props: Props) {
         super();
 
+        // console.dir(props.selectedPropsId);
+
         this.state = {
-            selectedStateId: props.selectedPropsId ? props.selectedPropsId : 0,
+            selectedStateId: props.selectedPropsId ? props.selectedPropsId : 1,
+            activeLeft: 0,
+            activeWidth: 0,
         };
     }
 
-    // componentDidMount() {
-    //     this.props.items && this.setState({
-    //         ...this.state,
-    //         activeLeft: this.items[
-    //             this.props.items.findIndex(x => x.id === this.state.selectedStateId)].offsetLeft,
-    //         activeWidth: this.items[
-    //             this.props.items.findIndex(x => x.id === this.state.selectedStateId)].offsetWidth,
-    //     });
-    // }
+    componentDidMount() {
+        this.props.items && this.setState({
+            ...this.state,
+            activeLeft: this.items[
+                this.props.items.findIndex(x => x.id === this.props.selectedPropsId)].offsetLeft,
+            activeWidth: this.items[
+                this.props.items.findIndex(x => x.id === this.props.selectedPropsId)].offsetWidth,
+        });
+    }
 
     render() {
         const {
@@ -118,24 +124,25 @@ export default class Radio extends Component<Props, AppState> {
             width,
         } = this.props;
 
-        const {
-            selectedStateId,
-        } = this.state;
+        // const {
+        //     selectedStateId,
+        // } = this.state;
 
         // console.dir(this.items);
+        // console.dir(selectedPropsId);
         if (!this.props.items) { return null; }
 
         // const activeIndex = 
-   
+
         // const activeLeft = selectedPropsId
         //     ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetLeft
         //     : this.items[this.props.items.findIndex(x => x.id === selectedStateId)].offsetLeft;
-        
+
         // const activeWidth = selectedPropsId
         //     ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetWidth
         //     : this.items[this.props.items.findIndex(x => x.id === selectedStateId)].offsetWidth;
 
-        const selectedId = selectedPropsId || selectedStateId;
+        // const selectedId = selectedPropsId;
 
         return (
             <MainContainer
@@ -152,16 +159,16 @@ export default class Radio extends Component<Props, AppState> {
                 <BodyContainer>
                     {
                         (items !== undefined)
-                            ? this.renderItems(items, selectedId, onChange, activeColor)
+                            ? this.renderItems(items, selectedPropsId || 1, onChange, activeColor)
                             : null
                     }
                     <UnderLine
                         activeLeft={this.items.length > 0
-                            ? this.items[this.props.items.findIndex(x => x.id === selectedId)].offsetLeft
+                            ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetLeft
                             : 0
                         }
                         activeWidth={this.items.length > 0
-                            ? this.items[this.props.items.findIndex(x => x.id === selectedId)].offsetWidth
+                            ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetWidth
                             : 0
                         }
                         underlineColor={underlineColor ? underlineColor : 'black'}

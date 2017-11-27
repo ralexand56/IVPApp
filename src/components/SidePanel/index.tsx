@@ -66,7 +66,7 @@ const SidePanel: StatelessComponent<Props> = ({isOpen, className, children, togg
             className={className}
         >
             <Header
-                backgroundColor={theme.headingBackground2}    
+                backgroundColor={theme.headingBackground1}    
                 isOpen={isOpen}
                 close={toggle}
             />
@@ -79,7 +79,7 @@ const StyledSidePanel = styled(SidePanel) `
     border: 0px solid;
     height: 100%;
     overflow: hidden;
-    padding: 50px 0 0 20px;
+    padding: 105px 0 0 8px;
     position: absolute;
     z-index: 1;
     right: 0;
