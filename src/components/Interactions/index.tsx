@@ -1,13 +1,13 @@
-import actionCreators from '../actions/ClientActions';
-import * as React from 'react';
+import actionCreators from '../../actions/ClientActions';
+import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     ApplicationState,
-} from '../store';
+} from '../../store';
 import {
     ClientState,
-} from '../datatypes';
+} from '../../datatypes';
 
 type Props = ClientState &
     typeof actionCreators;

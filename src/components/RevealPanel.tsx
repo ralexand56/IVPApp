@@ -52,16 +52,17 @@ const headerScaleOut = () => keyframes`
 `;
 
 interface Props {
-    actions?: JSX.Element[] | undefined;
+    actions?: JSX.Element[] | undefined | React.ReactChild;
     className?: string;
     endColor?: string;
     header?: React.ReactChild;
     height?: string;
     isVisible?: boolean;
     close?: Function;
+    margin?: string;
     headerStyle?: string;
     startColor?: string;
-    children?: React.ReactChild;
+    children?: {};
     width?: string;
 }
 
@@ -115,11 +116,15 @@ const StyledHeader = styled(Header) `
     font-size: 1.2em;
     font-style: normal;
     font-weight: normal;
-    padding-left: 10px;
+    padding: 3px;
 `;
 
 const BodyContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 100%;
+    height: 100%;
     margin: 5px;
     overflow: hidden;
     animation: ${(props: { isVisible: Boolean }) =>
@@ -181,12 +186,14 @@ const RevealPanel: StatelessComponent<Props> = (props) => {
 };
 
 const StyledRevealPanel = styled(RevealPanel) `
-    margin: 10px;
+    margin: ${props => props.margin || '10px'};
     display: flex;
     flex-direction: column;
-    width: ${props => props.width || '70%'};
-    height: ${props => props.height || '90%'};
+    justify-content: flex-start;
     border-radius: 5px;
+    border: 0px solid;
+    width: ${props => props.width || '100%'};
+    height: ${props => props.height || '100%'};
     animation: ${props =>
         props.isVisible
             ? shadowIn({ startColor: props.startColor || 'white', endColor: props.endColor || 'white' })

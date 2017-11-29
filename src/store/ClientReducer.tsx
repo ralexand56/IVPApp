@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import {
+    defaultUser,
     sampleClients,
     ClientState,
     KnownAction
@@ -9,6 +10,7 @@ const unloadedState: ClientState = {
     searchResultsIsVisible: true,
     clients: sampleClients,
     currentClientId: sampleClients[0].id,
+    currentUser: defaultUser,
     filteredClients: sampleClients,
     isInEditMode: false,
     selectedClientTabId: 1,

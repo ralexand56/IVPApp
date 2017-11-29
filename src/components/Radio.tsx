@@ -44,7 +44,7 @@ const MainContainer = styled.div`
     border-radius: 5px;
     margin:  ${(props: MainContainerProps) => props.margin}px;
     width:  ${(props: MainContainerProps) => props.width};
-    padding: 0.5em;
+    padding: 0em;
 `;
 
 const BodyContainer = styled.div`
@@ -146,7 +146,7 @@ export default class Radio extends Component<Props, AppState> {
 
         return (
             <MainContainer
-                backgroundColor={backgroundColor ? backgroundColor : 'white'}
+                backgroundColor={backgroundColor ? backgroundColor : 'transparent'}
                 fontSize={fontSize || '1em'}
                 margin={margin ? margin : 10}
                 width={width ? `${width}px` : 'auto'}

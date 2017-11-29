@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import AppHeaderContainer from './components/AppHeaderContainer';
 // import Button from './components/Button';
 import ClientBody from './components/ClientBody';
+import ClientFooter from './components/ClientFooter';
 import SidePanelContainer from './components/SidePanel/SidePanelContainer';
 import RevealPanel from './components/RevealPanel';
 import {
@@ -14,13 +15,15 @@ import {
   theme,
 } from './datatypes';
 import {
+  Badge,
   Icon,
+  Button,
 } from 'antd';
 import actionCreators from './actions/ClientActions';
 // import Radio from './components/Radio';
 // import Comments from './components/Comments';
 // import Interactions from './components/Interactions';
-import Btn from '@atlaskit/button';
+// import Btn from '@atlaskit/button';
 // const ClientViews = {
 //   1: <Comments comments={[]} />,
 //   2: <Interactions />,
@@ -30,8 +33,8 @@ const MainContainer = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  border: 1px solid;
-  padding: 50px;
+  border: 0px solid;
+  padding: 50px 560px 20px 20px;
 `;
 
 interface Props {
@@ -72,10 +75,10 @@ export default class App extends Component<Props, {}> {
     } = this.props;
 
     const currentClientIndex = clients.findIndex(x => x.id === currentClientId);
-    const currentClient = clients.filter(x => x.id === currentClientId)[0];
-    const fullName = currentClientId
-      ? `Current Client: ${currentClient.firstName} ${currentClient.lastName}`
-      : 'None selected...';
+    // const currentClient = clients.filter(x => x.id === currentClientId)[0];
+    // const fullName = currentClientId
+    //   ? `Current Client: ${currentClient.firstName} ${currentClient.lastName}`
+    //   : 'None selected...';
     return (
       [<AppHeaderContainer key="header" />,
       (
@@ -87,55 +90,56 @@ export default class App extends Component<Props, {}> {
             endColor={theme.bodyBackground}
             actions={
               [
-                <span
-                  key="totalClients"
-                  style={{ color: 'white' }}
-                >
-                  Total Clients: {clients.length}
-                </span>,
-                <Btn
+                <Button
+                  style={{ margin: 5 }}
                   key="addBtn"
+                  ghost={true}
+                  size="small"
                   onClick={() => addClient(findMaxId(clients) + 1)}
                 >
                   <Icon type="plus" />
-                </Btn>,
-                <Btn
-                  key="previousBtn"
-                  isDisabled={currentClientIndex === 0}
-                  onClick={() => setCurrentClient(clients[currentClientIndex - 1].id)}
+                </Button>,
+                <Button.Group
+                  key="nav"
+                  size="small"
                 >
-                  <Icon type="left" />
-                </Btn>,
-                <Btn
-                  key="nextBtn"
-                  isDisabled={currentClientIndex === clients.length - 1}
-                  onClick={() => setCurrentClient(clients[currentClientIndex + 1].id)}
-                >
-                  <Icon type="right" />
-                </Btn>,
+                  <Button
+                    size="small"
+                    ghost={true}
+                    disabled={currentClientIndex === 0}
+                    onClick={() => setCurrentClient(clients[currentClientIndex - 1].id)}
+                  >
+                    <Icon type="left" />
+                  </Button>
+                  <Button
+                    key="nextBtn"
+                    size="small"
+                    ghost={true}
+                    disabled={currentClientIndex === clients.length - 1}
+                    onClick={() => setCurrentClient(clients[currentClientIndex + 1].id)}
+                  >
+                    <Icon type="right" />
+                  </Button>
+                </Button.Group>,
               ]
             }
             header={
-              <span>
+              <StyledHeader>
                 <Icon
-                  type="user"
+                  type="idcard"
                   style={{ margin: 5 }}
                 />
-                {fullName}
-              </span>}
+                <Badge
+                  count={clients.length}
+                  style={{background: theme.headingBackground2}}
+                >
+                  Clients
+                </Badge>
+              </StyledHeader>}
             isVisible={true}
           >
-            <div>
-              <ClientBody />
-              {/* <RevealPanel>
-                header={
-                  newFunction(selectedClientTabId, setClientTab)
-                }
-                {
-                  ClientViews[selectedClientTabId]
-                }
-              </RevealPanel> */}
-            </div>
+            <ClientBody />
+            <ClientFooter />
           </RevealPanel>
         </MainContainer>
       )
@@ -151,11 +155,7 @@ const findMaxId = (clients: Client[]) => {
   return max;
 };
 
-// const renderClientTab(selectedClientTabId: number, setClientTab: (selectedClientTabId: number) 
-// => { type: string; clientTabId: number; }) => (
-//   <Radio items={[
-//     { name: 'Comments', id: 1 },
-//     { name: 'Interactions', id: 2 },
-//     { name: 'Sample Assets', id: 3 },
-//   ]} selectedPropsId={selectedClientTabId} 
-// onChange={(id: number) => setClientTab(id)} underlineColor={theme.headingBackground2} />);
+const StyledHeader = styled.span`
+  font-size: 1.2em;
+  font-weight: normal;
+`;

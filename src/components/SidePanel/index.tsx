@@ -6,7 +6,7 @@ import { theme } from '../../datatypes';
 
 const defaultStartColor: string = 'white';
 const defaultEndColor: string = '#fff';
-const defaultWidth: string = '20%';
+const defaultWidth: string = '500px';
 
 const shadowIn = (props: Props) => keyframes`
 0% {

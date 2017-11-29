@@ -10,7 +10,10 @@ import {
     theme,
 } from '../../datatypes';
 import SidePanel from './index';
-import { Table } from 'antd';
+import {
+    Avatar,
+    Table,
+} from 'antd';
 import { Client } from '../../datatypes';
 
 type Props = ClientState &
@@ -32,6 +35,7 @@ class SidePanelContainer extends Component<Props, {}> {
                     dataSource={filteredClients}
                     columns={Columns}
                     rowKey="id"
+                    style={{ minWidth: 300 }}
                     rowClassName={(rec: Client, ind: number) => ind % 2 ? 'alternateColor' : 'transparent'}
                 />
             </SidePanel>);
@@ -43,13 +47,35 @@ export default connect(
     actionCreators
 )(SidePanelContainer);
 
-const Columns = [{
-    title: 'First Name',
-    dataIndex: 'firstName',
-    key: 'firstName',
-},
-{
-    title: 'Last Name',
-    dataIndex: 'lastName',
-    key: 'lastName',
-}];
+const Columns = [
+    {
+        dataIndex: 'imgUrl',
+        key: 'imgUrl',
+        render: (i: string, c: Client) => (
+            <Avatar
+                src={c.imgUrl ? `/images/${c.imgUrl}` : ''}
+                shape="square"
+                icon="user"
+            />
+        ),
+    },
+    {
+        title: 'First Name',
+        dataIndex: 'firstName',
+        key: 'firstName',
+    },
+    {
+        title: 'Last Name',
+        dataIndex: 'lastName',
+        key: 'lastName',
+    },
+    {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+    },
+    {
+        title: 'Company',
+        dataIndex: 'company',
+        key: 'company',
+    }];
