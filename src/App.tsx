@@ -80,7 +80,7 @@ export default class App extends Component<Props, {}> {
     //   ? `Current Client: ${currentClient.firstName} ${currentClient.lastName}`
     //   : 'None selected...';
     return (
-      <React.Fragment>
+      < >
       <AppHeaderContainer key="header" />
       <SidePanelContainer key="sidepanel" />
       <MainContainer key="main">
@@ -140,7 +140,7 @@ export default class App extends Component<Props, {}> {
           <ClientFooter />
         </RevealPanel>
       </MainContainer>
-      </React.Fragment>
+      </ >
     )
   }
 }

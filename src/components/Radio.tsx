@@ -88,7 +88,7 @@ export default class Radio extends Component<Props, AppState> {
     private items: HTMLSpanElement[] = [];
 
     constructor(props: Props) {
-        super();
+        super(props);
 
         // console.dir(props.selectedPropsId);
 
