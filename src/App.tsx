@@ -80,71 +80,68 @@ export default class App extends Component<Props, {}> {
     //   ? `Current Client: ${currentClient.firstName} ${currentClient.lastName}`
     //   : 'None selected...';
     return (
-      [<AppHeaderContainer key="header" />,
-      (
-        <SidePanelContainer key="sidepanel" />
-      ),
-      (
-        <MainContainer key="main">
-          <RevealPanel
-            endColor={theme.bodyBackground}
-            actions={
-              [
+      <React.Fragment>
+      <AppHeaderContainer key="header" />
+      <SidePanelContainer key="sidepanel" />
+      <MainContainer key="main">
+        <RevealPanel
+          endColor={theme.bodyBackground}
+          actions={
+            [
+              <Button
+                style={{ margin: 5 }}
+                key="addBtn"
+                ghost={true}
+                size="small"
+                onClick={() => addClient(findMaxId(clients) + 1)}
+              >
+                <Icon type="plus" />
+              </Button>,
+              <Button.Group
+                key="nav"
+                size="small"
+              >
                 <Button
-                  style={{ margin: 5 }}
-                  key="addBtn"
+                  size="small"
                   ghost={true}
+                  disabled={currentClientIndex === 0}
+                  onClick={() => setCurrentClient(clients[currentClientIndex - 1].id)}
+                >
+                  <Icon type="left" />
+                </Button>
+                <Button
+                  key="nextBtn"
                   size="small"
-                  onClick={() => addClient(findMaxId(clients) + 1)}
+                  ghost={true}
+                  disabled={currentClientIndex === clients.length - 1}
+                  onClick={() => setCurrentClient(clients[currentClientIndex + 1].id)}
                 >
-                  <Icon type="plus" />
-                </Button>,
-                <Button.Group
-                  key="nav"
-                  size="small"
-                >
-                  <Button
-                    size="small"
-                    ghost={true}
-                    disabled={currentClientIndex === 0}
-                    onClick={() => setCurrentClient(clients[currentClientIndex - 1].id)}
-                  >
-                    <Icon type="left" />
-                  </Button>
-                  <Button
-                    key="nextBtn"
-                    size="small"
-                    ghost={true}
-                    disabled={currentClientIndex === clients.length - 1}
-                    onClick={() => setCurrentClient(clients[currentClientIndex + 1].id)}
-                  >
-                    <Icon type="right" />
-                  </Button>
-                </Button.Group>,
-              ]
-            }
-            header={
-              <StyledHeader>
-                <Icon
-                  type="idcard"
-                  style={{ margin: 5 }}
-                />
-                <Badge
-                  count={clients.length}
-                  style={{background: theme.headingBackground2}}
-                >
-                  Clients
+                  <Icon type="right" />
+                </Button>
+              </Button.Group>,
+            ]
+          }
+          header={
+            <StyledHeader>
+              <Icon
+                type="idcard"
+                style={{ margin: 5 }}
+              />
+              <Badge
+                count={clients.length}
+                style={{ background: theme.headingBackground2 }}
+              >
+                Clients
                 </Badge>
-              </StyledHeader>}
-            isVisible={true}
-          >
-            <ClientBody />
-            <ClientFooter />
-          </RevealPanel>
-        </MainContainer>
-      )
-      ]
-    );
+            </StyledHeader>}
+          isVisible={true}
+        >
+          <ClientBody />
+          <ClientFooter />
+        </RevealPanel>
+      </MainContainer>
+      </React.Fragment>
+    )
   }
 }
 
