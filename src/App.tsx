@@ -20,14 +20,7 @@ import {
   Button,
 } from 'antd';
 import actionCreators from './actions/ClientActions';
-// import Radio from './components/Radio';
-// import Comments from './components/Comments';
-// import Interactions from './components/Interactions';
 // import Btn from '@atlaskit/button';
-// const ClientViews = {
-//   1: <Comments comments={[]} />,
-//   2: <Interactions />,
-// };
 
 const MainContainer = styled.div`
   position: relative;
@@ -44,6 +37,13 @@ interface Props {
   isInEditMode: boolean;
   selectedClientTabId: number;
   setClientTab: typeof actionCreators.setClientTab;
+  setCurrentClient: typeof actionCreators.setCurrentClient;
+}
+
+interface MainBodyProps {
+  currentClientIndex: number;
+  addClient: typeof actionCreators.addClient;
+  clients: Client[];
   setCurrentClient: typeof actionCreators.setCurrentClient;
 }
 
@@ -75,71 +75,18 @@ export default class App extends Component<Props, {}> {
     } = this.props;
 
     const currentClientIndex = clients.findIndex(x => x.id === currentClientId);
-    // const currentClient = clients.filter(x => x.id === currentClientId)[0];
-    // const fullName = currentClientId
-    //   ? `Current Client: ${currentClient.firstName} ${currentClient.lastName}`
-    //   : 'None selected...';
     return (
       < >
-        <AppHeaderContainer key="header" />
-        <SidePanelContainer key="sidepanel" />
-        <MainContainer key="main">
-          <RevealPanel
-            endColor={theme.bodyBackground}
-            actions={
-              [
-                <Button
-                  style={{ margin: 5 }}
-                  key="addBtn"
-                  ghost={true}
-                  size="small"
-                  onClick={() => addClient(findMaxId(clients) + 1)}
-                >
-                  <Icon type="plus" />
-                </Button>,
-                <Button.Group
-                  key="nav"
-                  size="small"
-                >
-                  <Button
-                    size="small"
-                    ghost={true}
-                    disabled={currentClientIndex === 0}
-                    onClick={() => setCurrentClient(clients[currentClientIndex - 1].id)}
-                  >
-                    <Icon type="left" />
-                  </Button>
-                  <Button
-                    key="nextBtn"
-                    size="small"
-                    ghost={true}
-                    disabled={currentClientIndex === clients.length - 1}
-                    onClick={() => setCurrentClient(clients[currentClientIndex + 1].id)}
-                  >
-                    <Icon type="right" />
-                  </Button>
-                </Button.Group>,
-              ]
-            }
-            header={
-              <StyledHeader>
-                <Icon
-                  type="idcard"
-                  style={{ margin: 5 }}
-                />
-                <Badge
-                  count={clients.length}
-                  style={{ background: theme.headingBackground2 }}
-                >
-                  Clients
-                  </Badge>
-              </StyledHeader>}
-            isVisible={true}
-          >
-            <ClientBody />
-            <ClientFooter />
-          </RevealPanel>
-        </MainContainer>
+      <AppHeaderContainer />
+      <SidePanelContainer />
+      (
+      <MainBody
+        addClient={addClient}
+        clients={clients}
+        currentClientIndex={currentClientIndex}
+        setCurrentClient={setCurrentClient}
+      />
+      );
       </ >
     )
   }
@@ -156,3 +103,65 @@ const StyledHeader = styled.span`
   font-size: 1.2em;
   font-weight: normal;
 `;
+
+const MainBody = (props: MainBodyProps) => (
+  <MainContainer>
+    <RevealPanel
+      endColor={theme.bodyBackground}
+      actions={
+        [
+          <Button
+            style={{ margin: 5 }}
+            key="addBtn"
+            ghost={true}
+            size="small"
+            onClick={() => props.addClient(findMaxId(props.clients) + 1)}
+          >
+            <Icon type="plus" />
+          </Button>,
+          <Button.Group
+            key="nav"
+            size="small"
+          >
+            <Button
+              size="small"
+              ghost={true}
+              disabled={props.currentClientIndex === 0}
+              onClick={() => props.setCurrentClient(props.clients[props.currentClientIndex - 1].id)}
+            >
+              <Icon type="left" />
+            </Button>
+            <Button
+              key="nextBtn"
+              size="small"
+              ghost={true}
+              disabled={props.currentClientIndex === props.clients.length - 1}
+              onClick={() => props.setCurrentClient(props.clients[props.currentClientIndex + 1].id)}
+            >
+              <Icon type="right" />
+            </Button>
+          </Button.Group>,
+        ]
+      }
+      header={
+        (
+          <StyledHeader>
+            <Icon
+              type="idcard"
+              style={{ margin: 5 }}
+            />
+            <Badge
+              count={props.clients.length}
+              style={{ background: theme.headingBackground2 }}
+            >
+              Clients
+            </Badge>
+          </StyledHeader>)
+      }
+      isVisible={true}
+    >
+      <ClientBody />
+      <ClientFooter />
+    </RevealPanel>
+  </MainContainer>
+);
