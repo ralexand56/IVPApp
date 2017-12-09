@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'core-js';
-import AppMainContainer from './AppContainer';
+// import AppMainContainer from './AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
 
 import { AppContainer } from 'react-hot-loader';
+import SidePanel from './components/ClientBody';
 // import SidePanelContainer from './components/SidePanel/SidePanelContainer';
 import './index.css';
 import 'antd/dist/antd.css';
@@ -21,7 +22,7 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <AppMainContainer />
+        <SidePanel />
       </Provider>
     </ThemeProvider>
   </AppContainer>

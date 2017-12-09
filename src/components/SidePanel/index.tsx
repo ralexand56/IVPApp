@@ -1,90 +1,81 @@
-import React, { StatelessComponent } from 'react';
-import styled, { keyframes } from 'styled-components';
-import Header from './Header';
 import actionCreators from '../../actions/ClientActions';
-import { theme } from '../../datatypes';
+import React from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+    ApplicationState,
+} from '../../store';
+import {
+    ClientState,
+    theme,
+} from '../../datatypes';
+import SidePanel from './SidePanel';
+import {
+    Avatar,
+    Table,
+} from 'antd';
+import { Client } from '../../datatypes';
 
-const defaultStartColor: string = 'white';
-const defaultEndColor: string = '#fff';
-const defaultWidth: string = '500px';
+type Props = ClientState &
+    typeof actionCreators;
 
-const shadowIn = (props: Props) => keyframes`
-0% {
-    box-shadow: 0px 0px rgba(0,0,0,0.3);
-    background: ${props.startColor || defaultStartColor};
-    width: 0;
-    padding: 0px;
-}
-25% {
-    box-shadow: 0px 0px rgba(0,0,0,0.3);
-    background: ${props.startColor || defaultStartColor};
-}
-85%{
-    background: ${props.endColor || defaultEndColor};
-    box-shadow: 0px 0px rgba(0,0,0,0.3);
-}
-100% {
-    background: ${props.endColor || defaultEndColor};
-    box-shadow: inset 5px 0px 15px rgba(0,0,0,0.3);
-    width: ${props.width || defaultWidth};
-}
-`;
+class Container extends Component<Props, {}> {
 
-const shadowOut = (props: Props) => keyframes`
- 0% {
-    background: ${props.endColor || defaultEndColor};
-    box-shadow: inset 5px 0px 15px rgba(0,0,0,0.3);
-    width: ${props.width || defaultWidth};
-}
-25%{
-    background: ${props.endColor || defaultStartColor};
-    box-shadow: inset 5px 0px 15px rgba(0,0,0,0.3);
-}
-100% {
-    background: ${props.startColor || defaultStartColor};
-    box-shadow: 0px 0px rgba(0,0,0,0.3);
-    width: 0px;
-    padding: 0px;
-}
-`;
-
-interface Props {
-    className?: string;
-    children?: React.ReactChild;
-    isOpen?: boolean;
-    header?: string;
-    startColor?: string;
-    endColor?: string;
-    width?: string;
-    toggle: typeof actionCreators.setSearchResultsVisibility;
+    render() {
+        const {
+            clients
+        } = this.props;
+        return (
+            <SidePanel
+                isOpen={this.props.searchResultsIsVisible}
+                toggle={this.props.setSearchResultsVisibility}
+                endColor={theme.bodyBackground}
+            >
+                <Table
+                    dataSource={clients}
+                    columns={Columns}
+                    rowKey="id"
+                    style={{ minWidth: 300 }}
+                    rowClassName={(rec: Client, ind: number) => ind % 2 ? 'alternateColor' : 'transparent'}
+                />
+            </SidePanel>);
+    }
 }
 
-const SidePanel: StatelessComponent<Props> = ({isOpen, className, children, toggle}) => {
+export default connect(
+    (state: ApplicationState) => state.clientSlice,
+    actionCreators
+)(Container);
 
-    return (
-        <div
-            className={className}
-        >
-            <Header
-                backgroundColor={theme.headingBackground1}    
-                isOpen={isOpen}
-                close={toggle}
+const Columns = [
+    {
+        dataIndex: 'imgUrl',
+        key: 'imgUrl',
+        render: (i: string, c: Client) => (
+            <Avatar
+                src={c.imgUrl ? `/images/${c.imgUrl}` : ''}
+                shape="square"
+                icon="user"
             />
-            {children}
-        </div>
-    );
-};
-
-const StyledSidePanel = styled(SidePanel) `
-    border: 0px solid;
-    height: 100%;
-    overflow: hidden;
-    padding: 105px 0 0 8px;
-    position: absolute;
-    z-index: 1;
-    right: 0;
-    transition: all 0.7s ease-in-out;
-    animation: ${props => props.isOpen ? shadowIn : shadowOut} 0.5s ease-in-out both;
-`;
-
-export default StyledSidePanel;
+        ),
+    },
+    {
+        title: 'First Name',
+        dataIndex: 'firstName',
+        key: 'firstName',
+    },
+    {
+        title: 'Last Name',
+        dataIndex: 'lastName',
+        key: 'lastName',
+    },
+    {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+    },
+    {
+        title: 'Company',
+        dataIndex: 'company',
+        key: 'company',
+    }];
