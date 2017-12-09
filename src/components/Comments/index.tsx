@@ -24,12 +24,12 @@ class ContainerTemplate extends Component<Props, {}> {
         const currentClient = clients[clients.findIndex(x => x.id === currentClientId)];
 
         return (
-            currentClient.comments &&
+            currentClient.comments ?
             (
                 <Comments
                     comments={currentClient.comments}
                 />
-            )
+            ) : <h2>No Comments...</h2>
         );
     }
 }

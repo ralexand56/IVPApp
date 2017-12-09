@@ -1,40 +1,12 @@
 import React, { Component } from 'react';
-// import {
-//   Card
-// } from 'antd';
 // import firebase from 'firebase';
 require('firebase/firestore');
 import './App.css';
 import AppHeaderContainer from './components/AppHeaderContainer';
-// import Button from './components/Button';
 import SidePanel from './components/SidePanel';
-import { Client } from './datatypes';
 import MainBody from './components/MainBody';
-// import Btn from '@atlaskit/button';
 
-interface Props {
-  addClient: typeof actionCreators.addClient;
-  clients: Client[];
-  currentClientId: number | undefined;
-  isInEditMode: boolean;
-  selectedClientTabId: number;
-  setClientTab: typeof actionCreators.setClientTab;
-  setCurrentClient: typeof actionCreators.setCurrentClient;
-}
-
-// const Button = styled.button`
-//   background: transparent;
-//   border: none;
-// `;
-
-// const StyledCard = styled(Card) `
-//   color: orange;
-//   margin: 50px;
-//   width: 300px;
-//   background: #ECECEC;
-// `;
-
-export default class App extends Component<Props, {}> {
+export default class App extends Component<{}, {}> {
   // async componentDidMount() {
   //   firebase.initializeApp(config);
 
@@ -121,20 +93,14 @@ export default class App extends Component<Props, {}> {
   // });
   // }
 
-  handleChange = () => {
-    let i = 0;
-
-    console.dir(i);
-  }
-
   render() {
 
     return (
-      <div>
+      <>
         <AppHeaderContainer />
         <SidePanel />
         <MainBody />
-      </div>
+      </>
     );
   }
 }

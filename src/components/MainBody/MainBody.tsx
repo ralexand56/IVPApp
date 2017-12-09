@@ -89,8 +89,8 @@ const MainBody = (props: Props) => (
       }
       isVisible={true}
     >
-      <ClientBody />
-      <ClientFooter />
+            <ClientBody />
+      <ClientFooter />      
     </RevealPanel>
   </MainContainer>
 );

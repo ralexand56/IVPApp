@@ -68,32 +68,6 @@ export const sampleClients: Client[] = [
     website: 'http://www.louvre.fr/en',
     title: 'Artiste',
     company: 'Louvre',
-    comments: [
-      {
-        id: 1,
-        body: 'work was esoteric and derivative',
-        created: new Date(1900, 12, 25),
-        user: defaultUser
-      },
-      {
-        id: 2,
-        body: 'Check out latest collection',
-        created: new Date(1900, 12, 25),
-        user: defaultUser
-      },
-      {
-        id: 3,
-        body: 'contact to show work',
-        created: new Date(1900, 12, 25),
-        user: defaultUser
-      },
-      {
-        id: 4,
-        body: 'artist difficutl to work with',
-        created: new Date(1900, 12, 25),
-        user: defaultUser
-      }
-    ]
   },
   {
     id: 2,

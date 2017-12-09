@@ -59,7 +59,7 @@ const ClientFooter: StatelessComponent<Props> = ({
                 width="100%"
             >
                 {
-                    ClientViews[selectedClientTabId]
+                   selectedClientTabId && ClientViews[selectedClientTabId]
                 }
             </RevealPanel>
         </div>

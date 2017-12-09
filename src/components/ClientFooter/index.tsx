@@ -2,39 +2,38 @@ import actionCreators from '../../actions/ClientActions';
 import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    ApplicationState,
-} from '../../store';
-import {
-    ClientState,
-} from '../../datatypes';
+import { ApplicationState } from '../../store';
+import { ClientState } from '../../datatypes';
 import ClientFooter from './ClientFooter';
+import ErrorBoundary from '../ErrorBoundary';
 
-type Props = ClientState &
-    typeof actionCreators;
+type Props = ClientState & typeof actionCreators;
 
 class ContainerTemplate extends Component<Props, {}> {
+  render() {
+    const {
+      clients,
+      currentClientId,
+      selectedClientTabId,
+      setClientTab,
+    } = this.props;
 
-    render() {
-        const {
-            clients,
-            currentClientId,
-            selectedClientTabId,
-            setClientTab,
-        } = this.props;
+    const currentClient =
+      clients[clients.findIndex(x => x.id === currentClientId)];
 
-        const currentClient = clients[clients.findIndex(x => x.id === currentClientId)];
-
-        return (
-            <ClientFooter
-                currentClient={currentClient}
-                selectedClientTabId={selectedClientTabId}
-                setClientTab={setClientTab}
-            />);
-    }
+    return (
+      <ErrorBoundary>
+        <ClientFooter
+          currentClient={currentClient}
+          selectedClientTabId={selectedClientTabId}
+          setClientTab={setClientTab}
+        />
+      </ErrorBoundary>
+    );
+  }
 }
 
 export default connect(
-    (state: ApplicationState) => state.clientSlice,
-    actionCreators
+  (state: ApplicationState) => state.clientSlice,
+  actionCreators,
 )(ContainerTemplate);
