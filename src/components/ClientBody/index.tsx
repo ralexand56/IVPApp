@@ -19,7 +19,9 @@ class ContainerTemplate extends Component<Props, {}> {
         const {
             clients,
             currentClientId,
-            isInEditMode
+            isInEditMode,
+            setClientEditMode,
+            updateClient,
         } = this.props;
 
         const currentClient = clients[clients.findIndex(x => x.id === currentClientId)];
@@ -28,6 +30,8 @@ class ContainerTemplate extends Component<Props, {}> {
             <ClientBody
                 currentClient={currentClient}
                 isInEditMode={isInEditMode}
+                setClientEditMode={setClientEditMode}
+                updateClient={updateClient}
             />);
     }
 }

@@ -8,21 +8,24 @@ import ClientBody from '../ClientBody';
 import ClientFooter from '../ClientFooter';
 
 interface Props {
+  className?: string;
+  currentClient: Client;
   currentClientIndex: number;
   addClient: typeof actionCreators.addClient;
   clients: Client[];
   setCurrentClient: typeof actionCreators.setCurrentClient;
 }
 
-const findMaxId = (clients: Client[]) => {
-  let max = 0;
+// const findMaxId = (clients: Client[]) => {
+//   let max = 0;
 
-  clients.map(x => (x.id >= max ? (max = x.id) : null));
-  return max;
-};
+//   clients.map(x => (x.id >= max ? (max = x.id) : null));
+//   return max;
+// };
 
 const StyledHeader = styled.span`
-  font-size: 1.2em;
+  color: white;
+  font-size: 1.4em;
   font-weight: normal;
 `;
 
@@ -44,7 +47,7 @@ const MainBody = (props: Props) => (
           key="addBtn"
           ghost={true}
           size="small"
-          onClick={() => props.addClient(findMaxId(props.clients) + 1)}
+          onClick={() => props.addClient()}
         >
           <Icon type="plus" />
         </Button>,
@@ -80,17 +83,24 @@ const MainBody = (props: Props) => (
         <StyledHeader>
           <Icon type="idcard" style={{ margin: 5 }} />
           <Badge
+            className={props.className} 
             count={props.clients.length}
-            style={{ background: theme.headingBackground2 }}
+            style={{ background: theme.headingBackground2, color: 'white' }}
           >
-            Clients
+            <span style={{color: 'white', padding: 7}}>Clients</span>
           </Badge>
         </StyledHeader>
       }
       isVisible={true}
-    >
+    >{
+        props.currentClient
+          ? (
+            <>
             <ClientBody />
-      <ClientFooter />      
+            <ClientFooter />
+            </>
+          ) : <h2>Select Client...</h2>
+      }
     </RevealPanel>
   </MainContainer>
 );

@@ -14,6 +14,7 @@ import {
     Avatar,
     Table,
 } from 'antd';
+import { ColumnProps } from 'antd/lib/table';
 import { Client } from '../../datatypes';
 
 type Props = ClientState &
@@ -23,7 +24,9 @@ class Container extends Component<Props, {}> {
 
     render() {
         const {
-            clients
+            clients,
+            currentClientId,
+            setCurrentClient,
         } = this.props;
         return (
             <SidePanel
@@ -34,9 +37,12 @@ class Container extends Component<Props, {}> {
                 <Table
                     dataSource={clients}
                     columns={Columns}
+                    onRow={(c: Client) => ({onClick: ()  => setCurrentClient(c.id)})}
                     rowKey="id"
                     style={{ minWidth: 300 }}
-                    rowClassName={(rec: Client, ind: number) => ind % 2 ? 'alternateColor' : 'transparent'}
+                    rowClassName={(rec: Client, ind: number) => rec.id === currentClientId
+                        ? 'selectedColor'
+                        : ind % 2 ? 'oddColor' : 'evenColor'}
                 />
             </SidePanel>);
     }
@@ -47,13 +53,13 @@ export default connect(
     actionCreators
 )(Container);
 
-const Columns = [
+const Columns: ColumnProps<Client>[] = [
     {
         dataIndex: 'imgUrl',
         key: 'imgUrl',
         render: (i: string, c: Client) => (
             <Avatar
-                src={c.imgUrl ? `/images/${c.imgUrl}` : ''}
+                src={c.imgUrl ? `./images/${c.imgUrl}` : ''}
                 shape="square"
                 icon="user"
             />

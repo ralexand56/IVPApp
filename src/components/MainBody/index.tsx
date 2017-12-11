@@ -9,6 +9,7 @@ import MainBody from './MainBody';
 type Props = ClientState & typeof actionCreators;
 
 class ContainerTemplate extends Component<Props, {}> {
+  
   render() {
     const {
       addClient,
@@ -16,13 +17,14 @@ class ContainerTemplate extends Component<Props, {}> {
       currentClientId,
       setCurrentClient,
     } = this.props;
-
+    
     const currentClientIndex = clients.findIndex(x => x.id === currentClientId);
 
     return (
       <MainBody
         addClient={addClient}
         clients={clients}
+        currentClient={clients[currentClientIndex]}
         currentClientIndex={currentClientIndex}
         setCurrentClient={setCurrentClient}
       />

@@ -1,6 +1,7 @@
 import { Client } from './datatypes';
 import { keyframes } from 'styled-components';
 import ThemeInterface from './theme';
+import firebase from 'firebase';
 
 export const config = {
   apiKey: 'AIzaSyD6TDZWzU46rY07IHpz93778CpAVzLohcY',
@@ -11,28 +12,43 @@ export const config = {
   messagingSenderId: '390995409712'
 };
 
+export let db: firebase.firestore.Firestore;
+
+export const initializeDB = () => {
+  firebase.initializeApp(config);
+
+  db = firebase.firestore();
+};
+
 export const defaultUser = {
-  id: 1,
+  id: 'CTnkHtETIl0J5qxwloss',
+  isActive: true,
   firstName: 'Irina',
   lastName: 'Panasyuk',
-  imgSrc: 'irina.jpg'
+  imgSrc: 'irina.jpg',
+  created: new Date(),
+  userName: 'admin',
+  pwd: 'Sn6gf!Wk2'
 };
 
 export interface ClientState {
   clients: Client[];
-  currentClientId?: number;
+  currentClientId?: string;
   currentUser?: User;
   filteredClients: Client[];
   isInEditMode: boolean;
   searchResultsIsVisible: boolean;
   selectedClientTabId: number;
+  message: string;
+  users: User[];
+  tagCategories: TagCategory[];
 }
 
-export interface AssetState {}
+export interface AssetState { }
 
 export interface Client {
-  id: number;
-  isActive: boolean;
+  id?: string;
+  isActive?: boolean;
   firstName?: string;
   lastName?: string;
   address1?: string;
@@ -49,142 +65,8 @@ export interface Client {
   assets?: Asset[];
   comments?: Comment[];
   interactions?: Interaction[];
+  tagIds?: string[];
 }
-
-export const sampleClients: Client[] = [
-  {
-    id: 1,
-    isActive: true,
-    firstName: 'Leonardo',
-    lastName: 'Da Vinci',
-    address1: '34 42nd Street',
-    address2: 'Unit 300',
-    city: 'Manhattan',
-    state: 'NY',
-    country: 'US',
-    imgUrl: 'leonardo.jpg',
-    phone: '123-122-2322',
-    email: 'leo@gmail.com',
-    website: 'http://www.louvre.fr/en',
-    title: 'Artiste',
-    company: 'Louvre',
-  },
-  {
-    id: 2,
-    isActive: true,
-    firstName: 'Pablo',
-    lastName: 'Picasso',
-    address1: '34 42nd Street',
-    address2: 'Unit 300',
-    city: 'Manhattan',
-    state: 'NY',
-    country: 'US',
-    phone: '123-122-2322',
-    email: 'leo@gmail.com',
-    website: 'http://www.louvre.fr/en',
-    company: 'Metropolitan New York',
-    title: 'Painter',
-    comments: [
-      {
-        id: 1,
-        body: 'he draw so good',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 2,
-        body: 'Check out latest collection',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 3,
-        body: 'contact to show work',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 4,
-        body: 'artist difficutl to work with',
-        created: new Date(1900, 12, 25)
-      }
-    ]
-  },
-  {
-    id: 3,
-    isActive: true,
-    firstName: 'Andy',
-    lastName: 'Warhol',
-    address1: '34 42nd Street',
-    address2: 'Unit 300',
-    city: 'Manhattan',
-    state: 'NY',
-    country: 'US',
-    imgUrl: 'warhol.jpg',
-    phone: '123-122-2322',
-    email: 'leo@gmail.com',
-    website: 'http://www.louvre.fr/en',
-    title: 'World Mover',
-    company: 'LACMA',
-    comments: [
-      {
-        id: 1,
-        body: 'work was esoteric and derivative',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 2,
-        body: 'Check out latest collection',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 3,
-        body: 'contact to show work',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 4,
-        body: 'artist difficutl to work with',
-        created: new Date(1900, 12, 25)
-      }
-    ]
-  },
-  {
-    id: 4,
-    isActive: true,
-    firstName: 'Vincent',
-    lastName: 'van Gogh',
-    address1: '34 42nd Street',
-    address2: 'Unit 300',
-    city: 'Manhattan',
-    state: 'NY',
-    country: 'US',
-    phone: '123-122-2322',
-    email: 'leo@gmail.com',
-    website: 'http://www.louvre.fr/en',
-    title: 'Artiste',
-    company: 'Sucre',
-    comments: [
-      {
-        id: 1,
-        body: 'work was esoteric and derivative',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 2,
-        body: 'Check out latest collection',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 3,
-        body: 'contact to show work',
-        created: new Date(1900, 12, 25)
-      },
-      {
-        id: 4,
-        body: 'artist difficutl to work with',
-        created: new Date(1900, 12, 25)
-      }
-    ]
-  }
-];
 
 export interface Asset {
   id: number;
@@ -194,9 +76,10 @@ export interface Asset {
 }
 
 export interface Comment {
-  id: number;
+  id?: string;
   body: string;
   created: Date;
+  userId?: string;
   user?: User;
 }
 
@@ -207,23 +90,73 @@ export interface Interaction {
 }
 
 export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
+  id?: string;
+  isActive?: boolean;
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  pwd?: string;
   created?: Date;
-  imgSrc: string;
+  imgSrc?: string;
+}
+
+export interface TagCategory {
+  id?: string;
+  name?: string;
+  tags?: Tag[];
+}
+
+export interface Tag {
+  id?: string;
+  category?: TagCategory;
+  name?: string;
 }
 
 export type KnownAction =
   | AddClientAction
+  | AddTagCategoryAction
+  | AddUserAction
+  | DeleteCommentAction
   | InitAction
+  | SetClientEditModeAction
   | SetClientTabAction
   | SetSearchResultsVisibilityAction
-  | SetCurrentClientAction;
+  | SetClientsAction
+  | SetCurrentClientAction
+  | SetMessageAction
+  | SetTagCategoriesAction
+  | SetUsersAction
+  | UpdateClientAction
+  | UpdateTagCategory;
 
 export interface AddClientAction {
   type: 'ADD_CLIENT';
   newClient: Client;
+}
+
+export interface AddTagCategoryAction {
+  type: 'ADD_TAG_CATEGORY';
+  tagCategory: TagCategory;
+}
+
+export interface AddUserAction {
+  type: 'ADD_USER';
+  newUser: User;
+}
+
+export interface DeleteCommentAction {
+  type: 'DELETE_COMMENT';
+  id: string;
+}
+
+export interface SetClientsAction {
+  type: 'SET_CLIENTS';
+  clients: Client[];
+}
+
+export interface SetClientEditModeAction {
+  type: 'SET_CLIENT_EDIT_MODE';
+  isInEditMode: boolean;
 }
 
 export interface SetClientTabAction {
@@ -236,13 +169,38 @@ export interface SetSearchResultsVisibilityAction {
   isVisible: boolean;
 }
 
+export interface SetTagCategoriesAction {
+  type: 'SET_TAG_CATEGORIES';
+  tagCategories: TagCategory[];
+}
+
+export interface SetMessageAction {
+  type: 'SET_MESSAGE';
+  message: string;
+}
+
+export interface SetUsersAction {
+  type: 'SET_USERS';
+  users: User[];
+}
+
 export interface InitAction {
   type: 'INIT';
 }
 
 export interface SetCurrentClientAction {
   type: 'SET_CURRENT_CLIENT';
-  clientId: number;
+  clientId: string | undefined;
+}
+
+export interface UpdateClientAction {
+  type: 'UPDATE_CLIENT';
+  client: Client;
+}
+
+export interface UpdateTagCategory {
+  type: 'UPDATE_TAG_CATEGORY';
+  tagCategory: TagCategory;
 }
 
 export const theme: ThemeInterface = {

@@ -18,6 +18,7 @@ class ContainerTemplate extends Component<Props, {}> {
     render() {
         const {
             currentUser,
+            message,
             searchResultsIsVisible,
             setSearchResultsVisibility
          } = this.props;
@@ -27,6 +28,7 @@ class ContainerTemplate extends Component<Props, {}> {
                 backgroundColor={theme.headingBackground1}    
                 currentUser={currentUser}
                 extractPanelIsShowing={searchResultsIsVisible}
+                message={message}
                 setPanelVisibility={setSearchResultsVisibility}
             />);
     }

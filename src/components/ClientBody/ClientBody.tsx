@@ -8,15 +8,20 @@ import {
 import RevealPanel from '../RevealPanel';
 import {
     Avatar,
+    Button,
+    Icon,
     Input,
 } from 'antd';
 import HorizontalLayout from '../HorizontalLayout';
+import actionCreators from '../../actions/ClientActions';
 
 interface Props {
     className?: string;
     children?: React.ReactChild;
     currentClient: Client;
     isInEditMode?: boolean;
+    setClientEditMode: typeof actionCreators.setClientEditMode;
+    updateClient: typeof actionCreators.updateClient;
 }
 
 const ClientBody: StatelessComponent<Props> = ({
@@ -24,18 +29,32 @@ const ClientBody: StatelessComponent<Props> = ({
     children,
     currentClient,
     isInEditMode,
+    setClientEditMode,
+    updateClient,
  }) => (
         <RevealPanel
             className={className}
-            header={Header(currentClient, isInEditMode || false)}
+            header={Header(currentClient, isInEditMode || false, updateClient)}
             actions={
+                <>
+                <Button
+                    style={{ margin: 5 }}
+                    key="nextBtn"
+                    size="small"
+                    ghost={true}
+                    onClick={() => setClientEditMode(!isInEditMode)
+                    }
+                >
+                    <Icon type="edit" />
+                </Button>
                 <Avatar
-                    src={currentClient.imgUrl ? `/images/${currentClient.imgUrl}` : ''}
+                    src={currentClient.imgUrl ? `./images/${currentClient.imgUrl}` : ''}
                     shape="square"
                     size="large"
                     icon="user"
                     style={{ marginRight: 10 }}
                 />
+                </>
             }
         >
             <HorizontalLayout>
@@ -53,6 +72,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, address1: e.currentTarget.value })}
                             value={currentClient.address1}
                         />
                     </EditableField>
@@ -63,6 +83,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, address2: e.currentTarget.value })}
                             value={currentClient.address2}
                         />
                     </EditableField>
@@ -73,6 +94,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, city: e.currentTarget.value })}
                             value={currentClient.city}
                         />
                     </EditableField>
@@ -83,6 +105,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, country: e.currentTarget.value })}
                             value={currentClient.country}
                         />
                     </EditableField>
@@ -101,6 +124,13 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) =>
+                                updateClient(
+                                    {
+                                        ...currentClient,
+                                        phone: formatPhone(e.currentTarget.value)
+                                    })
+                            }
                             value={currentClient.phone}
                         />
                     </EditableField>
@@ -111,6 +141,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, email: e.currentTarget.value })}
                             value={currentClient.email}
                         />
                     </EditableField>
@@ -121,6 +152,7 @@ const ClientBody: StatelessComponent<Props> = ({
                         inline={true}
                     >
                         <Input
+                            onChange={(e) => updateClient({ ...currentClient, website: e.currentTarget.value })}
                             value={currentClient.website}
                         />
                     </EditableField>
@@ -140,7 +172,7 @@ const StyledClientBody = styled(ClientBody) `
 
 export default StyledClientBody;
 
-const Header = (currentClient: Client, isInEditMode: boolean) => (
+const Header = (currentClient: Client, isInEditMode: boolean, updateClient: typeof actionCreators.updateClient) => (
     <span style={{ display: 'flex' }}>
         <EditableField
             label="First Name"
@@ -150,6 +182,7 @@ const Header = (currentClient: Client, isInEditMode: boolean) => (
         >
             <Input
                 key="1"
+                onChange={(e) => updateClient({ ...currentClient, firstName: e.currentTarget.value })}
                 value={currentClient.firstName}
             />
         </EditableField>
@@ -161,6 +194,7 @@ const Header = (currentClient: Client, isInEditMode: boolean) => (
         >
             <Input
                 key="2"
+                onChange={(e) => updateClient({ ...currentClient, lastName: e.currentTarget.value })}
                 value={currentClient.lastName}
             />
         </EditableField>
@@ -171,7 +205,7 @@ const Header = (currentClient: Client, isInEditMode: boolean) => (
             labelColor="white"
         >
             <Input
-                key="2"
+                onChange={(e) => updateClient({ ...currentClient, title: e.currentTarget.value })}
                 value={currentClient.title}
             />
         </EditableField>
@@ -182,9 +216,23 @@ const Header = (currentClient: Client, isInEditMode: boolean) => (
             labelColor="white"
         >
             <Input
-                key="2"
+                onChange={(e) => updateClient({ ...currentClient, company: e.currentTarget.value })}
                 value={currentClient.company}
             />
         </EditableField>
     </span>
 );
+
+const formatPhone = (phonenum: string) => {
+    var regexObj = /^(?:\+?1[-. ]?)?(?:\(?([0-9]{3})\)?[-. ]?)?([0-9]{3})[-. ]?([0-9]{4})$/;
+    if (regexObj.test(phonenum)) {
+        let parts = phonenum.match(regexObj);
+        let phone = '';
+        if (parts && parts[1]) { phone += '+1 (' + parts[1] + ') '; }
+        if (parts) { phone += parts[2] + '-' + parts[3]; }
+        return phone;
+    } else {
+        // invalid phone number
+        return phonenum;
+    }
+};

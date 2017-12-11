@@ -2,34 +2,46 @@ import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
 import {
     Client,
+    Comment,
     theme,
+    User,
 } from '../../datatypes';
-import { 
+import {
     Icon,
     Input,
- } from 'antd';
+} from 'antd';
 import RevealPanel
     from '../RevealPanel';
 import Radio from '../Radio';
 import actionCreators from '../../actions/ClientActions';
+import Admin from '../Admin';
 import Comments from '../Comments';
+import TagsView from '../TagsView';
 
 const ClientViews = {
     1: <Comments />,
+    4: <TagsView />,
+    5: <Admin />
 };
 
+const Search = Input.Search;
+
 interface Props {
+    addComment: typeof actionCreators.addComment;
     className?: string;
     children?: React.ReactChild;
     currentClient: Client;
+    currentUser?: User;
     selectedClientTabId: number;
     setClientTab: typeof actionCreators.setClientTab;
 }
 
 const ClientFooter: StatelessComponent<Props> = ({
+    addComment,
     className,
     children,
     currentClient,
+    currentUser,
     selectedClientTabId,
     setClientTab,
  }) => (
@@ -46,6 +58,7 @@ const ClientFooter: StatelessComponent<Props> = ({
                             { name: 'Interactions', id: 2 },
                             { name: 'Sample Assets', id: 3 },
                             { name: 'Tags', id: 4 },
+                            { name: 'Admin', id: 5 },
                         ]}
                         selectedPropsId={selectedClientTabId}
                         onChange={(id: number) => setClientTab(id)}
@@ -54,12 +67,12 @@ const ClientFooter: StatelessComponent<Props> = ({
                     />
                 }
                 actions={
-                    getActions(selectedClientTabId)
+                    getActions(selectedClientTabId, currentClient, addComment, currentUser)
                 }
                 width="100%"
             >
                 {
-                   selectedClientTabId && ClientViews[selectedClientTabId]
+                    selectedClientTabId && ClientViews[selectedClientTabId]
                 }
             </RevealPanel>
         </div>
@@ -75,16 +88,35 @@ const StyledClientFooter = styled(ClientFooter) `
 
 export default StyledClientFooter;
 
-const getActions = (tabId: number) => {
+const getActions = (
+    tabId: number, 
+    currentClient: Client, 
+    addComment: typeof actionCreators.addComment, 
+    currentUser?: User) => {
     switch (tabId) {
         case 1:
             return (
-                <Input
+                <Search
+                    style={{ width: 300 }}
+                    onSearch={(val) => handleAddComment(addComment, currentClient, val, currentUser)}
                     placeholder="add comment..."
-                    addonAfter={<Icon type="plus" />}
+                    enterButton={< Icon type="plus" />}
                 />);
 
         default:
             return <span />;
     }
+};
+
+const handleAddComment = (
+    addComment: typeof actionCreators.addComment, 
+    currentClient: Client, body: string, 
+    currentUser?: User) => {
+    const newComment: Comment = {
+        body,
+        created: new Date(),
+        userId: currentUser ? currentUser.id : '',
+    };
+
+    addComment(newComment, currentClient);
 };

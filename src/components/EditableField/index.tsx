@@ -41,9 +41,9 @@ const StyledLabel = styled(Label) `
 `;
 
 const Content = styled.span`
-    font-size: 1.2em;
+    font-size: 1.1em;
     padding: 0px 0px 0px 3px;
-    font-weight: bold;
+    font-weight: normal;
 `;
 
 const EditableField: StatelessComponent<Props> = ({
@@ -64,7 +64,7 @@ const EditableField: StatelessComponent<Props> = ({
                 {
                     isInEditMode
                         ? children
-                        : txtValue || 'Insert Value'
+                        : txtValue || ''
                 }
             </Content>
         </div>

@@ -4,7 +4,8 @@ import {
     Comment,
     fadeIn,
 } from '../../datatypes';
-import CommentView from './Comment';
+import CommentView from '../Comment';
+import { Timeline } from 'antd';
 
 interface Props {
     className?: string;
@@ -17,15 +18,17 @@ const Comments: StatelessComponent<Props> = ({
     children,
     comments,
  }) => (
-        <div className={className}>
+        <Timeline className={className}>
             {
                 renderComments(comments)
             }
-        </div>
+        </Timeline>
     );
 
 const renderComments = (comments: Comment[]) => (
-    comments.map(x => <CommentView key={x.id} comment={x} />)
+    comments
+        .sort((x, y) => x.created > y.created ? -1 : 1)
+        .map(x => <Timeline.Item key={x.id} ><CommentView key={x.id}  comment={x} /></Timeline.Item>)
 );
 
 const StyledComments = styled(Comments) `

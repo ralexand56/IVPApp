@@ -186,7 +186,7 @@ const RevealPanel: StatelessComponent<Props> = (props) => {
 };
 
 const StyledRevealPanel = styled(RevealPanel) `
-    margin: ${props => props.margin || '10px'};
+    margin: ${props => props.margin || 'q0px'};
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

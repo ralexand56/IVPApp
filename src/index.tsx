@@ -6,17 +6,20 @@ import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
 
 import { AppContainer } from 'react-hot-loader';
-// import SidePanel from './components/ClientBody';
-// import SidePanelContainer from './components/SidePanel/SidePanelContainer';
 import './index.css';
 import 'antd/dist/antd.css';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from './styled-components';
 import './index.css';
 import configureStore from './configureStore';
-import { theme } from './datatypes';
+import { theme, initializeDB } from './datatypes';
+import { init } from './actions/ClientActions';
+require('firebase/firestore');
+
+initializeDB();
 
 const store = configureStore();
+init(store.dispatch);
 
 ReactDOM.render(
   <AppContainer>

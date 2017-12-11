@@ -17,9 +17,6 @@ const LogoHeader = styled.span`
     margin-left: 10px;
 `;
 
-// const ExportReportButton = styled(Icon) `
-//     margin-right: 10px;
-// `;
 const Search = Input.Search;
 
 interface Props {
@@ -27,6 +24,7 @@ interface Props {
     currentUser?: User;
     className?: string;
     foregroundColor?: string;
+    message: string;
     extractPanelIsShowing: boolean;
     setPanelVisibility: typeof actionCreators.setSearchResultsVisibility;
 }
@@ -36,12 +34,13 @@ const AppHeader: StatelessComponent<Props> = ({
     className,
     currentUser,
     extractPanelIsShowing,
+    message,
     setPanelVisibility, }: Props) => {
     return (
         <div className={className}>
             <LogoHeader>
                 <img
-                    src="/images/logo.png"
+                    src="./images/logo.png"
                     width="50"
                     height="46"
                     style={{ padding: 10 }}
@@ -50,6 +49,7 @@ const AppHeader: StatelessComponent<Props> = ({
             </LogoHeader>
 
             <div style={{display: 'flex'}}>
+                <span style={{margin: 10}}>{message}</span>
                 <Search
                     placeholder="search..."
                     style={{ width: 445, margin: 10 }}
@@ -59,7 +59,7 @@ const AppHeader: StatelessComponent<Props> = ({
                     currentUser &&
                     <Avatar
                         style={{margin: 5}}
-                        src={`/images/${currentUser.imgSrc}` || ''}
+                        src={`./images/${currentUser.imgSrc}` || ''}
                     />
                 }
             </div>

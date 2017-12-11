@@ -1,5 +1,5 @@
 import actionCreators from '../../actions/ClientActions';
-import * as React from 'react';
+import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
@@ -12,8 +12,10 @@ type Props = ClientState & typeof actionCreators;
 class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
+      addComment,
       clients,
       currentClientId,
+      currentUser,
       selectedClientTabId,
       setClientTab,
     } = this.props;
@@ -24,7 +26,9 @@ class ContainerTemplate extends Component<Props, {}> {
     return (
       <ErrorBoundary>
         <ClientFooter
+          addComment={addComment}
           currentClient={currentClient}
+          currentUser={currentUser}
           selectedClientTabId={selectedClientTabId}
           setClientTab={setClientTab}
         />

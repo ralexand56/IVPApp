@@ -16,6 +16,7 @@ const HorizontalLayout: StatelessComponent<Props> = ({ className, children }) =>
 
 const StyledHorizontalLayout = styled(HorizontalLayout) `
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin: 10px;
 `;
