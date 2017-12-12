@@ -115,7 +115,7 @@ export interface TagCategory {
 }
 
 export interface Tag {
-  id?: string;
+  id: string;
   category?: TagCategory;
   name?: string;
 }
