@@ -49,10 +49,7 @@ const ClientFooter: StatelessComponent<Props> = ({
           items={[
             { name: 'Home', id: 1 },
             { name: 'Comments', id: 2 },
-            { name: 'Interactions', id: 3 },
-            { name: 'Sample Assets', id: 4 },
             { name: 'Tags', id: 5 },
-            { name: 'Admin', id: 6 },
           ]}
           selectedPropsId={selectedClientTabId}
           onChange={(id: number) => setClientTab(id)}
