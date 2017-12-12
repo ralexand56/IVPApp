@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import EditableField from '../EditableField';
 import {
     Client,
+    ClientType,
     theme,
 } from '../../datatypes';
 import RevealPanel from '../RevealPanel';
@@ -11,6 +12,7 @@ import {
     Button,
     Icon,
     Input,
+    Select,
 } from 'antd';
 import HorizontalLayout from '../HorizontalLayout';
 import actionCreators from '../../actions/ClientActions';
@@ -18,6 +20,7 @@ import actionCreators from '../../actions/ClientActions';
 interface Props {
     className?: string;
     children?: React.ReactChild;
+    clientTypes: ClientType[];
     currentClient: Client;
     isInEditMode?: boolean;
     setClientEditMode: typeof actionCreators.setClientEditMode;
@@ -25,145 +28,216 @@ interface Props {
 }
 
 const ClientBody: StatelessComponent<Props> = ({
-    className,
-    children,
-    currentClient,
-    isInEditMode,
-    setClientEditMode,
-    updateClient,
- }) => (
-        <RevealPanel
-            className={className}
-            header={Header(currentClient, isInEditMode || false, updateClient)}
-            actions={
-                <>
-                <Button
-                    style={{ margin: 5 }}
-                    key="nextBtn"
-                    size="small"
-                    ghost={true}
-                    onClick={() => setClientEditMode(!isInEditMode)
-                    }
-                >
-                    <Icon type="edit" />
-                </Button>
-                <Avatar
-                    src={currentClient.imgUrl ? `./images/${currentClient.imgUrl}` : ''}
-                    shape="square"
-                    size="large"
-                    icon="user"
-                    style={{ marginRight: 10 }}
-                />
-                </>
-            }
+  className,
+  clientTypes,
+  children,
+  currentClient,
+  isInEditMode,
+  setClientEditMode,
+  updateClient,
+}) => (
+  <RevealPanel
+    className={className}
+    header={Header(
+      clientTypes,
+      currentClient,
+      isInEditMode || false,
+      updateClient,
+    )}
+    actions={
+      <>
+        <Button
+          style={{ margin: 5 }}
+          size="small"
+          ghost={true}
+          onClick={() =>
+            updateClient({ ...currentClient, isActive: false }, true)
+          }
         >
-            <HorizontalLayout>
-                <RevealPanel
-                    header="Address"
-                    width="400px"
-                    endColor={theme.bodyBackground}
-                    height="auto"
-                    isVisible={true}
-                >
-                    <EditableField
-                        label="Address 1"
-                        txtValue={currentClient.address1}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, address1: e.currentTarget.value })}
-                            value={currentClient.address1}
-                        />
-                    </EditableField>
-                    <EditableField
-                        label="Address 2"
-                        txtValue={currentClient.address2}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, address2: e.currentTarget.value })}
-                            value={currentClient.address2}
-                        />
-                    </EditableField>
-                    <EditableField
-                        label="City"
-                        txtValue={currentClient.city}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, city: e.currentTarget.value })}
-                            value={currentClient.city}
-                        />
-                    </EditableField>
-                    <EditableField
-                        label="Country"
-                        txtValue={currentClient.country}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, country: e.currentTarget.value })}
-                            value={currentClient.country}
-                        />
-                    </EditableField>
-                </RevealPanel>
-                <RevealPanel
-                    header="Contact Info"
-                    width="400px"
-                    endColor={theme.bodyBackground}
-                    height="auto"
-                    isVisible={true}
-                >
-                    <EditableField
-                        label="Phone"
-                        txtValue={currentClient.phone}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) =>
-                                updateClient(
-                                    {
-                                        ...currentClient,
-                                        phone: formatPhone(e.currentTarget.value)
-                                    })
-                            }
-                            value={currentClient.phone}
-                        />
-                    </EditableField>
-                    <EditableField
-                        label="Email"
-                        txtValue={currentClient.email}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, email: e.currentTarget.value })}
-                            value={currentClient.email}
-                        />
-                    </EditableField>
-                    <EditableField
-                        label="Website"
-                        txtValue={currentClient.website}
-                        isInEditMode={isInEditMode}
-                        inline={true}
-                    >
-                        <Input
-                            onChange={(e) => updateClient({ ...currentClient, website: e.currentTarget.value })}
-                            value={currentClient.website}
-                        />
-                    </EditableField>
-                </RevealPanel>
-            </HorizontalLayout>
-        </RevealPanel>
-    );
+          <Icon type="delete" />
+        </Button>
+        <Button
+          style={{ margin: 5 }}
+          size="small"
+          ghost={true}
+          onClick={() => setClientEditMode(!isInEditMode)}
+        >
+          <Icon type="edit" />
+        </Button>
+        <Avatar
+          src={currentClient.imgUrl ? `./images/${currentClient.imgUrl}` : ''}
+          shape="square"
+          size="large"
+          icon="user"
+          style={{ marginRight: 10 }}
+        />
+      </>
+    }
+  >
+    <HorizontalLayout>
+      <RevealPanel
+        header="Address"
+        width="400px"
+        endColor={theme.bodyBackground}
+        height="auto"
+        isVisible={true}
+      >
+        <EditableField
+          label="Address 1"
+          txtValue={currentClient.address1}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                address1: e.currentTarget.value,
+              })
+            }
+            value={currentClient.address1}
+          />
+        </EditableField>
+        <EditableField
+          label="Address 2"
+          txtValue={currentClient.address2}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                address2: e.currentTarget.value,
+              })
+            }
+            value={currentClient.address2}
+          />
+        </EditableField>
+        <HorizontalLayout>
+          <EditableField
+            label="City"
+            txtValue={currentClient.city}
+            isInEditMode={isInEditMode}
+            inline={true}
+          >
+            <Input
+              onChange={e =>
+                updateClient({ ...currentClient, city: e.currentTarget.value })
+              }
+              value={currentClient.city}
+            />
+          </EditableField>
+          <EditableField
+            label="State"
+            txtValue={currentClient.state}
+            isInEditMode={isInEditMode}
+            inline={true}
+          >
+            <Input
+              onChange={e =>
+                updateClient({ ...currentClient, state: e.currentTarget.value })
+              }
+              value={currentClient.state}
+            />
+          </EditableField>
+        </HorizontalLayout>
+        <EditableField
+          label="Country"
+          txtValue={currentClient.country}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({ ...currentClient, country: e.currentTarget.value })
+            }
+            value={currentClient.country}
+          />
+        </EditableField>
+      </RevealPanel>
+      <RevealPanel
+        header="Contact Info"
+        width="400px"
+        endColor={theme.bodyBackground}
+        height="auto"
+        isVisible={true}
+      >
+        <EditableField
+          label="Title"
+          txtValue={currentClient.title}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({ ...currentClient, title: e.currentTarget.value })
+            }
+            value={currentClient.title}
+          />
+        </EditableField>
+        <EditableField
+          label="Company"
+          txtValue={currentClient.company}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({ ...currentClient, company: e.currentTarget.value })
+            }
+            value={currentClient.company}
+          />
+        </EditableField>
+        <EditableField
+          label="Phone"
+          txtValue={currentClient.phone}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                phone: formatPhone(e.currentTarget.value),
+              })
+            }
+            value={currentClient.phone}
+          />
+        </EditableField>
+        <EditableField
+          label="Email"
+          txtValue={currentClient.email}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({ ...currentClient, email: e.currentTarget.value })
+            }
+            value={currentClient.email}
+          />
+        </EditableField>
+        <EditableField
+          label="Website"
+          txtValue={currentClient.website}
+          isInEditMode={isInEditMode}
+          inline={true}
+        >
+          <Input
+            onChange={e =>
+              updateClient({ ...currentClient, website: e.currentTarget.value })
+            }
+            value={currentClient.website}
+          />
+        </EditableField>
+      </RevealPanel>
+    </HorizontalLayout>
+  </RevealPanel>
+);
 
 const StyledClientBody = styled(ClientBody) `
     display: flex;
-    flex: 1;
     width: 80%;
     height: 100%;
     border: 0px solid;
@@ -172,7 +246,11 @@ const StyledClientBody = styled(ClientBody) `
 
 export default StyledClientBody;
 
-const Header = (currentClient: Client, isInEditMode: boolean, updateClient: typeof actionCreators.updateClient) => (
+const Header = (
+    clientTypes: ClientType[],
+    currentClient: Client,
+    isInEditMode: boolean,
+    updateClient: typeof actionCreators.updateClient) => (
     <span style={{ display: 'flex' }}>
         <EditableField
             label="First Name"
@@ -199,26 +277,22 @@ const Header = (currentClient: Client, isInEditMode: boolean, updateClient: type
             />
         </EditableField>
         <EditableField
-            label="Title"
-            txtValue={currentClient.title}
+            label="Type"
+            txtValue={
+                    (clientTypes && currentClient.clientTypeId)
+                        ? clientTypes[clientTypes.findIndex(x => x.id === currentClient.clientTypeId)].name
+                        : ''}
             isInEditMode={isInEditMode}
             labelColor="white"
         >
-            <Input
-                onChange={(e) => updateClient({ ...currentClient, title: e.currentTarget.value })}
-                value={currentClient.title}
-            />
-        </EditableField>
-        <EditableField
-            label="Company"
-            txtValue={currentClient.company}
-            isInEditMode={isInEditMode}
-            labelColor="white"
-        >
-            <Input
-                onChange={(e) => updateClient({ ...currentClient, company: e.currentTarget.value })}
-                value={currentClient.company}
-            />
+            <Select
+                style={{width: 150}}        
+                onChange={(value: string) => updateClient({ ...currentClient, clientTypeId: value })}
+                value={currentClient.clientTypeId}
+            >
+                    {
+                        clientTypes.map(x => <Select.Option key={x.id} value={x.id}>{x.name}</Select.Option>)}
+            </Select>        
         </EditableField>
     </span>
 );

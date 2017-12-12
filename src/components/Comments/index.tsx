@@ -29,7 +29,7 @@ class ContainerTemplate extends Component<Props, {}> {
                 <Comments
                     comments={currentClient.comments}
                 />
-            ) : <h2>No Comments...</h2>
+            ) : null
         );
     }
 }

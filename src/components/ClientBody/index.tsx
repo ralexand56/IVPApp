@@ -18,6 +18,7 @@ class ContainerTemplate extends Component<Props, {}> {
     render() {
         const {
             clients,
+            clientTypes,
             currentClientId,
             isInEditMode,
             setClientEditMode,
@@ -25,9 +26,9 @@ class ContainerTemplate extends Component<Props, {}> {
         } = this.props;
 
         const currentClient = clients[clients.findIndex(x => x.id === currentClientId)];
-
         return (
             <ClientBody
+                clientTypes={clientTypes}    
                 currentClient={currentClient}
                 isInEditMode={isInEditMode}
                 setClientEditMode={setClientEditMode}

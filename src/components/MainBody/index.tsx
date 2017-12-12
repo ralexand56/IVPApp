@@ -15,6 +15,7 @@ class ContainerTemplate extends Component<Props, {}> {
       addClient,
       clients,
       currentClientId,
+      searchResultsIsVisible,
       setCurrentClient,
     } = this.props;
     
@@ -26,6 +27,7 @@ class ContainerTemplate extends Component<Props, {}> {
         clients={clients}
         currentClient={clients[currentClientIndex]}
         currentClientIndex={currentClientIndex}
+        searchResultsIsVisible={searchResultsIsVisible}
         setCurrentClient={setCurrentClient}
       />
     );

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
 import { Client, theme } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
 import { Badge, Icon, Button } from 'antd';
 import RevealPanel from '../RevealPanel';
-import ClientBody from '../ClientBody';
 import ClientFooter from '../ClientFooter';
 
 interface Props {
@@ -13,15 +12,9 @@ interface Props {
   currentClientIndex: number;
   addClient: typeof actionCreators.addClient;
   clients: Client[];
+  searchResultsIsVisible: boolean;
   setCurrentClient: typeof actionCreators.setCurrentClient;
 }
-
-// const findMaxId = (clients: Client[]) => {
-//   let max = 0;
-
-//   clients.map(x => (x.id >= max ? (max = x.id) : null));
-//   return max;
-// };
 
 const StyledHeader = styled.span`
   color: white;
@@ -29,16 +22,8 @@ const StyledHeader = styled.span`
   font-weight: normal;
 `;
 
-const MainContainer = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  border: 0px solid;
-  padding: 50px 560px 20px 20px;
-`;
-
-const MainBody = (props: Props) => (
-  <MainContainer>
+const MainBody: StatelessComponent<Props> = (props: Props) => (
+  <div className={props.className}>
     <RevealPanel
       endColor={theme.bodyBackground}
       actions={[
@@ -83,26 +68,35 @@ const MainBody = (props: Props) => (
         <StyledHeader>
           <Icon type="idcard" style={{ margin: 5 }} />
           <Badge
-            className={props.className} 
             count={props.clients.length}
             style={{ background: theme.headingBackground2, color: 'white' }}
           >
-            <span style={{color: 'white', padding: 7}}>Clients</span>
+            <span style={{ color: 'white', padding: 7 }}>Clients</span>
           </Badge>
         </StyledHeader>
       }
       isVisible={true}
-    >{
-        props.currentClient
-          ? (
-            <>
-            <ClientBody />
-            <ClientFooter />
-            </>
-          ) : <h2>Select Client...</h2>
-      }
+    >
+      {props.currentClient ? (
+        <>
+          <ClientFooter />
+        </>
+      ) : (
+        <span />
+      )}
     </RevealPanel>
-  </MainContainer>
+  </div>
 );
 
-export default MainBody;
+const StyledMainBody = styled(MainBody)`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  border: 0px solid;
+  padding: ${props =>
+    props.searchResultsIsVisible
+      ? `50px 520px 20px 20px`
+      : `50px 20px 20px 20px`};
+`;
+
+export default StyledMainBody;

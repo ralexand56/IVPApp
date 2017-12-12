@@ -1,14 +1,14 @@
-import actionCreators from '../actions/ClientActions';
+import actionCreators from '../../actions/ClientActions';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     ApplicationState,
-} from '../store';
+} from '../../store';
 import {
     ClientState,
-} from '../datatypes';
+    theme
+} from '../../datatypes';
 import AppHeader from './AppHeader';
-import { theme } from '../datatypes';
 
 type Props = ClientState &
     typeof actionCreators;
@@ -17,18 +17,22 @@ class ContainerTemplate extends Component<Props, {}> {
 
     render() {
         const {
+            clients,
             currentUser,
             message,
             searchResultsIsVisible,
-            setSearchResultsVisibility
+            setSearchResultsVisibility,
+            searchClients,
          } = this.props;
 
         return (
             <AppHeader
+                clients={clients}    
                 backgroundColor={theme.headingBackground1}    
                 currentUser={currentUser}
                 extractPanelIsShowing={searchResultsIsVisible}
                 message={message}
+                searchClients={searchClients}
                 setPanelVisibility={setSearchResultsVisibility}
             />);
     }

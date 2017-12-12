@@ -1,5 +1,6 @@
 import {
   Client,
+  ClientType,
   Comment,
   db,
   KnownAction,
@@ -10,76 +11,192 @@ import {
 import { AppThunkAction, ApplicationState } from '../store';
 
 const actionCreators = {
-  addClient: ():
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      addClient(dispatch);
+  addClient: (): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addClient(dispatch);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a client...'
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client...',
+    });
+  },
 
-  addComment: (cmt: Comment, client: Client):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      addComment(dispatch, cmt, client, getState().clientSlice.currentUser);
+  addComment: (cmt: Comment, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addComment(dispatch, cmt, client, getState().clientSlice.currentUser);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a comment...',
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a comment...',
+    });
+  },
 
-  addTagCategory: (name: string):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      addTagCategory(dispatch, name);
+  addClientType: (name: string): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addClientType(dispatch, name);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a client...'
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client type...',
+    });
+  },
 
-  addTagToCategory: (name: string, tagCategory: TagCategory):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      addTagToCategory(dispatch, name, tagCategory);
+  addTagCategory: (name: string): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addTagCategory(dispatch, name);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a client...'
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client...',
+    });
+  },
 
-  addUser: (usr: User):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      addUser(dispatch, usr);
+  addTagToCategory: (
+    name: string,
+    tagCategory: TagCategory,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addTagToCategory(dispatch, name, tagCategory);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a user...'
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client...',
+    });
+  },
 
-  deleteComment: (id: string, client: Client):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      deleteComment(dispatch, id, client);
+  toggleClientTag: (
+    tagId: string,
+    client: Client,
+    isAdd: boolean,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    toggleClientTag(dispatch, tagId, client, isAdd);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Deleting comment...'
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding tag to client...',
+    });
+  },
 
-  init: ():
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      setUsers(dispatch);
-      setClients(dispatch);
+  addUser: (usr: User): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addUser(dispatch, usr);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Initializing...',
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a user...',
+    });
+  },
+
+  deleteComment: (id: string, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    deleteComment(dispatch, id, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Deleting comment...',
+    });
+  },
+
+  init: (): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    setUsers(dispatch);
+    setClients(dispatch);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Initializing...',
+    });
+  },
+
+  searchClients: (
+    searchText: string,
+    clients: Client[],
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    // const tags = getState().clientSlice.tagCategories;
+
+    clients.map(x => (x.tags = []));
+    // console.dir(t);
+
+    const filteredClients = clients.filter(x => (x.firstName && x.firstName
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.lastName && x.lastName
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.address1 && x.address1
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.address2 && x.address2
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.city && x.city
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.country && x.country
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.title && x.title
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.company && x.company
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.phone && x.phone
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.email && x.email
+            .toLowerCase()
+            .indexOf(
+              searchText.toLowerCase(),
+            ) > -1) || (x.website && x.website
+            .toLowerCase()
+            .indexOf(searchText.toLowerCase()) > -1));
+
+    //  x.tags && x.tags.findIndex(t => (t.name ? searchText
+    //              .toLowerCase()
+    //              .indexOf(
+    //                t.name.toLowerCase(),
+    //              ) > -1 : true)), dispatch({
+    //      type: 'SET_SEARCH_RESULTS_VISIBILITY',
+    //      isVisible: true,
+    //    });
+
+    dispatch({
+      type: 'SET_FILTERED_CLIENTS',
+      filteredClients,
+    });
+  },
 
   setSearchResultsVisibility: (isVisible: boolean) => ({
     type: 'SET_SEARCH_RESULTS_VISIBILITY',
@@ -101,15 +218,29 @@ const actionCreators = {
     clientTabId: selectedClientTabId,
   }),
 
-  updateClient: (client: Client):
-    AppThunkAction<KnownAction> => (dispatch: (action: KnownAction) => void, getState: () => ApplicationState) => {
-      updateClient(dispatch, client);
+  updateClient: (
+    client: Client,
+    isDelete: boolean = false,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    updateClient(dispatch, client);
 
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    const filteredClients = getState().clientSlice.filteredClients;
+
+    isDelete &&
+      filteredClients.length > 0 &&
       dispatch({
-        type: 'UPDATE_CLIENT',
-        client,
+        type: 'SET_CURRENT_CLIENT',
+        clientId: filteredClients[0].id,
       });
-    },
+  },
 };
 
 export const addClient = async (dispatch: (action: KnownAction) => void) => {
@@ -117,11 +248,15 @@ export const addClient = async (dispatch: (action: KnownAction) => void) => {
     isActive: true,
     id: '',
     firstName: 'New',
-    lastName: 'Client'
+    lastName: 'Client',
+    clientTypeId: 'XWVplrztsYm7RQeFMWzt',
   };
 
   const clientRef = await db.collection('clients').add(newClient);
-  db.collection('clients').doc(clientRef.id).update({ id: clientRef.id });
+  db
+    .collection('clients')
+    .doc(clientRef.id)
+    .update({ id: clientRef.id });
   newClient.id = clientRef.id;
   dispatch({
     type: 'ADD_CLIENT',
@@ -131,14 +266,16 @@ export const addClient = async (dispatch: (action: KnownAction) => void) => {
 
 export const addComment = async (
   dispatch: (action: KnownAction) => void,
-  newComment: Comment, client: Client,
-  user?: User) => {
+  newComment: Comment,
+  client: Client,
+  user?: User,
+) => {
   const clientRef = await db.collection('clients').doc(client.id);
   const newCommentRef = await clientRef.collection('comments').doc();
 
   newComment.id = newCommentRef.id;
 
-  const comments = [...client.comments || [], newComment];
+  const comments = [...(client.comments || []), newComment];
   clientRef.update({ comments: comments });
 
   comments.filter(x => x.id === newComment.id)[0].user = user;
@@ -149,12 +286,20 @@ export const addComment = async (
   });
 };
 
-export const addTagCategory = async (dispatch: (action: KnownAction) => void, name: string) => {
+export const addTagCategory = async (
+  dispatch: (action: KnownAction) => void,
+  name: string,
+) => {
   const newTagCategory: TagCategory = {
     name,
   };
-  const categoriesRef = await db.collection('tagCategories').add(newTagCategory);
-  db.collection('tagCategories').doc(categoriesRef.id).update({ id: categoriesRef.id });
+  const categoriesRef = await db
+    .collection('tagCategories')
+    .add(newTagCategory);
+  db
+    .collection('tagCategories')
+    .doc(categoriesRef.id)
+    .update({ id: categoriesRef.id });
   newTagCategory.id = categoriesRef.id;
 
   dispatch({
@@ -163,18 +308,41 @@ export const addTagCategory = async (dispatch: (action: KnownAction) => void, na
   });
 };
 
+export const addClientType = async (
+  dispatch: (action: KnownAction) => void,
+  name: string,
+) => {
+  const newClientType: ClientType = {
+    name,
+  };
+  const clientTypesRef = await db.collection('clientTypes').add(newClientType);
+  db
+    .collection('clientTypes')
+    .doc(clientTypesRef.id)
+    .update({ id: clientTypesRef.id });
+  newClientType.id = clientTypesRef.id;
+
+  dispatch({
+    type: 'ADD_CLIENT_TYPE',
+    clientType: newClientType,
+  });
+};
+
 export const addTagToCategory = async (
   dispatch: (action: KnownAction) => void,
   name: string,
-  tagCategory: TagCategory) => {
+  tagCategory: TagCategory,
+) => {
   const newTag: Tag = {
     name,
   };
-  const tagCategoryRef = await db.collection('tagCategories').doc(tagCategory.id);
+  const tagCategoryRef = await db
+    .collection('tagCategories')
+    .doc(tagCategory.id);
   const newTagRef = await tagCategoryRef.collection('tags').doc();
 
   newTag.id = newTagRef.id;
-  const tags = [...tagCategory.tags || [], newTag];
+  const tags = [...(tagCategory.tags || []), newTag];
   tagCategoryRef.update({ tags: tags });
 
   tagCategory.tags = tags;
@@ -185,10 +353,36 @@ export const addTagToCategory = async (
   });
 };
 
-export const addUser = async (dispatch: (action: KnownAction) => void, newUser: User) => {
+export const toggleClientTag = async (
+  dispatch: (action: KnownAction) => void,
+  tagId: string,
+  client: Client,
+  isAdd: boolean,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
 
+  const tagIds = isAdd
+    ? [...(client.tagIds || []), tagId]
+    : client.tagIds ? client.tagIds.filter(x => x !== tagId) : [];
+  clientRef.update({ tagIds: tagIds });
+
+  client.tagIds = tagIds;
+
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
+  });
+};
+
+export const addUser = async (
+  dispatch: (action: KnownAction) => void,
+  newUser: User,
+) => {
   const userRef = await db.collection('users').add(newUser);
-  db.collection('users').doc(userRef.id).update({ id: userRef.id });
+  db
+    .collection('users')
+    .doc(userRef.id)
+    .update({ id: userRef.id });
   newUser.id = userRef.id;
 
   dispatch({
@@ -197,7 +391,11 @@ export const addUser = async (dispatch: (action: KnownAction) => void, newUser: 
   });
 };
 
-export const deleteComment = async (dispatch: (action: KnownAction) => void, id: string, client: Client) => {
+export const deleteComment = async (
+  dispatch: (action: KnownAction) => void,
+  id: string,
+  client: Client,
+) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
   client.comments = client.comments && client.comments.filter(x => x.id !== id);
@@ -213,20 +411,30 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
   const usersRef = await db.collection('users').get();
   const users: User[] = await usersRef.docs.map(x => x.data());
 
-  const clientRef = await db.collection('clients').orderBy('firstName', 'asc').orderBy('lastName', 'asc');
+  const clientRef = await db
+    .collection('clients')
+    .where('isActive', '==', true)
+    .orderBy('firstName', 'asc')
+    .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
   const clients: Client[] = await clientsRef.docs.map(x => x.data());
 
   clients.map(x => {
     x.comments &&
-      x.comments.map(y => y.user = users.filter(z => z.id === y.userId)[0]);
+      x.comments.map(y => (y.user = users.filter(z => z.id === y.userId)[0]));
   });
 
-  clients && clients.length > 0
-    && dispatch({
+  clients &&
+    clients.length > 0 &&
+    dispatch({
       type: 'SET_CURRENT_CLIENT',
       clientId: clients[0].id,
     });
+
+  dispatch({
+    type: 'SET_FILTERED_CLIENTS',
+    filteredClients: clients,
+  });
 
   dispatch({
     type: 'SET_CLIENTS',
@@ -234,10 +442,31 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
   });
 };
 
-export const setTagCategories = async (dispatch: (action: KnownAction) => void) => {
-  const tagCategoriesRef = await db.collection('tagCategories').orderBy('name', 'asc');
+export const setClientTypes = async (
+  dispatch: (action: KnownAction) => void,
+) => {
+  const clientTypesRef = await db.collection('clientTypes');
+  const clientTypesList = await clientTypesRef.orderBy('name').get();
+  const clientTypes: ClientType[] = await clientTypesList.docs.map(x =>
+    x.data(),
+  );
+
+  dispatch({
+    type: 'SET_CLIENT_TYPES',
+    clientTypes,
+  });
+};
+
+export const setTagCategories = async (
+  dispatch: (action: KnownAction) => void,
+) => {
+  const tagCategoriesRef = await db
+    .collection('tagCategories')
+    .orderBy('name', 'asc');
   const tagCategoriesList = await tagCategoriesRef.get();
-  const tagCategories: TagCategory[] = await tagCategoriesList.docs.map(x => x.data());
+  const tagCategories: TagCategory[] = await tagCategoriesList.docs.map(x =>
+    x.data(),
+  );
 
   dispatch({
     type: 'SET_TAG_CATEGORIES',
@@ -246,7 +475,10 @@ export const setTagCategories = async (dispatch: (action: KnownAction) => void) 
 };
 
 export const setUsers = async (dispatch: (action: KnownAction) => void) => {
-  const usersRef = await db.collection('users').orderBy('firstName', 'asc').orderBy('lastName', 'asc');
+  const usersRef = await db
+    .collection('users')
+    .orderBy('firstName', 'asc')
+    .orderBy('lastName', 'asc');
   const userListRef = await usersRef.get();
   const users: User[] = await userListRef.docs.map(x => x.data());
 
@@ -259,12 +491,24 @@ export const setUsers = async (dispatch: (action: KnownAction) => void) => {
 export const init = (dispatch: (action: KnownAction) => void) => {
   setUsers(dispatch);
   setClients(dispatch);
+  setClientTypes(dispatch);
   setTagCategories(dispatch);
 };
 
-export const updateClient = async (dispatch: (action: KnownAction) => void, client: Client) => {
+export const updateClient = async (
+  dispatch: (action: KnownAction) => void,
+  client: Client,
+) => {
   const clientRef = await db.collection('clients').doc(client.id);
   clientRef.update(client);
 };
+
+// const getTagById = (tagCategories: TagCategory[], id: string) => {
+//   let list = [];
+
+//   tagCategories.forEach(x => {
+//     x.tags && x.tags.filter(y => y.id === id).length > 0;
+//   });
+// };
 
 export default actionCreators;

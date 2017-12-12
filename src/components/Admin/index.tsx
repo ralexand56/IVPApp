@@ -12,16 +12,20 @@ type Props = ClientState & typeof actionCreators;
 class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
+      addClientType,
       addTagCategory,
       addTagToCategory,
+      clientTypes,
       tagCategories,
     } = this.props;
 
     return (
       <ErrorBoundary>
         <Admin
+          addClientType={addClientType}  
           addTagCategory={addTagCategory}
           addTagToCategory={addTagToCategory}
+          clientTypes={clientTypes}
           tagCategories={tagCategories}
         />
       </ErrorBoundary>

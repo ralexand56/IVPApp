@@ -1,14 +1,15 @@
 import React, { StatelessComponent } from 'react';
-import styled from '../styled-components';
+import styled from '../../styled-components';
 import {
     Avatar,
     Input,
 } from 'antd';
-import actionCreators from '../actions/ClientActions';
-import { fadeIn } from '../datatypes';
+import actionCreators from '../../actions/ClientActions';
+import { fadeIn } from '../../datatypes';
 import {
+    Client,
     User
-} from '../datatypes';
+} from '../../datatypes';
 // import ThemeInterface from '../theme';
 
 const LogoHeader = styled.span`
@@ -20,21 +21,25 @@ const LogoHeader = styled.span`
 const Search = Input.Search;
 
 interface Props {
+    clients: Client[];
     backgroundColor?: string;
     currentUser?: User;
     className?: string;
     foregroundColor?: string;
     message: string;
     extractPanelIsShowing: boolean;
+    searchClients: typeof actionCreators.searchClients;
     setPanelVisibility: typeof actionCreators.setSearchResultsVisibility;
 }
 
 const AppHeader: StatelessComponent<Props> = ({
     backgroundColor,
     className,
+    clients,
     currentUser,
     extractPanelIsShowing,
     message,
+    searchClients,
     setPanelVisibility, }: Props) => {
     return (
         <div className={className}>
@@ -53,7 +58,7 @@ const AppHeader: StatelessComponent<Props> = ({
                 <Search
                     placeholder="search..."
                     style={{ width: 445, margin: 10 }}
-                    onSearch={(value: string) => console.dir(value)}
+                    onSearch={(value: string) => searchClients(value, clients)}
                 />
                 {
                     currentUser &&

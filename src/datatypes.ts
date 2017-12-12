@@ -33,6 +33,7 @@ export const defaultUser = {
 
 export interface ClientState {
   clients: Client[];
+  clientTypes: ClientType[];
   currentClientId?: string;
   currentUser?: User;
   filteredClients: Client[];
@@ -62,10 +63,17 @@ export interface Client {
   website?: string;
   title?: string;
   company?: string;
+  clientTypeId?: string;
   assets?: Asset[];
   comments?: Comment[];
   interactions?: Interaction[];
   tagIds?: string[];
+  tags?: Tag[];
+}
+
+export interface ClientType {
+  id?: string;
+  name?: string;
 }
 
 export interface Asset {
@@ -115,11 +123,14 @@ export interface Tag {
 export type KnownAction =
   | AddClientAction
   | AddTagCategoryAction
+  | AddClientTypeAction
   | AddUserAction
   | DeleteCommentAction
   | InitAction
+  | SetFilteredClientsAction
   | SetClientEditModeAction
   | SetClientTabAction
+  | SetClientTypesAction
   | SetSearchResultsVisibilityAction
   | SetClientsAction
   | SetCurrentClientAction
@@ -132,6 +143,11 @@ export type KnownAction =
 export interface AddClientAction {
   type: 'ADD_CLIENT';
   newClient: Client;
+}
+
+export interface AddClientTypeAction {
+  type: 'ADD_CLIENT_TYPE';
+  clientType: ClientType;
 }
 
 export interface AddTagCategoryAction {
@@ -162,6 +178,16 @@ export interface SetClientEditModeAction {
 export interface SetClientTabAction {
   type: 'SET_CLIENT_TAB';
   clientTabId: number;
+}
+
+export interface SetClientTypesAction {
+  type: 'SET_CLIENT_TYPES';
+  clientTypes: ClientType[];
+}
+
+export interface SetFilteredClientsAction {
+  type: 'SET_FILTERED_CLIENTS';
+  filteredClients: Client[];
 }
 
 export interface SetSearchResultsVisibilityAction {
