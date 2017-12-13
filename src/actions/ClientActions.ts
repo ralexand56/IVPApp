@@ -4,6 +4,7 @@ import {
   Comment,
   db,
   KnownAction,
+  UserImport,
   Tag,
   TagCategory,
   User,
@@ -11,18 +12,6 @@ import {
 import { AppThunkAction, ApplicationState } from '../store';
 
 const actionCreators = {
-  addClient: (): AppThunkAction<KnownAction> => (
-    dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState,
-  ) => {
-    addClient(dispatch);
-
-    dispatch({
-      type: 'SET_MESSAGE',
-      message: 'Adding a client...',
-    });
-  },
-
   addComment: (cmt: Comment, client: Client): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
@@ -32,6 +21,25 @@ const actionCreators = {
     dispatch({
       type: 'SET_MESSAGE',
       message: 'Adding a comment...',
+    });
+  },
+
+  addClient: (): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    const newClient: Client = {
+      isActive: true,
+      id: '',
+      firstName: 'New',
+      lastName: 'Client',
+      clientTypeId: 'XWVplrztsYm7RQeFMWzt',
+    };
+    addClient(dispatch, newClient);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client...',
     });
   },
 
@@ -65,14 +73,14 @@ const actionCreators = {
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
-    ) => {
-      addTagToCategory(dispatch, name, tagCategory);
+  ) => {
+    addTagToCategory(dispatch, name, tagCategory);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a client...',
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a client...',
+    });
+  },
 
   toggleClientTag: (
     tagId: string,
@@ -81,14 +89,14 @@ const actionCreators = {
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
-    ) => {
-      toggleClientTag(dispatch, tagId, client, isAdd);
+  ) => {
+    toggleClientTag(dispatch, tagId, client, isAdd);
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding tag to client...',
-      });
-    },
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding tag to client...',
+    });
+  },
 
   addUser: (usr: User): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
@@ -127,82 +135,84 @@ const actionCreators = {
     });
   },
 
+  importClients: (): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    const newClients = UserImport;
+
+    newClients.map(x => {
+      let fullName = x.ARTISTS.trim().split(' ');
+
+      let newClient: Client = {
+        isActive: true,
+        id: '',
+        firstName: fullName[0].trim(),
+        lastName: fullName[fullName.length - 1].trim(),
+        clientTypeId: 'XWVplrztsYm7RQeFMWzt',
+        note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
+        website: x.WEB.trim(),
+      };
+
+      // console.dir(newClient);
+      addClient(dispatch, newClient);
+    });
+  },
+
   searchClients: (
     searchText: string,
     clients: Client[],
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
-    ) => {
-      const cats = getState().clientSlice.tagCategories.filter(x => x.tags !== undefined).map(y => y.tags || []);
+  ) => {
+    const cats = getState()
+      .clientSlice.tagCategories.filter(x => x.tags !== undefined)
+      .map(y => y.tags || []);
 
-      const tags = cats.reduce((x, y) => x.concat(y), []).filter(z => z.id !== undefined).map(c => c.id);
-      // const t2 = tags.filter(x => x !== undefined);
+    const tags = cats.reduce((x, y) => x.concat(y), []).map(c => c.id);
 
-      // clients.map(x => (x.tags = []));
-      // console.dir(t);
+    const filteredClients = clients.filter(
+      x =>
+        (x.firstName &&
+          x.firstName.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.lastName &&
+          x.lastName.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.address1 &&
+          x.address1.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.address2 &&
+          x.address2.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.city &&
+          x.city.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.country &&
+          x.country.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.title &&
+          x.title.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.company &&
+          x.company.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.phone &&
+          x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.email &&
+          x.email.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.website &&
+          x.website.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.tagIds !== undefined && findOne(x.tagIds, tags)),
+    );
 
-      const filteredClients = clients.filter(x => (x.firstName && x.firstName
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.lastName && x.lastName
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.address1 && x.address1
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.address2 && x.address2
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.city && x.city
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.country && x.country
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.title && x.title
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.company && x.company
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.phone && x.phone
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.email && x.email
-        .toLowerCase()
-        .indexOf(
-        searchText.toLowerCase(),
-      ) > -1) || (x.website && x.website
-        .toLowerCase()
-        .indexOf(searchText.toLowerCase()) > -1) ||
-        (x.tagIds !== undefined
-          && findOne(x.tagIds, tags))
-      );
+    //  x.tags && x.tags.findIndex(t => (t.name ? searchText
+    //              .toLowerCase()
+    //              .indexOf(
+    //                t.name.toLowerCase(),
+    //              ) > -1 : true)), dispatch({
+    //      type: 'SET_SEARCH_RESULTS_VISIBILITY',
+    //      isVisible: true,
+    //    });
 
-      //  x.tags && x.tags.findIndex(t => (t.name ? searchText
-      //              .toLowerCase()
-      //              .indexOf(
-      //                t.name.toLowerCase(),
-      //              ) > -1 : true)), dispatch({
-      //      type: 'SET_SEARCH_RESULTS_VISIBILITY',
-      //      isVisible: true,
-      //    });
-
-      dispatch({
-        type: 'SET_FILTERED_CLIENTS',
-        filteredClients,
-      });
-    },
+    dispatch({
+      type: 'SET_FILTERED_CLIENTS',
+      filteredClients,
+    });
+  },
 
   setSearchResultsVisibility: (isVisible: boolean) => ({
     type: 'SET_SEARCH_RESULTS_VISIBILITY',
@@ -230,34 +240,29 @@ const actionCreators = {
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
-    ) => {
-      updateClient(dispatch, client);
+  ) => {
+    updateClient(dispatch, client);
 
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    const filteredClients = getState().clientSlice.filteredClients;
+
+    isDelete &&
+      filteredClients.length > 0 &&
       dispatch({
-        type: 'UPDATE_CLIENT',
-        client,
+        type: 'SET_CURRENT_CLIENT',
+        clientId: filteredClients[0].id,
       });
-
-      const filteredClients = getState().clientSlice.filteredClients;
-
-      isDelete &&
-        filteredClients.length > 0 &&
-        dispatch({
-          type: 'SET_CURRENT_CLIENT',
-          clientId: filteredClients[0].id,
-        });
-    },
+  },
 };
 
-export const addClient = async (dispatch: (action: KnownAction) => void) => {
-  const newClient: Client = {
-    isActive: true,
-    id: '',
-    firstName: 'New',
-    lastName: 'Client',
-    clientTypeId: 'XWVplrztsYm7RQeFMWzt',
-  };
-
+export const addClient = async (
+  dispatch: (action: KnownAction) => void,
+  newClient: Client,
+) => {
   const clientRef = await db.collection('clients').add(newClient);
   db
     .collection('clients')
@@ -519,7 +524,7 @@ export const updateClient = async (
 // };
 
 const findOne = (haystack: string[], arr: string[]) => {
-  return arr.some((v) => {
+  return arr.some(v => {
     return haystack.indexOf(v) >= 0;
   });
 };

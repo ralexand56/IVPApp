@@ -16,6 +16,7 @@ class ContainerTemplate extends Component<Props, {}> {
       addTagCategory,
       addTagToCategory,
       clientTypes,
+      importClients,
       tagCategories,
     } = this.props;
 
@@ -26,6 +27,7 @@ class ContainerTemplate extends Component<Props, {}> {
           addTagCategory={addTagCategory}
           addTagToCategory={addTagToCategory}
           clientTypes={clientTypes}
+          importClients={importClients}
           tagCategories={tagCategories}
         />
       </ErrorBoundary>

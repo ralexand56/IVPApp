@@ -13,11 +13,13 @@ interface Props {
   addTagToCategory: typeof actionCreators.addTagToCategory;
   clientTypes: ClientType[];
   className?: string;
+  importClients: typeof actionCreators.importClients;
   tagCategories: TagCategory[];
 }
 
 const Admin: StatelessComponent<Props> = props => (
   <div className={props.className}>
+    <Button onClick={() => props.importClients()}>Import</Button>
     <HorizontalLayout>
       <Search
         placeholder="Add Client Type..."

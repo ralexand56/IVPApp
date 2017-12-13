@@ -52,6 +52,7 @@ export interface Client {
   isActive?: boolean;
   firstName?: string;
   lastName?: string;
+  note?: string;
   address1?: string;
   address2?: string;
   city?: string;
