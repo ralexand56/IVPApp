@@ -1,5 +1,5 @@
 import React, { StatelessComponent } from 'react';
-import styled from '../styled-components';
+import styled from 'styled-components';
 import { keyframes } from 'styled-components';
 import { theme } from '../datatypes';
 
@@ -125,7 +125,6 @@ const BodyContainer = styled.div`
     justify-content: space-between;
     width: 100%;
     height: 100%;
-    margin: 5px;
     overflow: hidden;
     animation: ${(props: { isVisible: Boolean }) =>
         props.isVisible ? headerScaleIn : headerScaleOut} 0.5s ease-in-out both;
@@ -186,12 +185,12 @@ const RevealPanel: StatelessComponent<Props> = (props) => {
 };
 
 const StyledRevealPanel = styled(RevealPanel) `
-    margin: ${props => props.margin || 'q0px'};
+    margin: ${props => props.margin || '0px'};
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     border-radius: 5px;
-    border: 0px solid;
+    border: 0px solid black;
     width: ${props => props.width || '100%'};
     height: ${props => props.height || '100%'};
     animation: ${props =>

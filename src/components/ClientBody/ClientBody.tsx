@@ -1,6 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
-import { Client, ClientType } from '../../datatypes';
+import { Client, ClientType, theme } from '../../datatypes';
 import RevealPanel from '../RevealPanel';
 import { Avatar, Button, Icon } from 'antd';
 import HorizontalLayout from '../HorizontalLayout';
@@ -31,6 +31,7 @@ const ClientBody: StatelessComponent<Props> = ({
 }) => (
   <RevealPanel
     className={className}
+    endColor={theme.bodyBackground}
     header={
       <Header
         clientTypes={clientTypes}
@@ -94,7 +95,7 @@ const StyledClientBody = styled(ClientBody)`
   flex-direction: column;
   height: 100%;
   border: 0px solid;
-  margin: 20px;
+  margin: 0px;
 `;
 
 export default StyledClientBody;

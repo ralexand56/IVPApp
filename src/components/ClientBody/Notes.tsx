@@ -45,7 +45,6 @@ const Notes: StatelessComponent<Props> = ({
 
 const StyledNotes = styled(Notes)`
   width: 100%;
-  height: 20%;
 `;
 
 export default StyledNotes;

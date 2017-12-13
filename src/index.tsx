@@ -14,7 +14,13 @@ import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
 import { init } from './actions/ClientActions';
+// import styled from 'styled-components';
 require('firebase/firestore');
+// const TestStyle = styled.div`
+//   border: 2px solid black;
+//   width: 100%;
+//   height: 100%;
+// `;
 
 initializeDB();
 

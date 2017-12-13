@@ -38,8 +38,9 @@ const ClientFooter: StatelessComponent<Props> = ({
   selectedClientTabId,
   setClientTab,
 }) => (
-  <div className={className}>
     <RevealPanel
+      className={className}
+      endColor={theme.bodyBackground}
       header={
         <Radio
           label={`${currentClient.firstName} ${currentClient.lastName}`}
@@ -68,13 +69,13 @@ const ClientFooter: StatelessComponent<Props> = ({
     >
       {selectedClientTabId ? ClientViews[selectedClientTabId] : <h4>Error!</h4>}
     </RevealPanel>
-  </div>
-);
+  );
 
-const StyledClientFooter = styled(ClientFooter)`
+const StyledClientFooter = styled(ClientFooter) `
   display: flex;
+  width: 100%
   height: 100%;
-  margin: 5px;
+  margin: 0px;
   border: 0px solid white;
 `;
 
