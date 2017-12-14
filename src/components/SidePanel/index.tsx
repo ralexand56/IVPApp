@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import { ClientState, theme } from '../../datatypes';
 import SidePanel from './SidePanel';
-import { Avatar, Table } from 'antd';
+import { Avatar, Badge, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import { Client } from '../../datatypes';
 
@@ -45,7 +45,7 @@ class Container extends Component<Props, {}> {
               this.props.clientTypes[
                 this.props.clientTypes.findIndex(x => x.id === c.clientTypeId)
               ].name
-              : ''  
+              : ''
           }
         </span>
       ),
@@ -61,6 +61,15 @@ class Container extends Component<Props, {}> {
     const { filteredClients, currentClientId, setCurrentClient } = this.props;
     return (
       <SidePanel
+        header={(
+          <Badge
+            count={filteredClients.length}
+            overflowCount={10000}
+            style={{ background: theme.headingBackground2, color: 'white' }}
+          >
+            <span style={{ color: 'white', padding: 7, fontSize: '1.2em' }}>Search Results</span>
+          </Badge>
+        )}
         isOpen={this.props.searchResultsIsVisible}
         toggle={this.props.setSearchResultsVisibility}
         endColor={theme.bodyBackground}

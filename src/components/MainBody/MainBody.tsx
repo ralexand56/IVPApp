@@ -69,6 +69,7 @@ const MainBody: StatelessComponent<Props> = (props: Props) => (
           <Icon type="idcard" style={{ margin: 5 }} />
           <Badge
             count={props.clients.length}
+            overflowCount={10000}
             style={{ background: theme.headingBackground2, color: 'white' }}
           >
             <span style={{ color: 'white', padding: 7 }}>Clients</span>

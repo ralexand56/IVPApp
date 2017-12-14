@@ -8,7 +8,7 @@ interface Props {
     children?: React.ReactChild;
     className?: string;
     close: typeof actionCreators.setSearchResultsVisibility;
-    header?: string;
+    header?: React.ReactChild;
     isOpen?: boolean;
 }
 

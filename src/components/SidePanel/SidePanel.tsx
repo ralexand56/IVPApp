@@ -52,7 +52,7 @@ interface Props {
   className?: string;
   children?: React.ReactChild;
   isOpen?: boolean;
-  header?: string;
+  header?: React.ReactChild;
   startColor?: string;
   endColor?: string;
   width?: string;
@@ -63,12 +63,14 @@ const SidePanel: StatelessComponent<Props> = ({
   isOpen,
   className,
   children,
+  header,
   toggle,
 }) => {
   return (
     <div className={className}>
       <Header
         backgroundColor={theme.headingBackground1}
+        header={header}
         isOpen={isOpen}
         close={toggle}
       />
