@@ -11,6 +11,7 @@ interface Props {
   className?: string;
   currentClient: Client;
   isInEditMode: boolean;
+  setClientEditMode: typeof actionCreators.setClientEditMode;
   updateClient: typeof actionCreators.updateClient;
 }
 
@@ -18,6 +19,7 @@ const Address: StatelessComponent<Props> = ({
   className,
   currentClient,
   isInEditMode,
+  setClientEditMode,
   updateClient,
 }) => (
   <RevealPanel
@@ -30,6 +32,7 @@ const Address: StatelessComponent<Props> = ({
     <EditableField
       label="Address 1"
       txtValue={currentClient.address1}
+      click={() => setClientEditMode(true)}
       isInEditMode={isInEditMode}
       inline={true}
     >
@@ -45,6 +48,7 @@ const Address: StatelessComponent<Props> = ({
     </EditableField>
     <EditableField
       label="Address 2"
+      click={() => setClientEditMode(true)}
       txtValue={currentClient.address2}
       isInEditMode={isInEditMode}
       inline={true}
@@ -64,6 +68,7 @@ const Address: StatelessComponent<Props> = ({
         label="City"
         txtValue={currentClient.city}
         isInEditMode={isInEditMode}
+        click={() => setClientEditMode(true)}
         inline={true}
       >
         <Input
@@ -87,19 +92,36 @@ const Address: StatelessComponent<Props> = ({
         />
       </EditableField>
     </HorizontalLayout>
-    <EditableField
-      label="Country"
-      txtValue={currentClient.country}
-      isInEditMode={isInEditMode}
-      inline={true}
-    >
-      <Input
-        onChange={e =>
-          updateClient({ ...currentClient, country: e.currentTarget.value })
-        }
-        value={currentClient.country}
-      />
-    </EditableField>
+    <HorizontalLayout>
+      <EditableField
+        label="Zip"
+        txtValue={currentClient.zip}
+        isInEditMode={isInEditMode}
+        inline={true}
+        click={() => setClientEditMode(true)}
+      >
+        <Input
+          onChange={e =>
+            updateClient({ ...currentClient, zip: e.currentTarget.value })
+          }
+          value={currentClient.zip}
+        />
+      </EditableField>
+      <EditableField
+        label="Country"
+        txtValue={currentClient.country}
+        isInEditMode={isInEditMode}
+        inline={true}
+        click={() => setClientEditMode(true)}
+      >
+        <Input
+          onChange={e =>
+            updateClient({ ...currentClient, country: e.currentTarget.value })
+          }
+          value={currentClient.country}
+        />
+      </EditableField>
+    </HorizontalLayout>
   </RevealPanel>
 );
 

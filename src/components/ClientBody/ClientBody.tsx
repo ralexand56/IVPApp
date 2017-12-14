@@ -70,8 +70,9 @@ const ClientBody: StatelessComponent<Props> = ({
       </>
     }
   >
-      <HorizontalLayout align="flex-start">
+    <HorizontalLayout align="flex-start">
       <Address
+        setClientEditMode={setClientEditMode}
         currentClient={currentClient}
         isInEditMode={isInEditMode || false}
         updateClient={updateClient}
