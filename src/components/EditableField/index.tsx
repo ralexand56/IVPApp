@@ -10,6 +10,7 @@ interface Props {
   children?: React.ReactChild;
   inline?: boolean;
   isInEditMode?: boolean;
+  click?: Function;
   txtValue?: string;
 }
 
@@ -44,9 +45,10 @@ const EditableField: StatelessComponent<Props> = ({
   labelColor,
   className,
   children,
+  click,
   txtValue,
 }) => (
-  <div className={className}>
+  <div className={className} onClick={() => click && click(true)}>
     <StyledLabel labelColor={labelColor}>{label || ''}</StyledLabel>
     <Content>
       {isInEditMode ? children : processString(config)(txtValue) || ''}

@@ -58,6 +58,7 @@ export interface Client {
   city?: string;
   state?: string;
   country?: string;
+  zip?: string;
   phone?: string;
   imgUrl?: string;
   email?: string;
