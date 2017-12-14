@@ -71,6 +71,8 @@ export interface Client {
   interactions?: Interaction[];
   tagIds?: string[];
   tags?: Tag[];
+  created: Date;
+  modified: Date;
 }
 
 export interface ClientType {

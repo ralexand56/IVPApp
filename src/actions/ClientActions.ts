@@ -10,6 +10,7 @@ import {
   User,
 } from '../datatypes';
 import { AppThunkAction, ApplicationState } from '../store';
+import firebase from 'firebase';
 
 const actionCreators = {
   addComment: (cmt: Comment, client: Client): AppThunkAction<KnownAction> => (
@@ -34,6 +35,8 @@ const actionCreators = {
       firstName: 'New',
       lastName: 'Client',
       clientTypeId: 'XWVplrztsYm7RQeFMWzt',
+      created: new Date(),
+      modified: new Date(),
     };
     addClient(dispatch, newClient);
 
@@ -152,6 +155,8 @@ const actionCreators = {
         clientTypeId: 'XWVplrztsYm7RQeFMWzt',
         note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
         website: x.WEB.trim(),
+        created: new Date(),
+        modified: new Date(),
       };
 
       // console.dir(newClient);
@@ -429,11 +434,11 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('firstName', 'asc')
     .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
-  const clients: Client[] = await clientsRef.docs.map(x => x.data());
+  const clients = await clientsRef.docs.map((x: firebase.firestore.DocumentData) => x.data());
 
   clients.map(x => {
     x.comments &&
-      x.comments.map(y => (y.user = users.filter(z => z.id === y.userId)[0]));
+      x.comments.map((y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]));
   });
 
   clients &&
