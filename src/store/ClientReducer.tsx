@@ -10,7 +10,7 @@ const unloadedState: ClientState = {
   filteredClients: [],
   isInEditMode: false,
   message: '',
-  selectedClientTabId: 1,
+  selectedClientTabId: 2,
   tagCategories: [],
   users: [],
 };

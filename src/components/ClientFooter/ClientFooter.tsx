@@ -38,42 +38,42 @@ const ClientFooter: StatelessComponent<Props> = ({
   selectedClientTabId,
   setClientTab,
 }) => (
-    <RevealPanel
-      className={className}
-      endColor={theme.bodyBackground}
-      header={
-        <Radio
-          label={`${currentClient.firstName} ${currentClient.lastName}`}
-          labelColor="white"
-          itemColor="white"
-          activeColor="#ddd"
-          items={[
-            { name: 'Home', id: 1 },
-            { name: 'Comments', id: 2 },
-            { name: 'Tags', id: 5 },
-            { name: 'Admin', id: 6 },
-          ]}
-          selectedPropsId={selectedClientTabId}
-          onChange={(id: number) => setClientTab(id)}
-          underlineColor={theme.headingBackground2}
-          margin={0}
-        />
-      }
-      actions={getActions(
-        selectedClientTabId,
-        currentClient,
-        addComment,
-        currentUser,
-      )}
-      width="100%"
-    >
-      {selectedClientTabId ? ClientViews[selectedClientTabId] : <h4>Error!</h4>}
-    </RevealPanel>
-  );
+  <RevealPanel
+    className={className}
+    endColor={theme.bodyBackground}
+    header={
+      <Radio
+        label={`${currentClient.firstName} ${currentClient.lastName}`}
+        labelColor="white"
+        itemColor="white"
+        activeColor="#ddd"
+        items={[
+          { name: 'Home', id: 1 },
+          { name: 'Comments', id: 2 },
+          { name: 'Tags', id: 5 },
+          { name: 'Admin', id: 6 },
+        ]}
+        selectedPropsId={selectedClientTabId}
+        onChange={(id: number) => setClientTab(id)}
+        underlineColor={theme.headingBackground2}
+        margin={0}
+      />
+    }
+    actions={getActions(
+      selectedClientTabId,
+      currentClient,
+      addComment,
+      currentUser,
+    )}
+    width="100%"
+  >
+    {selectedClientTabId ? ClientViews[selectedClientTabId] : <h4>Error!</h4>}
+  </RevealPanel>
+);
 
-const StyledClientFooter = styled(ClientFooter) `
+const StyledClientFooter = styled(ClientFooter)`
   display: flex;
-  width: 100%
+  width: 100%;
   height: 100%;
   margin: 0px;
   border: 0px solid white;
@@ -90,14 +90,16 @@ const getActions = (
   switch (tabId) {
     case 2:
       return (
-        <Search
-          style={{ width: 300 }}
-          onSearch={val =>
-            handleAddComment(addComment, currentClient, val, currentUser)
-          }
-          placeholder="add comment..."
-          enterButton={<Icon type="plus" />}
-        />
+        currentUser && (
+          <Search
+            style={{ width: 300 }}
+            onSearch={val =>
+              handleAddComment(addComment, currentClient, val, currentUser)
+            }
+            placeholder="add comment..."
+            enterButton={<Icon type="plus" />}
+          />
+        )
       );
 
     default:
@@ -109,13 +111,14 @@ const handleAddComment = (
   addComment: typeof actionCreators.addComment,
   currentClient: Client,
   body: string,
-  currentUser?: User,
+  currentUser: User,
 ) => {
   const newComment: Comment = {
     body,
     created: new Date(),
     userId: currentUser ? currentUser.id : '',
+    user: currentUser,
   };
 
-  addComment(newComment, currentClient);
+  addComment(newComment, currentClient, currentUser);
 };

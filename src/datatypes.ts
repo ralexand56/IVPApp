@@ -92,7 +92,7 @@ export interface Comment {
   body: string;
   created: Date;
   userId?: string;
-  user?: User;
+  user: User;
 }
 
 export interface Interaction {
@@ -104,11 +104,11 @@ export interface Interaction {
 export interface User {
   id?: string;
   isActive?: boolean;
-  firstName?: string;
-  lastName?: string;
-  userName?: string;
-  pwd?: string;
-  created?: Date;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  pwd: string;
+  created: Date;
   imgSrc?: string;
 }
 

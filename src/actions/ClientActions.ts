@@ -13,11 +13,15 @@ import { AppThunkAction, ApplicationState } from '../store';
 import firebase from 'firebase';
 
 const actionCreators = {
-  addComment: (cmt: Comment, client: Client): AppThunkAction<KnownAction> => (
+  addComment: (
+    cmt: Comment,
+    client: Client,
+    currentUser: User,
+  ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
-    addComment(dispatch, cmt, client, getState().clientSlice.currentUser);
+    addComment(dispatch, cmt, client, currentUser);
 
     dispatch({
       type: 'SET_MESSAGE',
@@ -284,7 +288,7 @@ export const addComment = async (
   dispatch: (action: KnownAction) => void,
   newComment: Comment,
   client: Client,
-  user?: User,
+  user: User,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
   const newCommentRef = await clientRef.collection('comments').doc();
@@ -426,7 +430,9 @@ export const deleteComment = async (
 
 export const setClients = async (dispatch: (action: KnownAction) => void) => {
   const usersRef = await db.collection('users').get();
-  const users: User[] = await usersRef.docs.map(x => x.data());
+  const users = await usersRef.docs.map((x: firebase.firestore.DocumentData) =>
+    x.data(),
+  );
 
   const clientRef = await db
     .collection('clients')
@@ -434,11 +440,15 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('firstName', 'asc')
     .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
-  const clients = await clientsRef.docs.map((x: firebase.firestore.DocumentData) => x.data());
+  const clients = await clientsRef.docs.map(
+    (x: firebase.firestore.DocumentData) => x.data(),
+  );
 
   clients.map(x => {
     x.comments &&
-      x.comments.map((y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]));
+      x.comments.map(
+        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
+      );
   });
 
   clients &&
@@ -497,7 +507,9 @@ export const setUsers = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('firstName', 'asc')
     .orderBy('lastName', 'asc');
   const userListRef = await usersRef.get();
-  const users: User[] = await userListRef.docs.map(x => x.data());
+  const users: User[] = await userListRef.docs.map(
+    (x: firebase.firestore.DocumentData) => x.data(),
+  );
 
   dispatch({
     type: 'SET_USERS',
