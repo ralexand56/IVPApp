@@ -2,7 +2,7 @@ import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
 import { Client, ClientType, theme } from '../../datatypes';
 import RevealPanel from '../RevealPanel';
-import { Avatar, Button, Icon } from 'antd';
+import { Avatar, Button, Icon, Upload } from 'antd';
 import HorizontalLayout from '../HorizontalLayout';
 import actionCreators from '../../actions/ClientActions';
 import Header from './Header';
@@ -60,13 +60,26 @@ const ClientBody: StatelessComponent<Props> = ({
         >
           <Icon type="edit" />
         </Button>
-        <Avatar
-          src={currentClient.imgUrl ? `./images/${currentClient.imgUrl}` : ''}
-          shape="square"
-          size="large"
-          icon="user"
-          style={{ marginRight: 10 }}
-        />
+        {isInEditMode ? (
+          <Upload
+            name="avatar"
+            listType="text"
+            className="avatar-uploader"
+            showUploadList={false}
+            onChange={({ fileList }) => console.dir(fileList)}
+            action="./upload.php"
+          >
+            <UploadButton />
+          </Upload>
+        ) : (
+          <Avatar
+            src={currentClient.imgUrl ? `./images/${currentClient.imgUrl}` : ''}
+            shape="square"
+            size="large"
+            icon="user"
+            style={{ marginRight: 10 }}
+          />
+        )}
       </>
     }
   >
@@ -100,3 +113,13 @@ const StyledClientBody = styled(ClientBody)`
 `;
 
 export default StyledClientBody;
+
+const UploadButton = () => (
+  <form action="upload.php" method="post" encType="multipart/form-data">
+    <Button ghost={true}>
+      <Icon type="upload" />Upload Image
+    </Button>
+    {/* <input type="file" name="fileToUpload" id="fileToUpload" />
+    <input type="submit" value="Upload Image" name="submit" /> */}
+  </form>
+);

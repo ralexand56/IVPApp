@@ -25,7 +25,12 @@ const actionCreators = {
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a comment...',
+      message: 'Comment added...',
+    });
+
+    dispatch({
+      type: 'SET_COMMENT_TEXT',
+      newCommentText: '',
     });
   },
 
@@ -125,7 +130,7 @@ const actionCreators = {
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Deleting comment...',
+      message: 'Comment deleted...',
     });
   },
 
@@ -212,10 +217,12 @@ const actionCreators = {
     //              .toLowerCase()
     //              .indexOf(
     //                t.name.toLowerCase(),
-    //              ) > -1 : true)), dispatch({
-    //      type: 'SET_SEARCH_RESULTS_VISIBILITY',
-    //      isVisible: true,
-    //    });
+    //  ) > -1 : true)),
+
+    dispatch({
+      type: 'SET_SEARCH_RESULTS_VISIBILITY',
+      isVisible: true,
+    });
 
     dispatch({
       type: 'SET_FILTERED_CLIENTS',
@@ -266,6 +273,15 @@ const actionCreators = {
         clientId: filteredClients[0].id,
       });
   },
+
+  updateCommentText: (newCommentText: string): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) =>
+    dispatch({
+      type: 'SET_COMMENT_TEXT',
+      newCommentText,
+    }),
 };
 
 export const addClient = async (

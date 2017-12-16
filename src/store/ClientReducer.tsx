@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import { defaultUser, ClientState, KnownAction } from '../datatypes';
+import { message } from 'antd';
 
 const unloadedState: ClientState = {
   searchResultsIsVisible: true,
@@ -10,7 +11,8 @@ const unloadedState: ClientState = {
   filteredClients: [],
   isInEditMode: false,
   message: '',
-  selectedClientTabId: 2,
+  newCommentText: '',
+  selectedClientTabId: 1,
   tagCategories: [],
   users: [],
 };
@@ -59,10 +61,14 @@ const reducer: Reducer<ClientState> = (
     case 'SET_CLIENT_TYPES':
       return { ...state, clientTypes: action.clientTypes };
 
+    case 'SET_COMMENT_TEXT':
+      return { ...state, newCommentText: action.newCommentText };
+
     case 'SET_FILTERED_CLIENTS':
       return { ...state, filteredClients: action.filteredClients };
 
     case 'SET_MESSAGE':
+      message.success(action.message);  
       return { ...state, message: action.message };
 
     case 'SET_TAG_CATEGORIES':

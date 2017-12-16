@@ -9,6 +9,7 @@ import Comments from './Comments';
 type Props = ClientState & typeof actionCreators;
 
 class ContainerTemplate extends Component<Props, {}> {
+
   render() {
     const { clients, currentClientId, deleteComment } = this.props;
 

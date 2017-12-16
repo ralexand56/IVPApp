@@ -61,7 +61,7 @@ const StyledEditableField = styled(EditableField)`
   flex-direction: ${props => (props.inline ? 'row' : 'column')};
   align-items: flex-start;
   animation: ${fadeIn} 0.7s ease-in-out both;
-  margin: 15px 20px;
+  margin: 6px 8px;
 `;
 
 export default StyledEditableField;

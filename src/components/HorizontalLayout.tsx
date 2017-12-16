@@ -19,7 +19,7 @@ const StyledHorizontalLayout = styled(HorizontalLayout) `
     display: flex;
     align-items: ${props => props.align || 'center'};
     justify-content: space-between;
-    margin: 10px;
+    margin: 0px;
 `;
 
 export default StyledHorizontalLayout;

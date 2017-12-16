@@ -122,7 +122,7 @@ const StyledHeader = styled(Header) `
 const BodyContainer = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
     height: 100%;
     overflow: hidden;

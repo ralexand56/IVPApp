@@ -38,6 +38,7 @@ export interface ClientState {
   currentUser?: User;
   filteredClients: Client[];
   isInEditMode: boolean;
+  newCommentText: string;
   searchResultsIsVisible: boolean;
   selectedClientTabId: number;
   message: string;
@@ -137,6 +138,7 @@ export type KnownAction =
   | SetClientTypesAction
   | SetSearchResultsVisibilityAction
   | SetClientsAction
+  | SetCommentTextAction
   | SetCurrentClientAction
   | SetMessageAction
   | SetTagCategoriesAction
@@ -187,6 +189,11 @@ export interface SetClientTabAction {
 export interface SetClientTypesAction {
   type: 'SET_CLIENT_TYPES';
   clientTypes: ClientType[];
+}
+
+export interface SetCommentTextAction {
+  type: 'SET_COMMENT_TEXT';
+  newCommentText: string;
 }
 
 export interface SetFilteredClientsAction {

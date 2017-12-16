@@ -1,7 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
-import { Client, Comment, theme, User } from '../../datatypes';
-import { Icon, Input } from 'antd';
+import { Client, theme } from '../../datatypes';
 import RevealPanel from '../RevealPanel';
 import Radio from '../Radio';
 import actionCreators from '../../actions/ClientActions';
@@ -9,6 +8,7 @@ import Admin from '../Admin';
 import Comments from '../Comments';
 import ClientBody from '../ClientBody';
 import TagsView from '../TagsView';
+import AddCommentMenu from '../AddCommentMenu';
 
 const ClientViews = {
   1: <ClientBody />,
@@ -17,24 +17,18 @@ const ClientViews = {
   6: <Admin />,
 };
 
-const Search = Input.Search;
-
 interface Props {
-  addComment: typeof actionCreators.addComment;
   className?: string;
   children?: React.ReactChild;
   currentClient: Client;
-  currentUser?: User;
   selectedClientTabId: number;
   setClientTab: typeof actionCreators.setClientTab;
 }
 
 const ClientFooter: StatelessComponent<Props> = ({
-  addComment,
   className,
   children,
   currentClient,
-  currentUser,
   selectedClientTabId,
   setClientTab,
 }) => (
@@ -62,8 +56,6 @@ const ClientFooter: StatelessComponent<Props> = ({
     actions={getActions(
       selectedClientTabId,
       currentClient,
-      addComment,
-      currentUser,
     )}
     width="100%"
   >
@@ -84,41 +76,14 @@ export default StyledClientFooter;
 const getActions = (
   tabId: number,
   currentClient: Client,
-  addComment: typeof actionCreators.addComment,
-  currentUser?: User,
 ) => {
   switch (tabId) {
     case 2:
       return (
-        currentUser && (
-          <Search
-            style={{ width: 300 }}
-            onSearch={val =>
-              handleAddComment(addComment, currentClient, val, currentUser)
-            }
-            placeholder="add comment..."
-            enterButton={<Icon type="plus" />}
-          />
-        )
+       <AddCommentMenu />
       );
 
     default:
       return <span />;
   }
-};
-
-const handleAddComment = (
-  addComment: typeof actionCreators.addComment,
-  currentClient: Client,
-  body: string,
-  currentUser: User,
-) => {
-  const newComment: Comment = {
-    body,
-    created: new Date(),
-    userId: currentUser ? currentUser.id : '',
-    user: currentUser,
-  };
-
-  addComment(newComment, currentClient, currentUser);
 };

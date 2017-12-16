@@ -2,7 +2,7 @@ import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
 import { Client, Comment, fadeIn, theme } from '../../datatypes';
 // import CommentView from '../Comment';
-import { Avatar, Button, Icon, Timeline } from 'antd';
+import { Avatar, Button, Icon, Popconfirm, Timeline } from 'antd';
 import moment from 'moment';
 import actionCreators from '../../actions/ClientActions';
 
@@ -45,13 +45,20 @@ const renderComments = (
             .charAt(0)
             .toUpperCase()}`}
         </Avatar>
-        <Button
-          size="small"
-          style={{ color: theme.headingBackground2, margin: 5 }}
-          onClick={() => x.id && deleteComment(x.id, currentClient)}
+        <Popconfirm
+          placement="top"
+          title="Are you sure you want to delete comment?"
+          onConfirm={() => x.id && deleteComment(x.id, currentClient)}
+          okText="Yes"
+          cancelText="No"
         >
-          <Icon type="minus" />
-        </Button>
+          <Button
+            size="small"
+            style={{ color: theme.headingBackground2, margin: 5 }}
+          >
+            <Icon type="minus" />
+          </Button>
+        </Popconfirm>
       </span>
     </Timeline.Item>
   ));
