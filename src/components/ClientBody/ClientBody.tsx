@@ -1,8 +1,8 @@
 import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
-import { Client, ClientType, theme } from '../../datatypes';
+import { Client, ClientType, storage, theme } from '../../datatypes';
 import RevealPanel from '../RevealPanel';
-import { Avatar, Button, Icon, Upload } from 'antd';
+import { Avatar, Button, Icon, message, Upload } from 'antd';
 import HorizontalLayout from '../HorizontalLayout';
 import actionCreators from '../../actions/ClientActions';
 import Header from './Header';
@@ -62,12 +62,12 @@ const ClientBody: StatelessComponent<Props> = ({
         </Button>
         {isInEditMode ? (
           <Upload
+            beforeUpload={file => beforeUpload(file)}
             name="avatar"
             listType="text"
             className="avatar-uploader"
             showUploadList={false}
-            onChange={({ fileList }) => console.dir(fileList)}
-            action="./upload.php"
+            action="http://ivppublicart.com/admin/upload.php"
           >
             <UploadButton />
           </Upload>
@@ -123,3 +123,20 @@ const UploadButton = () => (
     <input type="submit" value="Upload Image" name="submit" /> */}
   </form>
 );
+
+const beforeUpload = (file) => {
+  const isJPG = file.type === 'image/jpeg';
+  if (!isJPG) {
+    message.error('You can only upload JPG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+
+  storage
+    .ref()
+    .child(`images/${file.name}`)
+    .put(file);
+  return isJPG && isLt2M;
+};

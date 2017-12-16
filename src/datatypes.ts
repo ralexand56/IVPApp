@@ -13,11 +13,12 @@ export const config = {
 };
 
 export let db: firebase.firestore.Firestore;
-
+export let storage: firebase.storage.Storage;
 export const initializeDB = () => {
   firebase.initializeApp(config);
 
   db = firebase.firestore();
+  storage = firebase.storage();
 };
 
 export const defaultUser = {
