@@ -25,7 +25,7 @@ require('firebase/firestore');
 initializeDB();
 
 const store = configureStore();
-init(store.dispatch);
+init(store.dispatch, store.getState);
 
 ReactDOM.render(
   <AppContainer>

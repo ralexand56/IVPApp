@@ -124,7 +124,7 @@ const UploadButton = () => (
   </form>
 );
 
-const beforeUpload = (file) => {
+const beforeUpload = (file: {type: string, size: number, name: string}) => {
   const isJPG = file.type === 'image/jpeg';
   if (!isJPG) {
     message.error('You can only upload JPG file!');
