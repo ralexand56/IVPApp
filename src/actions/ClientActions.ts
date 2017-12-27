@@ -7,7 +7,7 @@ import {
   UserImport,
   Tag,
   TagCategory,
-  User
+  User,
 } from '../datatypes';
 import { AppThunkAction, ApplicationState } from '../store';
 import firebase from 'firebase';
@@ -16,27 +16,27 @@ const actionCreators = {
   addComment: (
     cmt: Comment,
     client: Client,
-    currentUser: User
+    currentUser: User,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addComment(dispatch, cmt, client, currentUser);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Comment added...'
+      message: 'Comment added...',
     });
 
     dispatch({
       type: 'SET_COMMENT_TEXT',
-      newCommentText: ''
+      newCommentText: '',
     });
   },
 
   addClient: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const newClient: Client = {
       isActive: true,
@@ -45,111 +45,111 @@ const actionCreators = {
       lastName: 'Client',
       clientTypeId: 'XWVplrztsYm7RQeFMWzt',
       created: new Date(),
-      modified: new Date()
+      modified: new Date(),
     };
     addClient(dispatch, newClient);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   addClientType: (name: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addClientType(dispatch, name);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client type...'
+      message: 'Adding a client type...',
     });
   },
 
   addTagCategory: (name: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addTagCategory(dispatch, name);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   addTagToCategory: (
     name: string,
-    tagCategory: TagCategory
+    tagCategory: TagCategory,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addTagToCategory(dispatch, name, tagCategory);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   toggleClientTag: (
     tagId: string,
     client: Client,
-    isAdd: boolean
+    isAdd: boolean,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     toggleClientTag(dispatch, tagId, client, isAdd);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding tag to client...'
+      message: 'Adding tag to client...',
     });
   },
 
   addUser: (usr: User): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addUser(dispatch, usr);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a user...'
+      message: 'Adding a user...',
     });
   },
 
   deleteComment: (id: string, client: Client): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     deleteComment(dispatch, id, client);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Comment deleted...'
+      message: 'Comment deleted...',
     });
   },
 
   init: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     setUsers(dispatch);
     setClients(dispatch);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Initializing...'
+      message: 'Initializing...',
     });
   },
 
   importClients: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const newClients = UserImport;
 
@@ -165,7 +165,7 @@ const actionCreators = {
         note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
         website: x.WEB.trim(),
         created: new Date(),
-        modified: new Date()
+        modified: new Date(),
       };
 
       // console.dir(newClient);
@@ -175,10 +175,10 @@ const actionCreators = {
 
   searchClients: (
     searchText: string,
-    clients: Client[]
+    clients: Client[],
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const cats = getState()
       .clientSlice.tagCategories.filter(x => x.tags !== undefined)
@@ -210,7 +210,7 @@ const actionCreators = {
           x.email.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.website &&
           x.website.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
-        (x.tagIds !== undefined && findOne(x.tagIds, tags))
+        (x.tagIds !== undefined && findOne(x.tagIds, tags)),
     );
 
     //  x.tags && x.tags.findIndex(t => (t.name ? searchText
@@ -221,51 +221,51 @@ const actionCreators = {
 
     dispatch({
       type: 'SET_SEARCH_RESULTS_VISIBILITY',
-      isVisible: true
+      isVisible: true,
     });
 
     dispatch({
       type: 'SET_FILTERED_CLIENTS',
-      filteredClients
+      filteredClients,
     });
   },
 
   setSearchResultsVisibility: (isVisible: boolean) => ({
     type: 'SET_SEARCH_RESULTS_VISIBILITY',
-    isVisible
+    isVisible,
   }),
 
   setCurrentClient: (
-    clientId: string | undefined
+    clientId: string | undefined,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     setCurrentClient(dispatch, getState, clientId);
   },
 
   setClientEditMode: (isInEditMode: boolean) => ({
     type: 'SET_CLIENT_EDIT_MODE',
-    isInEditMode
+    isInEditMode,
   }),
 
   setClientTab: (selectedClientTabId: number) => ({
     type: 'SET_CLIENT_TAB',
-    clientTabId: selectedClientTabId
+    clientTabId: selectedClientTabId,
   }),
 
   updateClient: (
     client: Client,
-    isDelete: boolean = false
+    isDelete: boolean = false,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     updateClient(dispatch, client);
 
     dispatch({
       type: 'UPDATE_CLIENT',
-      client
+      client,
     });
 
     const filteredClients = getState().clientSlice.filteredClients;
@@ -274,23 +274,23 @@ const actionCreators = {
       filteredClients.length > 0 &&
       dispatch({
         type: 'SET_CURRENT_CLIENT',
-        clientId: filteredClients[0].id
+        clientId: filteredClients[0].id,
       });
   },
 
   updateCommentText: (newCommentText: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) =>
     dispatch({
       type: 'SET_COMMENT_TEXT',
-      newCommentText
-    })
+      newCommentText,
+    }),
 };
 
 export const addClient = async (
   dispatch: (action: KnownAction) => void,
-  newClient: Client
+  newClient: Client,
 ) => {
   const clientRef = await db.collection('clients').add(newClient);
   db
@@ -300,7 +300,7 @@ export const addClient = async (
   newClient.id = clientRef.id;
   dispatch({
     type: 'ADD_CLIENT',
-    newClient
+    newClient,
   });
 };
 
@@ -308,7 +308,7 @@ export const addComment = async (
   dispatch: (action: KnownAction) => void,
   newComment: Comment,
   client: Client,
-  user: User
+  user: User,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
   const newCommentRef = await clientRef.collection('comments').doc();
@@ -322,16 +322,16 @@ export const addComment = async (
   client.comments = comments;
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
 export const addTagCategory = async (
   dispatch: (action: KnownAction) => void,
-  name: string
+  name: string,
 ) => {
   const newTagCategory: TagCategory = {
-    name
+    name,
   };
   const categoriesRef = await db
     .collection('tagCategories')
@@ -344,16 +344,16 @@ export const addTagCategory = async (
 
   dispatch({
     type: 'ADD_TAG_CATEGORY',
-    tagCategory: newTagCategory
+    tagCategory: newTagCategory,
   });
 };
 
 export const addClientType = async (
   dispatch: (action: KnownAction) => void,
-  name: string
+  name: string,
 ) => {
   const newClientType: ClientType = {
-    name
+    name,
   };
   const clientTypesRef = await db.collection('clientTypes').add(newClientType);
   db
@@ -364,18 +364,18 @@ export const addClientType = async (
 
   dispatch({
     type: 'ADD_CLIENT_TYPE',
-    clientType: newClientType
+    clientType: newClientType,
   });
 };
 
 export const addTagToCategory = async (
   dispatch: (action: KnownAction) => void,
   name: string,
-  tagCategory: TagCategory
+  tagCategory: TagCategory,
 ) => {
   const newTag: Tag = {
     id: '',
-    name
+    name,
   };
   const tagCategoryRef = await db
     .collection('tagCategories')
@@ -390,7 +390,7 @@ export const addTagToCategory = async (
 
   dispatch({
     type: 'UPDATE_TAG_CATEGORY',
-    tagCategory
+    tagCategory,
   });
 };
 
@@ -398,7 +398,7 @@ export const toggleClientTag = async (
   dispatch: (action: KnownAction) => void,
   tagId: string,
   client: Client,
-  isAdd: boolean
+  isAdd: boolean,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
@@ -411,13 +411,13 @@ export const toggleClientTag = async (
 
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
 export const addUser = async (
   dispatch: (action: KnownAction) => void,
-  newUser: User
+  newUser: User,
 ) => {
   const userRef = await db.collection('users').add(newUser);
   db
@@ -428,14 +428,14 @@ export const addUser = async (
 
   dispatch({
     type: 'ADD_USER',
-    newUser
+    newUser,
   });
 };
 
 export const deleteComment = async (
   dispatch: (action: KnownAction) => void,
   id: string,
-  client: Client
+  client: Client,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
@@ -444,14 +444,14 @@ export const deleteComment = async (
 
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
 export const setClients = async (dispatch: (action: KnownAction) => void) => {
   const usersRef = await db.collection('users').get();
   const users = await usersRef.docs.map((x: firebase.firestore.DocumentData) =>
-    x.data()
+    x.data(),
   );
 
   const clientRef = await db
@@ -461,13 +461,13 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
   const clients = await clientsRef.docs.map(
-    (x: firebase.firestore.DocumentData) => x.data()
+    (x: firebase.firestore.DocumentData) => x.data(),
   );
 
   clients.map(x => {
     x.comments &&
       x.comments.map(
-        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0])
+        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
       );
   });
 
@@ -475,39 +475,39 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     clients.length > 0 &&
     dispatch({
       type: 'SET_CURRENT_CLIENT',
-      clientId: clients[0].id
+      clientId: clients[0].id,
     });
 
   dispatch({
     type: 'SET_FILTERED_CLIENTS',
-    filteredClients: clients
+    filteredClients: clients,
   });
 
   dispatch({
     type: 'SET_CLIENTS',
-    clients
+    clients,
   });
 };
 
 export const setClientTypes = async (
-  dispatch: (action: KnownAction) => void
+  dispatch: (action: KnownAction) => void,
 ) => {
   const clientTypesRef = await db.collection('clientTypes');
   const clientTypesList = await clientTypesRef.orderBy('name').get();
   const clientTypes: ClientType[] = await clientTypesList.docs.map(x =>
-    x.data()
+    x.data(),
   );
 
   dispatch({
     type: 'SET_CLIENT_TYPES',
-    clientTypes
+    clientTypes,
   });
 };
 
 export const setCurrentClient = async (
   dispatch: (action: KnownAction) => void,
   getState: () => ApplicationState,
-  clientId: string | undefined
+  clientId: string | undefined,
 ) => {
   const user = getState().clientSlice.currentUser;
   const userId = user ? user.id : undefined;
@@ -526,19 +526,19 @@ export const setCurrentClient = async (
 };
 
 export const setTagCategories = async (
-  dispatch: (action: KnownAction) => void
+  dispatch: (action: KnownAction) => void,
 ) => {
   const tagCategoriesRef = await db
     .collection('tagCategories')
     .orderBy('name', 'asc');
   const tagCategoriesList = await tagCategoriesRef.get();
   const tagCategories: TagCategory[] = await tagCategoriesList.docs.map(x =>
-    x.data()
+    x.data(),
   );
 
   dispatch({
     type: 'SET_TAG_CATEGORIES',
-    tagCategories
+    tagCategories,
   });
 };
 
@@ -549,18 +549,18 @@ export const setUsers = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('lastName', 'asc');
   const userListRef = await usersRef.get();
   const users: User[] = await userListRef.docs.map(
-    (x: firebase.firestore.DocumentData) => x.data()
+    (x: firebase.firestore.DocumentData) => x.data(),
   );
 
   dispatch({
     type: 'SET_USERS',
-    users
+    users,
   });
 };
 
 export const init = (
   dispatch: (action: KnownAction) => void,
-  getState: () => ApplicationState
+  getState: () => ApplicationState,
 ) => {
   setUsers(dispatch);
   setClients(dispatch);
@@ -571,7 +571,7 @@ export const init = (
 
 export const updateClient = async (
   dispatch: (action: KnownAction) => void,
-  client: Client
+  client: Client,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
   clientRef.update(client);
@@ -579,7 +579,7 @@ export const updateClient = async (
 
 export const watchClientChanges = async (
   dispatch: (action: KnownAction) => void,
-  getState: () => ApplicationState
+  getState: () => ApplicationState,
 ) => {
   const user = getState().clientSlice.currentUser;
   const userId = user ? user.id : undefined;
@@ -587,10 +587,13 @@ export const watchClientChanges = async (
   const currentClientRef = await db.collection('currentClientIds').doc(userId);
 
   currentClientRef.onSnapshot(snapShot => {
-    dispatch({
-      type: 'SET_CURRENT_CLIENT',
-      clientId: snapShot.data().clientId
-    });
+    console.dir(snapShot);
+
+    snapShot.exists &&
+      dispatch({
+        type: 'SET_CURRENT_CLIENT',
+        clientId: snapShot.data().clientId,
+      });
   });
 };
 
