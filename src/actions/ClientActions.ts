@@ -254,6 +254,11 @@ const actionCreators = {
     clientTabId: selectedClientTabId,
   }),
 
+  setInteractive: (isInteractive: boolean) => ({
+    type: 'SET_INTERACTIVE',
+    isInteractive,
+  }),
+
   updateClient: (
     client: Client,
     isDelete: boolean = false,
@@ -471,12 +476,12 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
       );
   });
 
-  clients &&
-    clients.length > 0 &&
-    dispatch({
-      type: 'SET_CURRENT_CLIENT',
-      clientId: clients[0].id,
-    });
+  // clients &&
+    // clients.length > 0 &&
+    // dispatch({
+    //   type: 'SET_CURRENT_CLIENT',
+    //   clientId: clients[0].id,
+    // });
 
   dispatch({
     type: 'SET_FILTERED_CLIENTS',
@@ -587,7 +592,7 @@ export const watchClientChanges = async (
   const currentClientRef = await db.collection('currentClientIds').doc(userId);
 
   currentClientRef.onSnapshot(snapShot => {
-    console.dir(snapShot);
+    // console.dir(snapShot);
 
     snapShot.exists &&
       dispatch({

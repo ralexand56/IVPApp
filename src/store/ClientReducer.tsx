@@ -10,6 +10,7 @@ const unloadedState: ClientState = {
   currentUser: defaultUser,
   filteredClients: [],
   isInEditMode: false,
+  isInteractive: false,
   message: '',
   newCommentText: '',
   selectedClientTabId: 1,
@@ -67,8 +68,11 @@ const reducer: Reducer<ClientState> = (
     case 'SET_FILTERED_CLIENTS':
       return { ...state, filteredClients: action.filteredClients };
 
+    case 'SET_INTERACTIVE':
+      return { ...state, isInteractive: action.isInteractive };
+
     case 'SET_MESSAGE':
-      message.success(action.message);  
+      message.success(action.message);
       return { ...state, message: action.message };
 
     case 'SET_TAG_CATEGORIES':

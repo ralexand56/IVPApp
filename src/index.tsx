@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'core-js';
-import AppMainContainer from './AppContainer';
+import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
 
@@ -31,7 +31,7 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <AppMainContainer />
+        <App />
       </Provider>
     </ThemeProvider>
   </AppContainer>

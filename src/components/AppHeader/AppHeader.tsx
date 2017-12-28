@@ -1,6 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Avatar, Input } from 'antd';
+import { Avatar, Button, Dropdown, Icon, Input, Menu, Switch } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import { fadeIn } from '../../datatypes';
 import { Client, User } from '../../datatypes';
@@ -48,9 +48,11 @@ interface Props {
   currentUser?: User;
   className?: string;
   foregroundColor?: string;
+  isInteractive: boolean;
   message: string;
   extractPanelIsShowing: boolean;
   searchClients: typeof actionCreators.searchClients;
+  setInteractive: typeof actionCreators.setInteractive;
   setPanelVisibility: typeof actionCreators.setSearchResultsVisibility;
 }
 
@@ -60,9 +62,11 @@ const AppHeader: StatelessComponent<Props> = ({
   clients,
   currentUser,
   extractPanelIsShowing,
+  isInteractive,
   message,
   searchClients,
   setPanelVisibility,
+  setInteractive,
 }: Props) => {
   return (
     <div className={className}>
@@ -84,6 +88,24 @@ const AppHeader: StatelessComponent<Props> = ({
             src={`./images/${currentUser.imgSrc}` || ''}
           />
         )}
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item>
+                <Switch
+                  onChange={e => setInteractive(e)}
+                  checked={isInteractive}
+                  checkedChildren="Interactive"
+                  unCheckedChildren="Non-Interactive"
+                />
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button style={{ color: 'white' }} type="ghost">
+            <Icon type="bars" />
+          </Button>
+        </Dropdown>
       </Header>
 
       <DesktopHeader>
@@ -108,6 +130,24 @@ const AppHeader: StatelessComponent<Props> = ({
               src={`./images/${currentUser.imgSrc}` || ''}
             />
           )}
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>
+                  <Switch
+                    onChange={e => setInteractive(e)}
+                    checked={isInteractive}
+                    checkedChildren="Interactive"
+                    unCheckedChildren="Non-Interactive"
+                  />
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Button style={{ color: 'white' }} type="ghost">
+              <Icon type="bars" />
+            </Button>
+          </Dropdown>
         </SearchHeader>
       </DesktopHeader>
     </div>

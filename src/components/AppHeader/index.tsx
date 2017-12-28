@@ -19,8 +19,10 @@ class ContainerTemplate extends Component<Props, {}> {
         const {
             clients,
             currentUser,
+            isInteractive,
             message,
             searchResultsIsVisible,
+            setInteractive,
             setSearchResultsVisibility,
             searchClients,
          } = this.props;
@@ -31,8 +33,10 @@ class ContainerTemplate extends Component<Props, {}> {
                 backgroundColor={theme.headingBackground1}    
                 currentUser={currentUser}
                 extractPanelIsShowing={searchResultsIsVisible}
+                isInteractive={isInteractive}
                 message={message}
                 searchClients={searchClients}
+                setInteractive={setInteractive}
                 setPanelVisibility={setSearchResultsVisibility}
             />);
     }
