@@ -15,6 +15,7 @@ class ContainerTemplate extends Component<Props, {}> {
       currentClientId,
       isInteractive,
       setCurrentClient,
+      setInteractive,
     } = this.props;
     const currentClient = currentClientId
       ? clients.find(x => x.id === currentClientId)
@@ -25,6 +26,7 @@ class ContainerTemplate extends Component<Props, {}> {
         currentClient={currentClient}
         isInteractive={isInteractive}
         setCurrentClient={setCurrentClient}
+        setInteractive={setInteractive}
       />
     );
   }

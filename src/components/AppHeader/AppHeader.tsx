@@ -1,6 +1,10 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Avatar, Button, Dropdown, Icon, Input, Menu, Switch } from 'antd';
+import {
+  Affix,
+  Avatar,
+  Input,
+} from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import { fadeIn } from '../../datatypes';
 import { Client, User } from '../../datatypes';
@@ -69,60 +73,19 @@ const AppHeader: StatelessComponent<Props> = ({
   setInteractive,
 }: Props) => {
   return (
-    <div className={className}>
-      <Header>
-        <img
-          src="./images/logo.png"
-          width="50"
-          height="46"
-          style={{ padding: 10 }}
-        />
-        <Search
-          placeholder="search..."
-          onSearch={(value: string) => searchClients(value, clients)}
-          style={{ flex: 1 }}
-        />
-        {currentUser && (
-          <Avatar
-            style={{ margin: 5 }}
-            src={`./images/${currentUser.imgSrc}` || ''}
-          />
-        )}
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item>
-                <Switch
-                  onChange={e => setInteractive(e)}
-                  checked={isInteractive}
-                  checkedChildren="Interactive"
-                  unCheckedChildren="Non-Interactive"
-                />
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button style={{ color: 'white' }} type="ghost">
-            <Icon type="bars" />
-          </Button>
-        </Dropdown>
-      </Header>
-
-      <DesktopHeader>
-        <LogoHeader>
+    <Affix>
+      <div className={className}>
+        <Header>
           <img
             src="./images/logo.png"
             width="50"
             height="46"
             style={{ padding: 10 }}
           />
-          IVP Public Art Client Manager
-        </LogoHeader>
-
-        <SearchHeader>
           <Search
             placeholder="search..."
             onSearch={(value: string) => searchClients(value, clients)}
+            style={{ flex: 1 }}
           />
           {currentUser && (
             <Avatar
@@ -130,27 +93,34 @@ const AppHeader: StatelessComponent<Props> = ({
               src={`./images/${currentUser.imgSrc}` || ''}
             />
           )}
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item>
-                  <Switch
-                    onChange={e => setInteractive(e)}
-                    checked={isInteractive}
-                    checkedChildren="Interactive"
-                    unCheckedChildren="Non-Interactive"
-                  />
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button style={{ color: 'white' }} type="ghost">
-              <Icon type="bars" />
-            </Button>
-          </Dropdown>
-        </SearchHeader>
-      </DesktopHeader>
-    </div>
+        </Header>
+
+        <DesktopHeader>
+          <LogoHeader>
+            <img
+              src="./images/logo.png"
+              width="50"
+              height="46"
+              style={{ padding: 10 }}
+            />
+            IVP Public Art Client Manager
+          </LogoHeader>
+
+          <SearchHeader>
+            <Search
+              placeholder="search..."
+              onSearch={(value: string) => searchClients(value, clients)}
+            />
+            {currentUser && (
+              <Avatar
+                style={{ margin: 5 }}
+                src={`./images/${currentUser.imgSrc}` || ''}
+              />
+            )}
+          </SearchHeader>
+        </DesktopHeader>
+      </div>
+    </Affix>
   );
 };
 
@@ -158,8 +128,6 @@ const StyledAppHeader = styled(AppHeader)`
   background: ${props => props.backgroundColor || 'gray'};
   color: white;
   display: flex;
-  position: absolute;
-  top: 0;
   justify-content: space-between;
   align-items: center;
   font-size: 1.5em;
@@ -167,7 +135,6 @@ const StyledAppHeader = styled(AppHeader)`
   font-weight: normal;
   padding: 0.3em;
   width: 100%;
-  z-index: 2;
   box-shadow: 0px 0px 10px #666;
   animation: ${fadeIn} 0.7s;
 `;
