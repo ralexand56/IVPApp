@@ -3,6 +3,7 @@
 > *Real-time databases have never been so easy!*
 -------
 - [x] Refactor UI
+* Add Login
 
 <details><summary>Boostnote is a notepad corresponding to markdown notation, which is a tool for organizing and sharing information.</summary>
 - Features - <br>
