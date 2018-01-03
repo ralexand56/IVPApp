@@ -29,7 +29,7 @@ export default class App extends Component<Props, {}> {
         {currentClient && (
           <ClientInfo
             currentClient={currentClient}
-            showClient={!isInteractive}
+            isVisible={!isInteractive}
             setCurrentClient={setCurrentClient}
           />
         )}

@@ -16,6 +16,7 @@
     "@types/react-hot-loader": "^3.0.1",
     "@types/react-redux": "^5.0.13",
     "@types/webpack-env": "^1.13.0",
+    "animated": "^0.2.1",
     "antd": "^3.0.0",
     "app-root-path": "^2.0.1",
     "autoprefixer": "7.1.0",
