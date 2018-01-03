@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'core-js';
-import App from './components/App';
+// import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
-
+import SlidingPanel from './components/SlidingPanel';
 import { AppContainer } from 'react-hot-loader';
 import './index.css';
 import 'antd/dist/antd.css';
@@ -31,7 +31,7 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <SlidingPanel />
       </Provider>
     </ThemeProvider>
   </AppContainer>
