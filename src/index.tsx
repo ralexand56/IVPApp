@@ -31,12 +31,23 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <SlidingPanel />
+        <SlidingPanel isOpen={true}>
+          <div>
+            <h2>Very Insightful</h2>
+            <p>
+              Years ago, I attended the DevTeach conference and was fortunate to
+              participate in conversations that helped me overcome many
+              challenges over the years that followed. This week I had the
+              opportunity to speak at DevTeach in Montreal. For this event, I
+              chose a topic that I’m really passionate about and needed to cover
+              a lot of ground in a short amount of time.
+            </p>
+          </div>
+        </SlidingPanel>
       </Provider>
     </ThemeProvider>
-  </AppContainer>
-  ,
-  document.getElementById('root') as HTMLElement
+  </AppContainer>,
+  document.getElementById('root') as HTMLElement,
 );
 
 registerServiceWorker();

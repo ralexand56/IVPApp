@@ -277,6 +277,29 @@ export const fadeOut = () => keyframes`
     }
 `;
 
+export const slideIn = () => keyframes`
+    0% {
+        transform: scaleY(0);
+    }
+    50% 100% {
+       transform: scaleY(1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+`;
+
+export const slideOut = () => keyframes`
+   0% {
+        opacity: 1;
+        max-height: 100%;
+    }
+    100% {
+        opacity: 1;
+        max-height: 0%;
+    }
+`;
+
 export const UserImport = [
   {
     ARTISTS: 'Agid Nick ',
