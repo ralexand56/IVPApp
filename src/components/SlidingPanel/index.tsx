@@ -43,7 +43,10 @@ class SlidingPanel extends Component<Props, {}> {
   componentDidMount() {
     const { isOpen } = this.props;
 
-    isOpen ? this.innerContainer && this.container && this.tl
+    isOpen
+      ? this.innerContainer &&
+        this.container &&
+        this.tl
           .fromTo(
             this.container,
             0.7,
@@ -55,7 +58,10 @@ class SlidingPanel extends Component<Props, {}> {
             0.5,
             { opacity: 0, ease: Bounce.easeOut },
             { opacity: 1, ease: Bounce.easeOut },
-          ) : this.innerContainer && this.container && this.tl
+          )
+      : this.innerContainer &&
+        this.container &&
+        this.tl
           .fromTo(this.innerContainer, 0.5, { opacity: 1 }, { opacity: 0 })
           .fromTo(this.container, 0.5, { scaleY: 1 }, { scaleY: 0 });
   }
