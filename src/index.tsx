@@ -14,6 +14,7 @@ import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
 import { init } from './actions/ClientActions';
+import styled from 'styled-components';
 // import styled from 'styled-components';
 require('firebase/firestore');
 // const TestStyle = styled.div`
@@ -21,6 +22,14 @@ require('firebase/firestore');
 //   width: 100%;
 //   height: 100%;
 // `;
+const HeaderStyle = styled.div`
+  background: white;
+  color: black;
+  padding: 5px 8px;
+  font-size: 0.6em;
+  margin: 7px 0px 0px 0px;
+  text-transform: uppercase;
+`;
 
 initializeDB();
 
@@ -31,17 +40,14 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <SlidingPanel isOpen={true}>
-          <div>
-            <h2>Very Insightful</h2>
-            <p>
-              Years ago, I attended the DevTeach conference and was fortunate to
-              participate in conversations that helped me overcome many
-              challenges over the years that followed. This week I had the
-              opportunity to speak at DevTeach in Montreal. For this event, I
-              chose a topic that I’m really passionate about and needed to cover
-              a lot of ground in a short amount of time.
-            </p>
+        <SlidingPanel background="purple" isOpen={true} title={<HeaderStyle>Address</HeaderStyle>}>
+          <div style={{ padding: 8 }}>
+            Years ago, I attended the DevTeach conference and was fortunate to
+            participate in conversations that helped me overcome many challenges
+            over the years that followed. This week I had the opportunity to
+            speak at DevTeach in Montreal. For this event, I chose a topic that
+            I’m really passionate about and needed to cover a lot of ground in a
+            short amount of time.
           </div>
         </SlidingPanel>
       </Provider>

@@ -4,40 +4,17 @@ import styled from 'styled-components';
 import { Bounce, TimelineMax } from 'gsap';
 
 interface Props {
+  background?: string;
   children?: React.ReactChild;
   className?: string;
   isOpen?: boolean;
+  title?: React.ReactElement<HTMLElement>;
 }
-
-// interface BackgroundProps {
-//   background?: string;
-//   children?: React.ReactChild;
-//   className?: string;
-//   isOpen: boolean;
-// }
-
-// interface ForegroundProps {
-//   children?: React.ReactChild;
-//   className?: string;
-//   isOpen?: boolean;
-// }
-
-// const BackgroundPanel: StatelessComponent<BackgroundProps> = ({
-//   className,
-// }) => <div className={className} />;
-
-// const StyledBackgroundPanel = styled(BackgroundPanel)`
-//   transform-origin: 0% 0%;
-//   width: 100%;
-//   height: 100%;
-//   position: absolute;
-//   opacity: 1;
-//   animation: ${props => (props.isOpen ? slideIn : slideOut)} 1s ease-in-out both;
-// `;
 
 class SlidingPanel extends Component<Props, {}> {
   container: HTMLDivElement | null;
-  innerContainer: HTMLDivElement | null;
+  headerContainer: HTMLElement | null;
+  innerContainer: HTMLMainElement | null;
   tl: TimelineMax = new TimelineMax();
 
   componentDidMount() {
@@ -46,6 +23,7 @@ class SlidingPanel extends Component<Props, {}> {
     isOpen
       ? this.innerContainer &&
         this.container &&
+        this.headerContainer &&
         this.tl
           .fromTo(
             this.container,
@@ -54,10 +32,16 @@ class SlidingPanel extends Component<Props, {}> {
             { scaleY: 1, ease: Bounce.easeOut },
           )
           .fromTo(
-            this.innerContainer,
+            this.headerContainer,
             0.5,
-            { opacity: 0, ease: Bounce.easeOut },
-            { opacity: 1, ease: Bounce.easeOut },
+            { opacity: 0 },
+            { opacity: 1 },
+          )
+          .fromTo(
+            this.innerContainer,
+            0.3,
+            { opacity: 0 },
+            { opacity: 1 },
           )
       : this.innerContainer &&
         this.container &&
@@ -67,25 +51,27 @@ class SlidingPanel extends Component<Props, {}> {
   }
 
   render() {
-    const { children, className } = this.props;
+    const { children, className, title } = this.props;
 
     return (
       <div className={className} ref={x => (this.container = x)}>
-        <div ref={x => (this.innerContainer = x)}>{children}</div>
+        {title && (
+          <header ref={x => (this.headerContainer = x)}>{title}</header>
+        )}
+        <main ref={x => (this.innerContainer = x)}>{children}</main>
       </div>
     );
   }
 }
 
 const StyledSlidingPanel = styled(SlidingPanel)`
-  background: rgba(0, 0, 0, 0.4);
+  background: ${props => props.background || 'rgba(0, 0, 0, 0.8)'};
+  display: flex;
+  flex-direction: column;
   color: white;
   font-size: 1em;
   overflow: hidden;
-  padding: 10px;
   transform-origin: 0% 0%;
 `;
 
 export default StyledSlidingPanel;
-
-// animation: 1s ${props => (props.isOpen ? slideIn : slideOut)} ease-in-out both;
