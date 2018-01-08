@@ -241,6 +241,8 @@ const actionCreators = {
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
+    clientId && dispatch({type: 'SET_CURRENT_CLIENT', clientId: undefined});
+    
     setCurrentClient(dispatch, getState, clientId);
   },
 

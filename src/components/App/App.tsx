@@ -20,19 +20,17 @@ export default class App extends Component<Props, {}> {
       currentClient,
       isInteractive,
       setCurrentClient,
-      setInteractive,
+      setInteractive
     } = this.props;
     return (
       <>
         <AppHeader />
         <ClientList />
-        {currentClient && (
-          <ClientInfo
-            currentClient={currentClient}
-            isVisible={!isInteractive}
-            setCurrentClient={setCurrentClient}
-          />
-        )}
+        <ClientInfo
+          currentClient={currentClient}
+          showClient={!isInteractive && currentClient !== undefined}
+          setCurrentClient={setCurrentClient}
+        />
         {InteractiveSwitch(isInteractive, setInteractive)}
       </>
     );
@@ -41,7 +39,7 @@ export default class App extends Component<Props, {}> {
 
 const InteractiveSwitch = (
   isInteractive: boolean,
-  setInteractive: typeof actionCreators.setInteractive,
+  setInteractive: typeof actionCreators.setInteractive
 ) => (
   <Affix offsetBottom={0} style={{ position: 'absolute', right: 0 }}>
     <Switch

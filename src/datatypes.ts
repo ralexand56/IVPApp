@@ -2,7 +2,7 @@ import { Client } from './datatypes';
 import { keyframes } from 'styled-components';
 import ThemeInterface from './theme';
 import firebase from 'firebase';
-
+import styled from 'styled-components';
 export const config = {
   apiKey: 'AIzaSyD6TDZWzU46rY07IHpz93778CpAVzLohcY',
   authDomain: 'ivpdb-1399c.firebaseapp.com',
@@ -34,6 +34,7 @@ export const defaultUser = {
 
 export interface ClientState {
   clients: Client[];
+  clientIsVisible: boolean;
   clientTypes: ClientType[];
   currentClientId?: string;
   currentUser?: User;
@@ -249,8 +250,8 @@ export interface UpdateTagCategory {
 }
 
 export const theme: ThemeInterface = {
-  headingBackground1: '#98323C',
-  headingBackground2: '#CF4A59',
+  headingBackground1: '#867290',
+  headingBackground2: '#64c1a1',
   bodyBackground: '#EBEAE7',
   bodyForeground: '#86A0CC',
 };
@@ -298,6 +299,17 @@ export const slideOut = () => keyframes`
         opacity: 1;
         max-height: 0%;
     }
+`;
+
+export const HeaderStyle = styled.div`
+  background: #64c1a1;
+  color: #fff;
+  padding: 5px 12px;
+  font-size: 0.9em;
+  font-weight: bold;
+  letter-spacing: 4px;
+  margin: 0px 0px 0px 0px;
+  text-transform: uppercase;
 `;
 
 export const UserImport = [

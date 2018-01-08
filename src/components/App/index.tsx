@@ -15,7 +15,7 @@ class ContainerTemplate extends Component<Props, {}> {
       currentClientId,
       isInteractive,
       setCurrentClient,
-      setInteractive,
+      setInteractive
     } = this.props;
     const currentClient = currentClientId
       ? clients.find(x => x.id === currentClientId)
@@ -34,5 +34,5 @@ class ContainerTemplate extends Component<Props, {}> {
 
 export default connect(
   (state: ApplicationState) => state.clientSlice,
-  actionCreators,
+  actionCreators
 )(ContainerTemplate);

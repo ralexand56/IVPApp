@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-// import { slideIn, slideOut } from '../../datatypes';
 import { Bounce, TimelineMax } from 'gsap';
 
 interface Props {
   background?: string;
-  children?: React.ReactChild;
+  children?: React.ReactChild | Element[];
   className?: string;
+  delay?: number;
   isOpen?: boolean;
-  title?: React.ReactElement<HTMLElement>;
+  title?: React.ReactElement<HTMLElement> | React.ReactChild;
+  updateAnimation: boolean;
 }
 
 class SlidingPanel extends Component<Props, {}> {
@@ -17,37 +18,83 @@ class SlidingPanel extends Component<Props, {}> {
   innerContainer: HTMLMainElement | null;
   tl: TimelineMax = new TimelineMax();
 
-  componentDidMount() {
-    const { isOpen } = this.props;
+  componentWillMount() {
+    const { delay, isOpen } = this.props;
 
-    isOpen
-      ? this.innerContainer &&
+    if (this.props.isOpen !== isOpen) {
+      if (isOpen) {
         this.container &&
-        this.headerContainer &&
-        this.tl
-          .fromTo(
+          this.tl.fromTo(
             this.container,
             0.7,
             { scaleY: 0, ease: Bounce.easeOut },
             { scaleY: 1, ease: Bounce.easeOut },
-          )
-          .fromTo(
+            delay || 0
+          );
+
+        this.headerContainer &&
+          this.tl.fromTo(
             this.headerContainer,
             0.5,
             { opacity: 0 },
-            { opacity: 1 },
-          )
-          .fromTo(
+            { opacity: 1 }
+          );
+
+        this.innerContainer &&
+          this.tl.fromTo(
             this.innerContainer,
             0.3,
             { opacity: 0 },
-            { opacity: 1 },
-          )
-      : this.innerContainer &&
+            { opacity: 1 }
+          );
+      } else {
+        this.innerContainer &&
+          this.container &&
+          this.tl
+            .fromTo(this.innerContainer, 0.5, { opacity: 1 }, { opacity: 0 })
+            .fromTo(this.container, 0.5, { scaleY: 1 }, { scaleY: 0 });
+      }
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { delay, isOpen } = nextProps;
+    console.dir(`next: ${isOpen} | current: ${this.props.isOpen}`);
+
+    if (this.props.isOpen !== isOpen) {
+      if (isOpen) {
         this.container &&
-        this.tl
-          .fromTo(this.innerContainer, 0.5, { opacity: 1 }, { opacity: 0 })
-          .fromTo(this.container, 0.5, { scaleY: 1 }, { scaleY: 0 });
+          this.tl.fromTo(
+            this.container,
+            0.7,
+            { scaleY: 0, ease: Bounce.easeOut },
+            { scaleY: 1, ease: Bounce.easeOut },
+            delay || 0
+          );
+
+        this.headerContainer &&
+          this.tl.fromTo(
+            this.headerContainer,
+            0.5,
+            { opacity: 0 },
+            { opacity: 1 }
+          );
+
+        this.innerContainer &&
+          this.tl.fromTo(
+            this.innerContainer,
+            0.3,
+            { opacity: 0 },
+            { opacity: 1 }
+          );
+      } else {
+        this.innerContainer &&
+          this.container &&
+          this.tl
+            .fromTo(this.innerContainer, 0.5, { opacity: 1 }, { opacity: 0 })
+            .fromTo(this.container, 0.5, { scaleY: 1 }, { scaleY: 0 });
+      }
+    }
   }
 
   render() {

@@ -1,13 +1,15 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Client, fadeIn, fadeOut } from '../../datatypes';
+import { Button, Icon } from 'antd';
+import { Client, HeaderStyle } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
-import SlideRevealPanel from '../SlideRevealPanel';
+import HorizontalPanel from '../HorizontalLayout';
+import SlidingPanel from '../SlidingPanel';
 import ThemeInterface from '../../theme';
 
 interface Props {
   className?: string;
-  currentClient: Client;
+  currentClient: Client | undefined;
   isInEditMode?: boolean;
   showClient?: boolean;
   setCurrentClient: typeof actionCreators.setCurrentClient;
@@ -19,30 +21,45 @@ const ClientInfo: StatelessComponent<Props> = ({
   currentClient,
   setCurrentClient,
   showClient,
-  theme,
+  theme
 }) => (
   <div className={className}>
-    <SlideRevealPanel
-      isVisible={showClient}
-      endColor={theme ? theme.headingBackground2 : 'white'}
+    <SlidingPanel
+      title={
+        <HeaderStyle>
+          <HorizontalPanel>
+            <span>info</span>
+            <Button
+              ghost={true}
+              size="small"
+              onClick={() => setCurrentClient(undefined)}
+            >
+              <Icon type="close" />
+            </Button>
+          </HorizontalPanel>
+        </HeaderStyle>
+      }
+      isOpen={currentClient === undefined && (showClient ? true : false)}
+      updateAnimation={true}
     >
-      <p>{currentClient.firstName}</p>
-      <p>{currentClient.lastName}</p>
-    </SlideRevealPanel>
+      <>
+        <p>{currentClient ? currentClient.firstName : ''}</p>
+        <p>{currentClient ? currentClient.lastName : ''}</p>
+      </>
+    </SlidingPanel>
   </div>
 );
 
 const StyledClientInfo = styled(ClientInfo)`
-  display: flex;
+  display: ${props =>
+    props.currentClient && props.showClient ? 'flex' : 'none'};
+  flex-direction: column;
   position: absolute;
   top: 0;
   background: rgba(0, 0, 0, 0.4);
+  margin: 59px 0 0 0;
   width: 100%;
   height: 100%;
-  padding: 4.0em 1.0em;
-  animation: ${(props: { isVisible: Boolean }) =>
-      props.isVisible ? fadeIn : fadeOut}
-    0.5s ease-in-out both;
 `;
 
 export default StyledClientInfo;

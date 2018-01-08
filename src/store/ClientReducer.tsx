@@ -5,6 +5,7 @@ import { message } from 'antd';
 const unloadedState: ClientState = {
   searchResultsIsVisible: true,
   clients: [],
+  clientIsVisible: false,
   clientTypes: [],
   currentClientId: undefined,
   currentUser: defaultUser,
