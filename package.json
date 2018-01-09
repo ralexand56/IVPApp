@@ -37,6 +37,8 @@
     "moment": "^2.19.2",
     "numeral": "^2.0.6",
     "object-assign": "4.1.1",
+    "popmotion": "^8.1.7",
+    "popmotion-react": "^2.1.0",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
     "promise": "7.1.1",
