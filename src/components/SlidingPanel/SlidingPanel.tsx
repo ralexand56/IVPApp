@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { tween } from 'popmotion';
-import Transition from 'react-transition-group/Transition';
+// import Transition from 'react-transition-group/Transition';
 // import { TweenMax } from 'gsap';
 // import styled from 'styled-components';
 
@@ -42,17 +42,11 @@ class SlidingPanel extends Component<Props, {}> {
 
   render() {
     return (
-      <Transition
-        timeout={500}
-        onEnter={() => this.componentWillEnter()}
-        onEntering={() => this.componentWillEnter()}
-      >
         <div
           style={{ background: 'red', width: 100, height: 100 }}
           key="l"
           ref={e => (this.el = e)}
         />
-      </Transition>
     );
   }
 }

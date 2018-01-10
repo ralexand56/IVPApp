@@ -9,7 +9,7 @@ import { AppContainer } from 'react-hot-loader';
 import './index.css';
 import 'antd/dist/antd.css';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from './styled-components';
+import { ThemeProvider } from 'styled-components';
 import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
@@ -24,21 +24,21 @@ init(store.dispatch, store.getState);
 
 ReactDOM.render(
   <AppContainer>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <SlidingPanel isOpen={true}>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <SlidingPanel isOpen={false}>
           <>
-          <h2>Toney Alexander</h2>
-          <p>
-            This new API reflects Popmotion’s gradual shift towards functional
-            programming and adopts it as a core part of the design philosophy.
-            The result is a small, flexible and composable library that I hope
-            you’ll find fun to use. Let’s take a look at what’s new.
-          </p>
+            <h2>Toney Alexander</h2>
+            <p>
+              This new API reflects Popmotion’s gradual shift towards functional
+              programming and adopts it as a core part of the design philosophy.
+              The result is a small, flexible and composable library that I hope
+              you’ll find fun to use. Let’s take a look at what’s new.
+            </p>
           </>
         </SlidingPanel>
-      </Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Provider>
   </AppContainer>,
   document.getElementById('root') as HTMLElement,
 );
