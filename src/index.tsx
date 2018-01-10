@@ -26,7 +26,7 @@ ReactDOM.render(
   <AppContainer>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <SlidingPanel>
+        <SlidingPanel isOpen={true}>
           <>
           <h2>Toney Alexander</h2>
           <p>

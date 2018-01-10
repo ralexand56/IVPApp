@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-// import { tween } from 'popmotion';
-import Transition from 'react-transition-group/Transition';
+// import styled from 'styled-components';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import SlidingPanel from './SlidingPanel';
 // import { MotionValue } from 'popmotion-react';
 // declare module 'popmotion-react';
 
@@ -16,41 +16,39 @@ interface Props {
   updateAnimation?: boolean;
 }
 
-// const stateChangeHandlers = {
-//   componentWillAppear: ({value, complete}) =>
-//     tween({
-//       from: value.get(),
-//       to: 1,
-//     }).start({
-//       update: value,
-//       complete: complete,
-//     }),
+// const duration = 1000;
+
+// const defaultStyle = {
+//   transition: `all ${duration}ms ease-in-out`,
+//   transform: `scaleY(1)`,
+// };
+
+// const transitionStyles = {
+//   entering: { transform: `scaleY(0)` },
+//   entered: { transform: `scaleY(1)` },
+//   exiting: { transform: `scaleY(1)` },
+//   exited: { transform: `scaleY(0)` },
 // };
 
 class Pop extends Component<Props, {}> {
+  state = { in: true };
+
+  // toggleEnterState = () => {
+  //   this.setState({ in: !this.state.in });
+  // };
+
   render() {
     return (
-      <Transition in={true} timeout={50000}>
-        {(status) => (
-          <div
-            className={this.props.className}
-          >
-            {this.props.children}
-            <span>{status}</span>
-          </div>
-        )}
-      </Transition>
+      <TransitionGroup>
+        {this.props.isOpen && <SlidingPanel key="sl" />}
+      </TransitionGroup>
     );
   }
 }
 
-const StyledPop = styled(Pop)`
-  display: flex;
-  background: white;
-  flex-direction: column;
-  padding: 1.4em;
-  opacity: 1;
-  transition: all 50000ms ease-in-out;
-`;
+// const StyledPop = styled.div`
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-export default StyledPop;
+export default Pop;
