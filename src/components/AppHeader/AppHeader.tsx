@@ -1,13 +1,9 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import {
-  Affix,
-  Avatar,
-  Input,
-} from 'antd';
+import { Affix, Avatar, Input } from 'antd';
 import actionCreators from '../../actions/ClientActions';
-import { fadeIn } from '../../datatypes';
 import { Client, User } from '../../datatypes';
+import SlidingPanel from '../SlidingPanel';
 // import ThemeInterface from '../theme';
 
 const Header = styled.span`
@@ -74,42 +70,19 @@ const AppHeader: StatelessComponent<Props> = ({
 }: Props) => {
   return (
     <Affix>
-      <div className={className}>
-        <Header>
-          <img
-            src="./images/logo.png"
-            width="50"
-            height="46"
-            style={{ padding: 10 }}
-          />
-          <Search
-            placeholder="search..."
-            onSearch={(value: string) => searchClients(value, clients)}
-            style={{ flex: 1 }}
-          />
-          {currentUser && (
-            <Avatar
-              style={{ margin: 5 }}
-              src={`./images/${currentUser.imgSrc}` || ''}
-            />
-          )}
-        </Header>
-
-        <DesktopHeader>
-          <LogoHeader>
+      <SlidingPanel isOpen={true}>
+        <div className={className}>
+          <Header>
             <img
               src="./images/logo.png"
               width="50"
               height="46"
               style={{ padding: 10 }}
             />
-            IVP Public Art Client Manager
-          </LogoHeader>
-
-          <SearchHeader>
             <Search
               placeholder="search..."
               onSearch={(value: string) => searchClients(value, clients)}
+              style={{ flex: 1 }}
             />
             {currentUser && (
               <Avatar
@@ -117,9 +90,34 @@ const AppHeader: StatelessComponent<Props> = ({
                 src={`./images/${currentUser.imgSrc}` || ''}
               />
             )}
-          </SearchHeader>
-        </DesktopHeader>
-      </div>
+          </Header>
+
+          <DesktopHeader>
+            <LogoHeader>
+              <img
+                src="./images/logo.png"
+                width="50"
+                height="46"
+                style={{ padding: 10 }}
+              />
+              IVP Public Art Client Manager
+            </LogoHeader>
+
+            <SearchHeader>
+              <Search
+                placeholder="search..."
+                onSearch={(value: string) => searchClients(value, clients)}
+              />
+              {currentUser && (
+                <Avatar
+                  style={{ margin: 5 }}
+                  src={`./images/${currentUser.imgSrc}` || ''}
+                />
+              )}
+            </SearchHeader>
+          </DesktopHeader>
+        </div>
+      </SlidingPanel>
     </Affix>
   );
 };
@@ -136,7 +134,6 @@ const StyledAppHeader = styled(AppHeader)`
   padding: 0.3em;
   width: 100%;
   box-shadow: 0px 0px 10px #666;
-  animation: ${fadeIn} 0.7s;
 `;
 
 export default StyledAppHeader;

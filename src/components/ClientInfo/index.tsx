@@ -38,11 +38,10 @@ const ClientInfo: StatelessComponent<Props> = ({
             </Button>
           </HorizontalPanel>
         </HeaderStyle>
-      }
-      isOpen={currentClient === undefined && (showClient ? true : false)}
-      updateAnimation={true}
+        }
+      isOpen={currentClient !== undefined}
     >
-      <>
+        <>
         <p>{currentClient ? currentClient.firstName : ''}</p>
         <p>{currentClient ? currentClient.lastName : ''}</p>
       </>
@@ -51,11 +50,9 @@ const ClientInfo: StatelessComponent<Props> = ({
 );
 
 const StyledClientInfo = styled(ClientInfo)`
-  display: ${props =>
-    props.currentClient && props.showClient ? 'flex' : 'none'};
   flex-direction: column;
   position: absolute;
-  top: 0;
+  top: 0px;
   background: rgba(0, 0, 0, 0.4);
   margin: 59px 0 0 0;
   width: 100%;

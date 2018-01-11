@@ -304,8 +304,8 @@ export const slideOut = () => keyframes`
 export const HeaderStyle = styled.div`
   background: #64c1a1;
   color: #fff;
-  padding: 5px 12px;
-  font-size: 0.9em;
+  padding: 3px 9px;
+  font-size: 0.6rem;
   font-weight: bold;
   letter-spacing: 4px;
   margin: 0px 0px 0px 0px;

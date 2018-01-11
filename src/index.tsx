@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'core-js';
-// import App from './components/App';
+import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 // import RevealPanel from './components/RevealPanel';
-import SlidingPanel from './components/SlidingPanel';
+// import SlidingPanel from './components/SlidingPanel';
 import { AppContainer } from 'react-hot-loader';
 import './index.css';
 import 'antd/dist/antd.css';
@@ -26,17 +26,7 @@ ReactDOM.render(
   <AppContainer>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <SlidingPanel isOpen={false}>
-          <>
-            <h2>Toney Alexander</h2>
-            <p>
-              This new API reflects Popmotion’s gradual shift towards functional
-              programming and adopts it as a core part of the design philosophy.
-              The result is a small, flexible and composable library that I hope
-              you’ll find fun to use. Let’s take a look at what’s new.
-            </p>
-          </>
-        </SlidingPanel>
+        <App />
       </ThemeProvider>
     </Provider>
   </AppContainer>,

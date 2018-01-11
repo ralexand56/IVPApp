@@ -3,12 +3,13 @@ import styled from '../../styled-components';
 import Transition from 'react-transition-group/Transition';
 import { timeline, styler } from 'popmotion';
 import Theme from '../../theme';
-// import SlidingPanel from './SlidingPanel';
+import { HeaderStyle } from '../../datatypes';
 
 interface Props {
   background?: string;
   children?: React.ReactChild | Element[];
   className?: string;
+  color?: string;
   delay?: number;
   isOpen?: boolean;
   horizontal?: boolean;
@@ -23,82 +24,37 @@ interface Props {
 
 const duration = 400;
 
-// const slideIn = (ele: Element) => {
-//   tween({
-//     from: { scaleY: 0 },
-//     to: { scaleY: 1 },
-//     duration,
-//   }).start({ update: styler(ele).set });
-// };
-
-// const setStylers = (v: typeof Update, ele1: Element, ele2: Element) => {
-//   v.shade && styler(ele1).set(v.scale);
-//   v.modal && styler(ele2).set(v.opacity);
-// };
-
-// const slideIn = (ele: Element, inner: Element) => {
-//   tween({
-//     from: { scaleY: 0 },
-//     to: { scaleY: 1 },
-//     duration,
-//   }).start({ update: styler(ele).set, complete: () => fadeIn(inner) });
-// };
-
-// const slideOut = (ele: Element) => {
-//   tween({
-//     from: { scaleY: 1 },
-//     to: { scaleY: 0 },
-//   }).start(styler(ele).set);
-// };
-
-// const fadeIn = (ele: Element) => {
-//   tween({
-//     from: { opacity: 0 },
-//     to: { opacity: 1 },
-//     duration,
-//   }).start({ update: styler(ele).set });
-// };
-
 class Pop extends Component<Props, {}> {
-  state = { in: true };
   outerPanel: HTMLDivElement | null;
   innerPanel: HTMLDivElement | null;
 
   componentDidMount() {
-    this.props.isOpen ? this.enterAnimation() : this.exitAnimation();
-  }
-
-  handleEntered() {
-    // console.dir('entered');
+    this.props.isOpen || true ? this.enterAnimation() : this.exitAnimation();
   }
 
   handleEntering() {
-    // console.dir('entering');
+    console.dir('entering');
     this.enterAnimation();
   }
 
   handleExiting() {
-    // console.dir('exiting');
+    console.dir('exiting');
     this.exitAnimation();
-  }
-
-  handleExited() {
-    // console.dir('exited');
-    // this.exitAnimation();
-  }
-
-  toggleEnterState() {
-    this.setState({ in: !this.state.in });
   }
 
   enterAnimation() {
     const scaleTrack = this.props.horizontal
-      ? { track: 'scale', from: { scaleX: 1 }, to: { scaleX: 0 }, duration }
-      : { track: 'scale', from: { scaleY: 1 }, to: { scaleY: 0 }, duration };
+      ? { track: 'scale', from: { scaleX: 0 }, to: { scaleX: 1 }, duration }
+      : { track: 'scale', from: { scaleY: 0 }, to: { scaleY: 1 }, duration };
 
     timeline([
-      { track: 'scale', from: { scaleX: 0 }, to: { scaleX: 1 }, duration },
       scaleTrack,
+      {
+        track: 'opacity',
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+        duration: 300,
+      },
     ]).start(v => {
       v.scale && this.outerPanel && styler(this.outerPanel).set(v.scale);
       v.opacity && this.innerPanel && styler(this.innerPanel).set(v.opacity);
@@ -135,12 +91,13 @@ class Pop extends Component<Props, {}> {
   }
 
   render() {
+    const { title } = this.props;
+
     return (
       <Transition
-        in={this.props.isOpen}
+        in={this.props.isOpen || true}
         timeout={duration}
         onEntering={() => this.handleEntering()}
-        onExited={() => this.handleExited()}
         onExit={() => this.handleExiting()}
       >
         {
@@ -148,7 +105,17 @@ class Pop extends Component<Props, {}> {
             ref={e => (this.outerPanel = e)}
             className={this.props.className}
           >
-            <div style={{ opacity: 0 }} ref={e => (this.innerPanel = e)}>
+            <div
+              style={{ opacity: 0, overflow: 'hidden' }}
+              ref={e => (this.innerPanel = e)}
+            >
+              <header>
+                {title && (
+                  <HeaderStyle>
+                    <span>{title}</span>
+                  </HeaderStyle>
+                )}
+              </header>
               {this.props.children}
             </div>
           </div>
@@ -158,16 +125,16 @@ class Pop extends Component<Props, {}> {
   }
 }
 
-// const InnerPanel = styled.div`
-//   opacity: 0;
-// `;
-
 const StyledPop = styled(Pop)`
   background: ${props =>
-    props.background || props.theme.headingBackground1 || 'red'};
-  color: white;
+    props.background ||
+    'white' ||
+    props.theme.headingBackground1 ||
+    'transparent'};
+  color: ${props => props.color || 'black'};
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   transform-origin: 0% 0%;
 `;
 

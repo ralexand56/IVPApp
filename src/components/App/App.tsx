@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import AppHeader from '../AppHeader';
 import ClientList from '../ClientList';
-import ClientInfo from '../ClientInfo';
+// import ClientInfo from '../ClientInfo';
 import { Client } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
 import { Affix, Switch } from 'antd';
+import ClientMobileLayout from '../ClientMobileLayout';
+import ClientDesktopLayout from '../ClientDesktopLayout';
 
 interface Props {
   currentClient: Client | undefined;
@@ -19,18 +21,23 @@ export default class App extends Component<Props, {}> {
     const {
       currentClient,
       isInteractive,
-      setCurrentClient,
       setInteractive,
     } = this.props;
     return (
       <div>
         <AppHeader />
         <ClientList />
-        <ClientInfo
-          currentClient={currentClient}
-          showClient={!isInteractive && currentClient !== undefined}
-          setCurrentClient={setCurrentClient}
-        />
+        {currentClient && (
+          <>
+            <ClientDesktopLayout currentClient={currentClient} />
+            <ClientMobileLayout currentClient={currentClient} />
+          </>
+          // <ClientInfo
+          //   currentClient={currentClient}
+          //   showClient={!isInteractive && currentClient !== undefined}
+          //   setCurrentClient={setCurrentClient}
+          // />
+        )}
         {InteractiveSwitch(isInteractive, setInteractive)}
       </div>
     );
