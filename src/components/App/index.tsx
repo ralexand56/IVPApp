@@ -13,9 +13,12 @@ class ContainerTemplate extends Component<Props, {}> {
     const {
       clients,
       currentClientId,
+      isInEditMode,
       isInteractive,
+      setClientEditMode,
       setCurrentClient,
-      setInteractive
+      setInteractive,
+      updateClient,
     } = this.props;
     const currentClient = currentClientId
       ? clients.find(x => x.id === currentClientId)
@@ -24,9 +27,12 @@ class ContainerTemplate extends Component<Props, {}> {
     return (
       <App
         currentClient={currentClient}
+        isInEditMode={isInEditMode}
         isInteractive={isInteractive}
         setCurrentClient={setCurrentClient}
+        setClientEditMode={setClientEditMode}
         setInteractive={setInteractive}
+        updateClient={updateClient}
       />
     );
   }

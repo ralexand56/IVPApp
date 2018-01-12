@@ -68,6 +68,7 @@ export interface Client {
   email?: string;
   website?: string;
   title?: string;
+  salutation?: number;
   company?: string;
   clientTypeId?: string;
   assets?: Asset[];

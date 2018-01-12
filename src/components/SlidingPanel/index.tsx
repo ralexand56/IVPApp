@@ -13,6 +13,7 @@ interface Props {
   delay?: number;
   isOpen?: boolean;
   horizontal?: boolean;
+  margin?: string;
   theme?: Theme;
   title?:
     | React.ReactElement<HTMLElement>
@@ -134,6 +135,7 @@ const StyledPop = styled(Pop)`
   color: ${props => props.color || 'black'};
   display: flex;
   flex-direction: column;
+  margin: ${props => props.margin || 0};
   overflow: hidden;
   transform-origin: 0% 0%;
 `;

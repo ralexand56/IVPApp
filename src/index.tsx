@@ -14,6 +14,9 @@ import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
 import { init } from './actions/ClientActions';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import 'slick-carousel/slick/slick.css';
+// import 'slick-carousel/slick/slick-theme.css';
 // import styled from 'styled-components';
 require('firebase/firestore');
 

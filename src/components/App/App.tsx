@@ -12,16 +12,23 @@ import ClientDesktopLayout from '../ClientDesktopLayout';
 interface Props {
   currentClient: Client | undefined;
   setCurrentClient: typeof actionCreators.setCurrentClient;
+  setClientEditMode: typeof actionCreators.setClientEditMode;
   setInteractive: typeof actionCreators.setInteractive;
+  isInEditMode: boolean;
   isInteractive: boolean;
+  updateClient: typeof actionCreators.updateClient;
 }
 
 export default class App extends Component<Props, {}> {
   render() {
     const {
       currentClient,
+      isInEditMode,
       isInteractive,
+      setClientEditMode,
+      setCurrentClient,
       setInteractive,
+      updateClient,
     } = this.props;
     return (
       <div>
@@ -29,7 +36,13 @@ export default class App extends Component<Props, {}> {
         <ClientList />
         {currentClient && (
           <>
-            <ClientDesktopLayout currentClient={currentClient} />
+            <ClientDesktopLayout
+              isInEditMode={isInEditMode}
+              currentClient={currentClient}
+              setClientEditMode={setClientEditMode}
+              setCurrentClient={setCurrentClient}
+              updateClient={updateClient}
+            />
             <ClientMobileLayout currentClient={currentClient} />
           </>
           // <ClientInfo

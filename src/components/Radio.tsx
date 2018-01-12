@@ -6,7 +6,7 @@ interface Props {
     activeColor?: string;
     backgroundColor?: string;
     fontSize?: string;
-    selectedPropsId?: number;
+    value?: number;
     label?: string;
     labelColor?: string;
     margin?: number;
@@ -93,19 +93,19 @@ export default class Radio extends Component<Props, AppState> {
         // console.dir(props.selectedPropsId);
 
         this.state = {
-            selectedStateId: props.selectedPropsId ? props.selectedPropsId : 1,
+            selectedStateId: props.value ? props.value : 1,
             activeLeft: 0,
             activeWidth: 0,
         };
     }
 
     componentDidMount() {
-        this.props.items && this.setState({
+        this.props.items && this.props.value && this.setState({
             ...this.state,
             activeLeft: this.items[
-                this.props.items.findIndex(x => x.id === this.props.selectedPropsId)].offsetLeft,
+                this.props.items.findIndex(x => x.id === this.props.value)].offsetLeft,
             activeWidth: this.items[
-                this.props.items.findIndex(x => x.id === this.props.selectedPropsId)].offsetWidth,
+                this.props.items.findIndex(x => x.id === this.props.value)].offsetWidth,
         });
     }
 
@@ -119,7 +119,7 @@ export default class Radio extends Component<Props, AppState> {
             labelColor,
             margin,
             onChange,
-            selectedPropsId,
+            value,
             underlineColor,
             width,
         } = this.props;
@@ -159,16 +159,16 @@ export default class Radio extends Component<Props, AppState> {
                 <BodyContainer>
                     {
                         (items !== undefined)
-                            ? this.renderItems(items, selectedPropsId || 1, onChange, activeColor)
+                            ? this.renderItems(items, value || 1, onChange, activeColor)
                             : null
                     }
                     <UnderLine
                         activeLeft={this.items.length > 0
-                            ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetLeft
+                            ? this.items[this.props.items.findIndex(x => x.id === value)].offsetLeft
                             : 0
                         }
                         activeWidth={this.items.length > 0
-                            ? this.items[this.props.items.findIndex(x => x.id === selectedPropsId)].offsetWidth
+                            ? this.items[this.props.items.findIndex(x => x.id === value)].offsetWidth
                             : 0
                         }
                         underlineColor={underlineColor ? underlineColor : 'black'}

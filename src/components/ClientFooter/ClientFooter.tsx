@@ -47,7 +47,7 @@ const ClientFooter: StatelessComponent<Props> = ({
           { name: 'Tags', id: 5 },
           { name: 'Admin', id: 6 },
         ]}
-        selectedPropsId={selectedClientTabId}
+        value={selectedClientTabId}
         onChange={(id: number) => setClientTab(id)}
         underlineColor={theme.headingBackground2}
         margin={0}
