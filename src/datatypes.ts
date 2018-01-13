@@ -63,10 +63,11 @@ export interface Client {
   state?: string;
   country?: string;
   zip?: string;
+  fax?: string;
   phone?: string;
   imgUrl?: string;
-  email?: string;
-  website?: string;
+  emails?: string[];
+  websites?: string[];
   title?: string;
   salutation?: number;
   company?: string;
@@ -312,6 +313,24 @@ export const HeaderStyle = styled.div`
   margin: 0px 0px 0px 0px;
   text-transform: uppercase;
 `;
+
+export const formatPhone = (phonenum: string) => {
+  var regexObj = /^(?:\+?1[-. ]?)?(?:\(?([0-9]{3})\)?[-. ]?)?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if (regexObj.test(phonenum)) {
+    let parts = phonenum.match(regexObj);
+    let phone = '';
+    if (parts && parts[1]) {
+      phone += '+1 (' + parts[1] + ') ';
+    }
+    if (parts) {
+      phone += parts[2] + '-' + parts[3];
+    }
+    return phone;
+  } else {
+    // invalid phone number
+    return phonenum;
+  }
+};
 
 export const UserImport = [
   {

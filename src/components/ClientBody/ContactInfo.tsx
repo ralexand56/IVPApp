@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import EditableField from '../EditableField';
 import RevealPanel from '../RevealPanel';
 import { Input } from 'antd';
-import { Client, theme } from '../../datatypes';
+import { Client, formatPhone, theme } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
 
 interface Props {
@@ -13,9 +13,14 @@ interface Props {
   updateClient: typeof actionCreators.updateClient;
 }
 
-const ContactInfo: StatelessComponent<Props> = ({className, currentClient, isInEditMode, updateClient}) => (
+const ContactInfo: StatelessComponent<Props> = ({
+  className,
+  currentClient,
+  isInEditMode,
+  updateClient,
+}) => (
   <RevealPanel
-    className={className}  
+    className={className}
     header="Contact Info"
     endColor={theme.bodyBackground}
     height="auto"
@@ -63,7 +68,7 @@ const ContactInfo: StatelessComponent<Props> = ({className, currentClient, isInE
         value={currentClient.phone}
       />
     </EditableField>
-    <EditableField
+    {/* <EditableField
       label="Email"
       txtValue={currentClient.email}
       isInEditMode={isInEditMode}
@@ -88,31 +93,13 @@ const ContactInfo: StatelessComponent<Props> = ({className, currentClient, isInE
         }
         value={currentClient.website}
       />
-    </EditableField>
+    </EditableField> */}
   </RevealPanel>
 );
 
-const StyledContactInfo = styled(ContactInfo) `
+const StyledContactInfo = styled(ContactInfo)`
   width: 100%;
   margin: 1em;
 `;
 
 export default StyledContactInfo;
-
-const formatPhone = (phonenum: string) => {
-  var regexObj = /^(?:\+?1[-. ]?)?(?:\(?([0-9]{3})\)?[-. ]?)?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if (regexObj.test(phonenum)) {
-    let parts = phonenum.match(regexObj);
-    let phone = '';
-    if (parts && parts[1]) {
-      phone += '+1 (' + parts[1] + ') ';
-    }
-    if (parts) {
-      phone += parts[2] + '-' + parts[3];
-    }
-    return phone;
-  } else {
-    // invalid phone number
-    return phonenum;
-  }
-};

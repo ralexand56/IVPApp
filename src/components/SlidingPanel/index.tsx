@@ -18,6 +18,7 @@ interface Props {
   title?:
     | React.ReactElement<HTMLElement>
     | React.ReactChild
+    | null
     | Element
     | Element[];
   updateAnimation?: boolean;

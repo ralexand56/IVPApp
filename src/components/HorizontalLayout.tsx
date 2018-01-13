@@ -10,7 +10,8 @@ interface Props {
     | React.ReactElement<{}>
     | JSX.Element[]
     | undefined
-    | (React.ReactElement<{}> | number | string | JSX.Element | undefined)[];
+    | (React.ReactElement<{}> | number | string | JSX.Element | null | undefined)[]
+    | JSX.Element;
   justify?: string;
   margin?: string;
 }

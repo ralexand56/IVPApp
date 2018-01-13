@@ -1,15 +1,16 @@
 import React, { StatelessComponent } from 'react';
 import styled from 'styled-components';
-import { Client, Comment, fadeIn, theme } from '../../datatypes';
+import { Client, Comment, theme } from '../../datatypes';
 // import CommentView from '../Comment';
 import { Avatar, Button, Icon, Popconfirm, Timeline } from 'antd';
 import moment from 'moment';
 import actionCreators from '../../actions/ClientActions';
+import SlidingPanel from '../SlidingPanel';
 
 interface Props {
   className?: string;
   children?: React.ReactChild;
-  comments: Comment[];
+  comments?: Comment[];
   currentClient: Client;
   deleteComment: typeof actionCreators.deleteComment;
 }
@@ -21,11 +22,17 @@ const Comments: StatelessComponent<Props> = ({
   currentClient,
   deleteComment,
 }) => (
-  <div className={className}>
-    <Timeline>
-      {renderComments(comments, currentClient, deleteComment)}
-    </Timeline>
-  </div>
+  <SlidingPanel title="Comments">
+    <div className={className}>
+      {comments ? (
+        <Timeline>
+          {renderComments(comments, currentClient, deleteComment)}
+        </Timeline>
+      ) : (
+        <span>No comments...</span>
+      )}{' '}
+    </div>
+  </SlidingPanel>
 );
 
 const renderComments = (
@@ -66,12 +73,12 @@ const renderComments = (
 const StyledComments = styled(Comments)`
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 10px;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 0.4em;
+
+  font-size: 0.8em;
   border: 0px solid black;
-  animation: ${fadeIn} 0.7s ease-in-out;
 `;
 
 export default StyledComments;

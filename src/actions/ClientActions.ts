@@ -163,7 +163,7 @@ const actionCreators = {
         lastName: fullName[fullName.length - 1].trim(),
         clientTypeId: 'XWVplrztsYm7RQeFMWzt',
         note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
-        website: x.WEB.trim(),
+        websites: [x.WEB.trim()],
         created: new Date(),
         modified: new Date(),
       };
@@ -206,10 +206,6 @@ const actionCreators = {
           x.company.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.phone &&
           x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
-        (x.email &&
-          x.email.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
-        (x.website &&
-          x.website.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.tagIds !== undefined && findOne(x.tagIds, tags)),
     );
 

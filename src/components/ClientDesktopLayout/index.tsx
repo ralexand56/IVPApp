@@ -1,14 +1,17 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
+import ThemeInterface from '../../theme';
 import { Client } from '../../datatypes';
+import ContactInfo from '../ContactInfo';
 import HorizontalPanel from '../HorizontalLayout';
 import SlidingPanel from '../SlidingPanel';
-import { Carousel } from 'react-responsive-carousel';
 import EditableField from '../EditableField';
 import { Button, Icon, Input, Switch } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import Radio from '../Radio';
-import ThemeInterface from '../../theme';
+import { Carousel } from 'react-responsive-carousel';
+import ArtGroup from '../ArtGroup';
+import Comments from '../Comments';
 // import Slider from 'react-slick';
 
 interface Props {
@@ -39,7 +42,7 @@ const Index: StatelessComponent<Props> = ({
       <CenterPanel>
         <HorizontalPanel justify="flex-end">
           <span style={{ margin: 3 }}>
-            <Icon type="edit"/>
+            <Icon type="edit" />
             <Switch
               defaultChecked={isInEditMode}
               onChange={val => setClientEditMode(val)}
@@ -71,22 +74,44 @@ const Index: StatelessComponent<Props> = ({
                 updateClient={updateClient}
               />
             </SlidingPanel>
-            <SlidingPanel margin={margin} title="Artist Group" />
-            <SlidingPanel margin={margin} title="Contact Info" />
-            <SlidingPanel margin={margin} title="Comments" />
+            <ArtGroup />
+            <ContactInfo />
+            <Comments />
           </Column1>
           <Column2>
             <SlidingPanel margin={margin} title="Sample Work">
               <SampleWork />
             </SlidingPanel>
             <SlidingPanel margin={margin} title="Additional Tags" />
-            <SlidingPanel margin={margin} title="List Subscription" />
+            <SlidingPanel margin={margin} title="List Subscription">
+              <ListSubscriptionPanel>
+                <HorizontalPanel>
+                  <Switch defaultChecked={true} />
+                  <span style={{ margin: 3 }}>Email</span>
+                </HorizontalPanel>
+                <HorizontalPanel>
+                  <Switch />
+                  <span style={{ margin: 3 }}>Mail</span>
+                </HorizontalPanel>
+              </ListSubscriptionPanel>
+            </SlidingPanel>
           </Column2>
         </MainPanel>
       </CenterPanel>
     </div>
   );
 };
+
+const ListSubscriptionPanel = styled.div`
+  color: ${props => props.theme.headingBackground2 || 'black'};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  padding: 0.4em;
+`;
 
 const Info = ({
   currentClient,
