@@ -16,7 +16,7 @@ const StringList: StatelessComponent<Props> = ({
   className,
   label,
   linkList,
-  list,
+  list
 }) => (
   <div className={className}>
     <h5>{label || 'List'}</h5>
@@ -37,14 +37,15 @@ const ListContainer = styled.ul`
   justify-content: flex-start;
   list-style: none;
   padding-left: 10px;
-
   font-size: 0.8em;
 `;
 
 const StyledStringList = styled(StringList)`
   display: flex;
-  margin: ${props => props.margin || '0.7em'};
+  margin: ${props => props.margin || '0.5em'};
   > h5 {
+    font-size: 0.7em;
+    font-weight: normal;
     color: ${props => props.theme.headingBackground2 || 'black'};
     text-transform: uppercase;
   }

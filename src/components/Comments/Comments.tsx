@@ -6,10 +6,12 @@ import { Avatar, Button, Icon, Popconfirm, Timeline } from 'antd';
 import moment from 'moment';
 import actionCreators from '../../actions/ClientActions';
 import SlidingPanel from '../SlidingPanel';
+import ThemeInterface from '../../theme';
 
 interface Props {
   className?: string;
   children?: React.ReactChild;
+  theme?: ThemeInterface;
   comments?: Comment[];
   currentClient: Client;
   deleteComment: typeof actionCreators.deleteComment;
@@ -75,8 +77,8 @@ const StyledComments = styled(Comments)`
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  color: ${props => props.theme.headingBackground1};
   padding: 0.4em;
-
   font-size: 0.8em;
   border: 0px solid black;
 `;

@@ -19,6 +19,7 @@ interface Props {
   isInEditMode: boolean;
   currentClient: Client;
   children?: React.ReactChild;
+  addClient: typeof actionCreators.addClient;
   setClientEditMode: typeof actionCreators.setClientEditMode;
   setCurrentClient: typeof actionCreators.setCurrentClient;
   theme?: ThemeInterface;
@@ -30,32 +31,47 @@ const Salutations = { 1: 'Mr.', 2: 'Mrs.', 3: 'Ms.' };
 const margin = '0.1em';
 
 const Index: StatelessComponent<Props> = ({
+  addClient,
   className,
   currentClient,
   isInEditMode,
   setClientEditMode,
   setCurrentClient,
-  updateClient,
+  updateClient
 }) => {
   return (
     <div className={className}>
       <CenterPanel>
-        <HorizontalPanel justify="flex-end">
-          <span style={{ margin: 3 }}>
-            <Icon type="edit" />
-            <Switch
-              defaultChecked={isInEditMode}
-              onChange={val => setClientEditMode(val)}
-            />
-          </span>
+        <ActionHeader>
           <Button
-            type="danger"
+            style={{ margin: 3 }}
+            size="small"
+            ghost={true}
+            onClick={() => addClient()}
+          >
+            <span style={{ margin: 3 }}>
+              <Icon type="plus" />
+            </span>
+          </Button>
+          <Button
+            style={{ margin: 3 }}
+            size="small"
+            ghost={true}
+            onClick={() => setClientEditMode(true)}
+          >
+            <span style={{ margin: 3 }}>
+              <Icon type="edit" />
+            </span>
+          </Button>
+          <Button
+            style={{ margin: 3 }}
+            size="small"
             ghost={true}
             onClick={() => setCurrentClient(undefined)}
           >
             <Icon type="double-left" />Back to Client List
           </Button>
-        </HorizontalPanel>
+        </ActionHeader>
         <MainPanel>
           <Column1>
             <SlidingPanel margin={margin} title="info">
@@ -117,7 +133,7 @@ const Info = ({
   currentClient,
   isInEditMode,
   setClientEditMode,
-  updateClient,
+  updateClient
 }: {
   currentClient: Client;
   isInEditMode: boolean;
@@ -136,12 +152,12 @@ const Info = ({
           items={[
             { id: 1, name: 'Mr.' },
             { id: 2, name: 'Mrs.' },
-            { id: 3, name: 'Ms.' },
+            { id: 3, name: 'Ms.' }
           ]}
           onChange={(id: number) =>
             updateClient({
               ...currentClient,
-              salutation: id,
+              salutation: id
             })
           }
           value={currentClient.salutation || undefined}
@@ -156,7 +172,7 @@ const Info = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              firstName: e.currentTarget.value,
+              firstName: e.currentTarget.value
             })
           }
         />
@@ -170,7 +186,7 @@ const Info = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              lastName: e.currentTarget.value,
+              lastName: e.currentTarget.value
             })
           }
         />
@@ -188,7 +204,7 @@ const Info = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              title: e.currentTarget.value,
+              title: e.currentTarget.value
             })
           }
         />
@@ -206,7 +222,7 @@ const Info = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              company: e.currentTarget.value,
+              company: e.currentTarget.value
             })
           }
         />
@@ -219,7 +235,7 @@ const Address = ({
   currentClient,
   isInEditMode,
   setClientEditMode,
-  updateClient,
+  updateClient
 }: {
   currentClient: Client;
   isInEditMode: boolean;
@@ -239,7 +255,7 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address1: e.currentTarget.value,
+              address1: e.currentTarget.value
             })
           }
           value={currentClient.address1}
@@ -258,14 +274,14 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address2: e.currentTarget.value,
+              address2: e.currentTarget.value
             })
           }
           value={currentClient.address2}
         />
       </EditableField>
     </HorizontalPanel>
-    <HorizontalPanel justify="space-between">
+    <HorizontalPanel>
       <EditableField
         label="City"
         txtValue={currentClient.city}
@@ -294,7 +310,7 @@ const Address = ({
         />
       </EditableField>
     </HorizontalPanel>
-    <HorizontalPanel justify="space-between">
+    <HorizontalPanel>
       <EditableField
         label="Country"
         txtValue={currentClient.country}
@@ -346,10 +362,10 @@ const SampleWork = () => (
         <img src="./images/samples.png" />
       </div>
       <div>
-        <img src="./images/warhol.jpg" />
+        <img src="https://s.blogcdn.com/www.dailyfinance.com/media/2013/05/artist-604cs052113.jpg" />
       </div>
       <div>
-        <img src="https://s.blogcdn.com/www.dailyfinance.com/media/2013/05/artist-604cs052113.jpg" />
+        <img src="./images/warhol.jpg" />
       </div>
     </Carousel>
   </SampleWorkPanel>
@@ -359,9 +375,9 @@ const SampleWorkPanel = styled.div`
   display: flex;
   justify-content: center;
   img {
-    display: block;
-    max-width: 300px;
-    max-height: 200px;
+    display: flex; 
+    max-width: 290px;
+    max-height: 270px;
     width: auto;
     height: auto;
   }
@@ -369,10 +385,11 @@ const SampleWorkPanel = styled.div`
 
 const CenterPanel = styled.div`
   display: flex;
+  color: ${props => props.theme.headingBackground1 || 'black'};
   flex-direction: column;
   background: ${props => props.theme.bodyBackground || 'white'};
   font-size: 1em;
-  padding: 1em;
+  padding: 0em;
   width: 1072px;
 `;
 
@@ -380,21 +397,25 @@ const MainPanel = styled.div`
   display: flex;
   background: ${props => props.theme.bodyBackground || 'white'};
   font-size: 1em;
-  padding: 1em;
+  padding: 0.2em;
 `;
 
 const Column1 = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  flex: 2;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 const Column2 = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
   flex: 1;
+  overflow-y: auto;
+`;
+
+const ActionHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.2em;
+  background: ${props => props.theme.headingBackground2 || 'initial'};
 `;
 
 const StyledIndex = styled(Index)`

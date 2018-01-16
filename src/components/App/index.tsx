@@ -11,6 +11,7 @@ type Props = ClientState & typeof actionCreators;
 class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
+      addClient,
       clients,
       currentClientId,
       isInEditMode,
@@ -26,6 +27,7 @@ class ContainerTemplate extends Component<Props, {}> {
 
     return (
       <App
+        addClient={addClient}
         currentClient={currentClient}
         isInEditMode={isInEditMode}
         isInteractive={isInteractive}

@@ -10,6 +10,7 @@ import ClientMobileLayout from '../ClientMobileLayout';
 import ClientDesktopLayout from '../ClientDesktopLayout';
 
 interface Props {
+  addClient: typeof actionCreators.addClient;
   currentClient: Client | undefined;
   setCurrentClient: typeof actionCreators.setCurrentClient;
   setClientEditMode: typeof actionCreators.setClientEditMode;
@@ -22,6 +23,7 @@ interface Props {
 export default class App extends Component<Props, {}> {
   render() {
     const {
+      addClient,
       currentClient,
       isInEditMode,
       isInteractive,
@@ -37,6 +39,7 @@ export default class App extends Component<Props, {}> {
         {currentClient && (
           <>
             <ClientDesktopLayout
+              addClient={addClient}
               isInEditMode={isInEditMode}
               currentClient={currentClient}
               setClientEditMode={setClientEditMode}

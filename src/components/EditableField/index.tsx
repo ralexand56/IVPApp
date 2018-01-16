@@ -29,14 +29,16 @@ const StyledLabel = styled(Label)`
   color: ${props => props.labelColor || theme.headingBackground2 || 'black'};
   padding: 0px 4px;
   font-style: normal;
-  font-size: 0.9em;
+  font-size: 0.7em;
   font-weight: normal;
+  text-transform: uppercase;
 `;
 
 const Content = styled.span`
-  font-size: 1.1em;
+  font-size: 1em;
   padding: 0px 0px 0px 3px;
-  font-weight: normal;
+  font-weight: 400;
+  color: ${props => props.theme.headingBackground1 || 'black'};
 `;
 
 const EditableField: StatelessComponent<Props> = ({

@@ -133,7 +133,7 @@ const StyledPop = styled(Pop)`
     'white' ||
     props.theme.headingBackground1 ||
     'transparent'};
-  color: ${props => props.color || 'black'};
+  color: ${props => props.color || 'initial'};
   display: flex;
   flex-direction: column;
   margin: ${props => props.margin || 0};
