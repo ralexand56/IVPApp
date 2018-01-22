@@ -1,4 +1,4 @@
-import { Client } from './datatypes';
+import { Client, SampleLink } from './datatypes';
 import { keyframes } from 'styled-components';
 import ThemeInterface from './theme';
 import firebase from 'firebase';
@@ -9,7 +9,7 @@ export const config = {
   databaseURL: 'https://ivpdb-1399c.firebaseio.com',
   projectId: 'ivpdb-1399c',
   storageBucket: 'ivpdb-1399c.appspot.com',
-  messagingSenderId: '390995409712',
+  messagingSenderId: '390995409712'
 };
 
 export let db: firebase.firestore.Firestore;
@@ -29,7 +29,7 @@ export const defaultUser = {
   imgSrc: 'irina.jpg',
   created: new Date(),
   userName: 'admin',
-  pwd: 'Sn6gf!Wk2',
+  pwd: 'Sn6gf!Wk2'
 };
 
 export interface ClientState {
@@ -75,6 +75,7 @@ export interface Client {
   assets?: Asset[];
   comments?: Comment[];
   interactions?: Interaction[];
+  sampleLinks?: SampleLink[];
   tagIds?: string[];
   tags?: Tag[];
   created: Date;
@@ -107,6 +108,12 @@ export interface Interaction {
   created: Date;
 }
 
+export interface SampleLink {
+  id?: string;
+  src?: string;
+  isLocal?: boolean;
+}
+
 export interface User {
   id?: string;
   isActive?: boolean;
@@ -132,6 +139,7 @@ export interface Tag {
 
 export type KnownAction =
   | AddClientAction
+  | AddSampleLinkAction
   | AddTagCategoryAction
   | AddClientTypeAction
   | AddUserAction
@@ -155,6 +163,11 @@ export type KnownAction =
 export interface AddClientAction {
   type: 'ADD_CLIENT';
   newClient: Client;
+}
+
+export interface AddSampleLinkAction {
+  type: 'ADD_SAMPLE_LINK';
+  sampleLink: SampleLink;
 }
 
 export interface AddClientTypeAction {
@@ -255,7 +268,7 @@ export const theme: ThemeInterface = {
   headingBackground1: '#867290',
   headingBackground2: '#64c1a1',
   bodyBackground: '#EBEAE7',
-  bodyForeground: '#86A0CC',
+  bodyForeground: '#86A0CC'
 };
 
 export const fadeIn = () => keyframes`
@@ -340,7 +353,7 @@ export const UserImport = [
       'hybrid betw sculpture and painting, stained glass like, etched metal',
     Notes: '310.980.7195',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Aitken Doug ',
@@ -348,7 +361,7 @@ export const UserImport = [
     Medium: 'video - architectural scale',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Alawi Seyed ',
@@ -356,7 +369,7 @@ export const UserImport = [
     Medium: 'conceptual, site-responsive',
     Notes: 'San Francisco',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Albaquerque Lita',
@@ -364,7 +377,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Aldrich Lynn',
@@ -372,7 +385,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Allen Terry ',
@@ -380,7 +393,7 @@ export const UserImport = [
     Medium: 'LA LOUVER',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Appel Kevin ',
@@ -388,7 +401,7 @@ export const UserImport = [
     Medium: 'architecural abstract painting',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Aycock Alice ',
@@ -396,7 +409,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Ball-Nogues',
@@ -404,7 +417,7 @@ export const UserImport = [
     Medium: 'architect-artist team, site-responsive environments',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Bartels Marlo ',
@@ -412,7 +425,7 @@ export const UserImport = [
     Medium: 'Mosaic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Bavington Tim ',
@@ -420,7 +433,7 @@ export const UserImport = [
     Medium: 'musical, colorful vertical bands of color',
     Notes: 'Las Vegas - gal',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Bengston Billy Al ',
@@ -428,7 +441,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'BJ Krivanek',
@@ -436,7 +449,7 @@ export const UserImport = [
     Medium: 'text',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Blum Nancy ',
@@ -444,7 +457,7 @@ export const UserImport = [
     Medium: 'Painter and public art',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Botello Paul  ',
@@ -452,7 +465,7 @@ export const UserImport = [
     Medium: 'chicano, muralist',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Braunstein Terry ',
@@ -460,7 +473,7 @@ export const UserImport = [
     Medium: 'multimedia, photomontage',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Braver Nancy ',
@@ -468,7 +481,7 @@ export const UserImport = [
     Medium: 'acrylic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Brogger Mary ',
@@ -476,7 +489,7 @@ export const UserImport = [
     Medium: 'steel curtains',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Bronson Jessica ',
@@ -484,7 +497,7 @@ export const UserImport = [
     Medium: 'media, video, text',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Browder Amanda ',
@@ -492,7 +505,7 @@ export const UserImport = [
     Medium: 'stripes, textile',
     Notes: 'Brooklyn',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Brower Hatcher',
@@ -500,7 +513,7 @@ export const UserImport = [
     Medium: 'light etc.',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Campbell Jim ',
@@ -508,7 +521,7 @@ export const UserImport = [
     Medium: 'LED kinetic, animated installations',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Cao Andy  - Xavier Perrot',
@@ -516,7 +529,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Carpenter Ed ',
@@ -524,7 +537,7 @@ export const UserImport = [
     Medium: 'Glass, metal, light',
     Notes: 'Portland',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Carpenter James ',
@@ -532,7 +545,7 @@ export const UserImport = [
     Medium: 'architectural, light, glass',
     Notes: 'NYC',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Chang Jackie ',
@@ -540,7 +553,7 @@ export const UserImport = [
     Medium: 'text',
     Notes: 'Brooklyn',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Cheng Carl , John Doe Co.',
@@ -548,7 +561,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Corliss Troy ',
@@ -556,7 +569,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Corson Dan ',
@@ -564,7 +577,7 @@ export const UserImport = [
     Medium: 'light + Installations',
     Notes: 'Seattle',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Creative Machines Blessing Hancock',
@@ -572,7 +585,7 @@ export const UserImport = [
     Medium: 'cutout steel, interactive light, ball machines, etc.',
     Notes: 'Tuscon, Arizona',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'D&quot;Agostino Fernanda ',
@@ -580,7 +593,7 @@ export const UserImport = [
     Medium: 'mixed media, interactive, video, film',
     Notes: 'Portland',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Deacon Richard ',
@@ -588,7 +601,7 @@ export const UserImport = [
     Medium: 'sculpture',
     Notes: 'UK',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Delgado Roberto ',
@@ -596,7 +609,7 @@ export const UserImport = [
     Medium: 'chicano photo-realism',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Dumbacher John and Joseph ',
@@ -604,7 +617,7 @@ export const UserImport = [
     Medium: 'elegant minimal sculpture (not much public focus)',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Dym Miriam ',
@@ -612,7 +625,7 @@ export const UserImport = [
     Medium: 'maping, textile,',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Echelman Janet ',
@@ -620,7 +633,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Electroland',
@@ -628,7 +641,7 @@ export const UserImport = [
     Medium: ' interactive- and media-arts in public spaces',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Erskine Peter ',
@@ -636,7 +649,7 @@ export const UserImport = [
     Medium: 'solar spectrum environmental art',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Fairey Shepard ',
@@ -644,7 +657,7 @@ export const UserImport = [
     Medium: 'street artist, political',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Farrage Tom ',
@@ -652,7 +665,7 @@ export const UserImport = [
     Medium: 'Culver City',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Fitzgibbons Bill ',
@@ -660,7 +673,7 @@ export const UserImport = [
     Medium: 'Public art with light, sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Fletcher Harrell ',
@@ -668,7 +681,7 @@ export const UserImport = [
     Medium: 'Interdisciplinary, community outreach',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Gantman Martin ',
@@ -676,7 +689,7 @@ export const UserImport = [
     Medium: 'Interdisciplinary, community outreach',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Gardner Ann ',
@@ -684,7 +697,7 @@ export const UserImport = [
     Medium: 'Mosaic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Garten Cliff ',
@@ -692,7 +705,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Gawne Candice ',
@@ -700,7 +713,7 @@ export const UserImport = [
     Medium: 'neon, light ',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Geckler Megan ',
@@ -708,7 +721,7 @@ export const UserImport = [
     Medium: 'stripes, site-specific architectural',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Geller Matthew ',
@@ -716,7 +729,7 @@ export const UserImport = [
     Medium: 'fog trees etc.',
     Notes: 'NY',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Genderen Monique Van ',
@@ -724,7 +737,7 @@ export const UserImport = [
     Medium: 'reflective, vinyl decals ',
     Notes: 'Hammer Wall project',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Georgesco Christopher ',
@@ -732,7 +745,7 @@ export const UserImport = [
     Medium: 'contemporary sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Gillies-Smith Shauna ',
@@ -740,7 +753,7 @@ export const UserImport = [
     Medium: 'landscape',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Glassman Stephen ',
@@ -748,7 +761,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Green Phyllis ',
@@ -756,7 +769,7 @@ export const UserImport = [
     Medium: 'ceramic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Greiman April ',
@@ -764,7 +777,7 @@ export const UserImport = [
     Medium: '"transmedia" computer, design',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Grygutis Barbara ',
@@ -772,7 +785,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Haddad-Drugan',
@@ -780,7 +793,7 @@ export const UserImport = [
     Medium: 'ladscape, conceptual, site specific',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hall Sarah ',
@@ -788,7 +801,7 @@ export const UserImport = [
     Medium: 'glass',
     Notes: 'Toronto',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hamrol Lloyd ',
@@ -796,7 +809,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Harries-Heder',
@@ -804,7 +817,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hasimoto Jacob ',
@@ -812,7 +825,7 @@ export const UserImport = [
     Medium: 'paper kites, interactive compositions',
     Notes: 'NYC',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hayden Michael ',
@@ -820,7 +833,7 @@ export const UserImport = [
     Medium: 'light, neon, holographic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Healy Wayne ',
@@ -828,7 +841,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Herman Roger ',
@@ -836,7 +849,7 @@ export const UserImport = [
     Medium: 'painter',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hirschfield Jim - Ishii Sonya ',
@@ -844,7 +857,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Hobson Paul  ',
@@ -852,7 +865,7 @@ export const UserImport = [
     Medium: 'gates',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Howe Anthony ',
@@ -860,7 +873,7 @@ export const UserImport = [
     Medium: 'kinetic metal wind sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Howe Brad ',
@@ -868,7 +881,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Huether Gordon ',
@@ -876,7 +889,7 @@ export const UserImport = [
     Medium: 'glass, metal',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Isermann Jim ',
@@ -884,7 +897,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Janney Christopher ',
@@ -892,7 +905,7 @@ export const UserImport = [
     Medium: 'sound and light installations',
     Notes: 'Lexington MA and London',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Jaquis Michelle ',
@@ -900,7 +913,7 @@ export const UserImport = [
     Medium: 'interdisciplinary, video',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Johnston Richard M ',
@@ -908,7 +921,7 @@ export const UserImport = [
     Medium: 'metal sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: ' Jones Kristin - Ginzel Andrew ',
@@ -916,7 +929,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Jordan Lorna',
@@ -924,7 +937,7 @@ export const UserImport = [
     Medium: 'Environmental',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kahn Ned ',
@@ -932,7 +945,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kaiser Smith Yvette ',
@@ -940,7 +953,7 @@ export const UserImport = [
     Medium: 'crocheted fiberglass sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kaneko Jun ',
@@ -948,7 +961,7 @@ export const UserImport = [
     Medium: 'ceramic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Karlsen Anne Marie ',
@@ -956,7 +969,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kaufman Seth ',
@@ -964,7 +977,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kemper Guy ',
@@ -972,7 +985,7 @@ export const UserImport = [
     Medium: 'glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'King Ray ',
@@ -980,7 +993,7 @@ export const UserImport = [
     Medium: 'sculpting with glass, light  (dichroic)',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Klein Sheila ',
@@ -988,7 +1001,7 @@ export const UserImport = [
     Medium: 'multimedia and steel yarn',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Knapp Steve ',
@@ -996,7 +1009,7 @@ export const UserImport = [
     Medium: 'sculpting with light, glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Kobayashi - Perlas',
@@ -1004,7 +1017,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Koblitz Karen ',
@@ -1012,7 +1025,7 @@ export const UserImport = [
     Medium: 'ceramic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Lang Gary ',
@@ -1020,7 +1033,7 @@ export const UserImport = [
     Medium: 'dense color circles, lines, grids',
     Notes: 'Ojai',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Larson Laura ',
@@ -1028,7 +1041,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'LeFevre Gregg ',
@@ -1036,7 +1049,7 @@ export const UserImport = [
     Medium: 'Photography, bronze plaques',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Legrady George ',
@@ -1044,7 +1057,7 @@ export const UserImport = [
     Medium: 'experimental visualization, computer and interactive media',
     Notes: 'Santa Barbara',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Lere Mark ',
@@ -1052,7 +1065,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Looney Norm ',
@@ -1060,7 +1073,7 @@ export const UserImport = [
     Medium: 'metal colorful sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Lozano Hemmer Rafael ',
@@ -1068,7 +1081,7 @@ export const UserImport = [
     Medium: 'electronic, architectural, interactive projections',
     Notes: 'Montreal Canada',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Lutyens Marcos ',
@@ -1076,7 +1089,7 @@ export const UserImport = [
     Medium: 'multimedia',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mahaffey Rae ',
@@ -1084,7 +1097,7 @@ export const UserImport = [
     Medium: 'painter of patterns at times pa on glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mandel Mike ',
@@ -1092,7 +1105,7 @@ export const UserImport = [
     Medium: 'photo mosaic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mansfield Robert ',
@@ -1100,7 +1113,7 @@ export const UserImport = [
     Medium: 'monumental sculpture - abstract',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Marcheschi Cork ',
@@ -1108,7 +1121,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Marianantoni Alessandro ',
@@ -1116,7 +1129,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Marioni Paul -Ann Troutner',
@@ -1124,7 +1137,7 @@ export const UserImport = [
     Medium: 'glass, mosaic, etc.',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Martinez Juliana ',
@@ -1132,7 +1145,7 @@ export const UserImport = [
     Medium: 'ceramic muralist (outreach)',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'McCafferty Jay ',
@@ -1140,7 +1153,7 @@ export const UserImport = [
     Medium: 'solar burned paintings',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'McCarren Barbara  (Jud Fine)',
@@ -1148,7 +1161,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'McRight Blue ',
@@ -1156,7 +1169,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Merge Conceptual Design',
@@ -1164,7 +1177,7 @@ export const UserImport = [
     Medium: 'conceptual, site-responsive',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mersky Deborah ',
@@ -1172,7 +1185,7 @@ export const UserImport = [
     Medium: 'cut metal',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Metais Jean Bernard ',
@@ -1180,7 +1193,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mizuno Mineo ',
@@ -1188,7 +1201,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Moeller Christian ',
@@ -1196,7 +1209,7 @@ export const UserImport = [
     Medium: 'innovative, interactive architectural installations',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mooslin Nancy ',
@@ -1204,7 +1217,7 @@ export const UserImport = [
     Medium: 'color and musical concepts',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Mortimer Art ',
@@ -1212,7 +1225,7 @@ export const UserImport = [
     Medium: 'muralist',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Muller Manfred ',
@@ -1220,7 +1233,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Muller Mario ',
@@ -1228,7 +1241,7 @@ export const UserImport = [
     Medium: 'shadow india ink paintings on glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Narduli Susan ',
@@ -1236,7 +1249,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Neilson Rob ',
@@ -1244,7 +1257,7 @@ export const UserImport = [
     Medium: 'witty',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Nettleship Will ',
@@ -1252,7 +1265,7 @@ export const UserImport = [
     Medium: 'hardscape',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Niemi Ries ',
@@ -1260,7 +1273,7 @@ export const UserImport = [
     Medium: 'metal',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Nolan Timothy ',
@@ -1268,7 +1281,7 @@ export const UserImport = [
     Medium: 'pattern, repetition',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'NY Art Projects',
@@ -1276,7 +1289,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Odland Bruce ',
@@ -1284,7 +1297,7 @@ export const UserImport = [
     Medium: 'sound',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Okulick John ',
@@ -1292,7 +1305,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Okun Jenny ',
@@ -1300,7 +1313,7 @@ export const UserImport = [
     Medium: 'photography',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Outerbridge John ',
@@ -1308,7 +1321,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Owens Laura ',
@@ -1316,7 +1329,7 @@ export const UserImport = [
     Medium: 'Painting, colour dense, Lasker like with text and grid',
     Notes: 'LA - gal',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Pagen Geoffrey ',
@@ -1324,7 +1337,7 @@ export const UserImport = [
     Medium: 'ceramic panels',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Petley Kate ',
@@ -1332,7 +1345,7 @@ export const UserImport = [
     Medium: 'resin, glass, photography',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Pinkel Sheila ',
@@ -1340,7 +1353,7 @@ export const UserImport = [
     Medium: 'photography, xeroradiography',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Poethig Johanna ',
@@ -1348,7 +1361,7 @@ export const UserImport = [
     Medium: 'text, ceramic, mosaic, etc.',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Pollack Linda ',
@@ -1356,7 +1369,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Powell Eric ',
@@ -1364,7 +1377,7 @@ export const UserImport = [
     Medium: 'metal fences and gates',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Redl Erwin',
@@ -1372,7 +1385,7 @@ export const UserImport = [
     Medium: 'light, LED, interactive',
     Notes: 'Ace',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Reginato Peter ',
@@ -1380,7 +1393,7 @@ export const UserImport = [
     Medium: 'painted steel, abstract, sculpture',
     Notes: 'NYC',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Reiss Roland ',
@@ -1388,7 +1401,7 @@ export const UserImport = [
     Medium: 'painter, sculptor',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Retna',
@@ -1396,7 +1409,7 @@ export const UserImport = [
     Medium: 'graffity, street art',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Roden Steve ',
@@ -1404,7 +1417,7 @@ export const UserImport = [
     Medium: 'sound, concptual painting',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Rogers John ',
@@ -1412,7 +1425,7 @@ export const UserImport = [
     Medium: 'glass and light',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Rolstad Koryn ',
@@ -1420,7 +1433,7 @@ export const UserImport = [
     Medium: 'various public installations - glass, metal, etc.',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Ross Adam ',
@@ -1428,7 +1441,7 @@ export const UserImport = [
     Medium: 'Painting',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Rothenberg Erika ',
@@ -1436,7 +1449,7 @@ export const UserImport = [
     Medium: 'issues based text',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Salas Roberto ',
@@ -1444,7 +1457,7 @@ export const UserImport = [
     Medium: 'murals, collaborations, sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Sanborn Jim ',
@@ -1452,7 +1465,7 @@ export const UserImport = [
     Medium: 'text, light, topographic projections',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Sanders John Hillis ',
@@ -1460,7 +1473,7 @@ export const UserImport = [
     Medium: 'light and metal sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Saxe-Patterson',
@@ -1468,7 +1481,7 @@ export const UserImport = [
     Medium: 'ceramic',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Sayre Thomas ',
@@ -1476,7 +1489,7 @@ export const UserImport = [
     Medium: 'terrazzo, stone, collaborations',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Scharf Kenny ',
@@ -1484,7 +1497,7 @@ export const UserImport = [
     Medium: 'cartoon, popular culture, street art',
     Notes: 'Brooklyn',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Schwendinger Leni ',
@@ -1492,7 +1505,7 @@ export const UserImport = [
     Medium: 'light',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Sharrod Partin Charles ',
@@ -1500,7 +1513,7 @@ export const UserImport = [
     Medium: 'carved brick',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Shire Peter ',
@@ -1508,7 +1521,7 @@ export const UserImport = [
     Medium: 'ceramic ',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Siegel Fran ',
@@ -1516,7 +1529,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Silton Susan ',
@@ -1524,7 +1537,7 @@ export const UserImport = [
     Medium: 'photography, cinema, stripes ',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Smith Phillip K ',
@@ -1532,7 +1545,7 @@ export const UserImport = [
     Medium: 'sculpture, light',
     Notes: 'Indio',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Soto Lewis de ',
@@ -1540,7 +1553,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Stallard Tony ',
@@ -1548,7 +1561,7 @@ export const UserImport = [
     Medium: 'neon, light ',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Steinkamp Jennifer ',
@@ -1556,7 +1569,7 @@ export const UserImport = [
     Medium: 'projection, led',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Stoller Roger ',
@@ -1564,7 +1577,7 @@ export const UserImport = [
     Medium: 'sculpture, fountains, architectural',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Strasen Barbara ',
@@ -1572,7 +1585,7 @@ export const UserImport = [
     Medium: 'lenticular',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Strayhorn Robin ',
@@ -1580,7 +1593,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Stutz Michael ',
@@ -1588,7 +1601,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Sun May ',
@@ -1596,7 +1609,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Surls James ',
@@ -1604,7 +1617,7 @@ export const UserImport = [
     Medium: 'sculpture',
     Notes: 'Colorado',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Taylor Gail ',
@@ -1612,7 +1625,7 @@ export const UserImport = [
     Medium: 'copper etched with nature scapes, leaves, trees',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Thomas Austin ',
@@ -1620,7 +1633,7 @@ export const UserImport = [
     Medium: 'theoretical architecture, perches',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Turk Elizabeth ',
@@ -1628,7 +1641,7 @@ export const UserImport = [
     Medium: 'marble sculpture',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Turner Ray ',
@@ -1636,7 +1649,7 @@ export const UserImport = [
     Medium: 'Portrait painter on glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Turner Richard ',
@@ -1644,7 +1657,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Umbrico Penelope ',
@@ -1652,7 +1665,7 @@ export const UserImport = [
     Medium: 'Photography based',
     Notes: 'NYC',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Updegraff Miller ',
@@ -1660,7 +1673,7 @@ export const UserImport = [
     Medium: 'painter',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Urbana - Robert Ley',
@@ -1668,7 +1681,7 @@ export const UserImport = [
     Medium: 'Experimental materials, metal, architectural installations',
     Notes: 'LA  (Lumenscape)',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Utterback Camille ',
@@ -1676,7 +1689,7 @@ export const UserImport = [
     Medium: 'interactive, media, projections',
     Notes: 'San Francisco',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Wagner Catherine ',
@@ -1684,7 +1697,7 @@ export const UserImport = [
     Medium: 'Photogeaphy based, media, LED, site specific',
     Notes: 'San Francisco',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Walter Jack',
@@ -1692,7 +1705,7 @@ export const UserImport = [
     Medium: 'crushed wall',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Weber Sally ',
@@ -1700,7 +1713,7 @@ export const UserImport = [
     Medium: 'solar, glass',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Weisman Nina ',
@@ -1708,7 +1721,7 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'White Emily - Little Lisa  ',
@@ -1716,7 +1729,7 @@ export const UserImport = [
     Medium: 'PMCA installation, architectural interventions',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'White Pae ',
@@ -1725,7 +1738,7 @@ export const UserImport = [
     Medium: 'tapestry, hanging mobiles, modernist, art-design',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Williams Stuart ',
@@ -1733,7 +1746,7 @@ export const UserImport = [
     Medium: 'environmental artist, light, landscape installations',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Wiseman David ',
@@ -1741,7 +1754,7 @@ export const UserImport = [
     Medium: 'ceramic, crystal, glass, etc. chandeliers, branches',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Wolff Karen Frimkess ',
@@ -1749,7 +1762,7 @@ export const UserImport = [
     Medium: 'Sound and site specific with sound, bells',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Woytuk Peter ',
@@ -1757,7 +1770,7 @@ export const UserImport = [
     Medium: 'bronze birds and animals',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Yunhee Min  ',
@@ -1765,7 +1778,7 @@ export const UserImport = [
     Medium: 'hard-edged color planes, site specific installations',
     Notes: 'LA',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Zellen Jody ',
@@ -1773,7 +1786,7 @@ export const UserImport = [
     Medium: 'photography, glass, tiles',
     Notes: '',
     Column4: '',
-    Column5: '',
+    Column5: ''
   },
   {
     ARTISTS: 'Zweig Janet ',
@@ -1781,6 +1794,6 @@ export const UserImport = [
     Medium: '',
     Notes: '',
     Column4: '',
-    Column5: '',
-  },
+    Column5: ''
+  }
 ];

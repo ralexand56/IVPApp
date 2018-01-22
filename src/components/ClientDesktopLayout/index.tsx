@@ -9,9 +9,9 @@ import EditableField from '../EditableField';
 import { Button, Icon, Input, Switch } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import Radio from '../Radio';
-import { Carousel } from 'react-responsive-carousel';
 import ArtGroup from '../ArtGroup';
 import Comments from '../Comments';
+import SampleWork from '../SampleWork';
 // import Slider from 'react-slick';
 
 interface Props {
@@ -53,16 +53,27 @@ const Index: StatelessComponent<Props> = ({
               <Icon type="plus" />
             </span>
           </Button>
-          <Button
-            style={{ margin: 3 }}
-            size="small"
-            ghost={true}
-            onClick={() => setClientEditMode(true)}
-          >
-            <span style={{ margin: 3 }}>
-              <Icon type="edit" />
-            </span>
-          </Button>
+          {!isInEditMode ? (
+            <Button
+              style={{ margin: 3 }}
+              size="small"
+              ghost={true}
+              onClick={() => setClientEditMode(true)}
+            >
+              <span style={{ margin: 3 }}>
+                <Icon type="edit" />
+              </span>
+            </Button>
+          ) : (
+            <Button
+              style={{ margin: 3 }}
+              size="small"
+              ghost={true}
+              onClick={() => setClientEditMode(false)}
+            >
+              <span style={{ margin: 3 }}>Done</span>
+            </Button>
+          )}
           <Button
             style={{ margin: 3 }}
             size="small"
@@ -353,34 +364,6 @@ const InfoPanel = styled.div`
   display: flex;
   flex-direction: column;
   padding: 5;
-`;
-
-const SampleWork = () => (
-  <SampleWorkPanel>
-    <Carousel showArrows={true} autoPlay={true} infiniteLoop={false}>
-      <div>
-        <img src="./images/samples.png" />
-      </div>
-      <div>
-        <img src="https://s.blogcdn.com/www.dailyfinance.com/media/2013/05/artist-604cs052113.jpg" />
-      </div>
-      <div>
-        <img src="./images/warhol.jpg" />
-      </div>
-    </Carousel>
-  </SampleWorkPanel>
-);
-
-const SampleWorkPanel = styled.div`
-  display: flex;
-  justify-content: center;
-  img {
-    display: flex; 
-    max-width: 290px;
-    max-height: 270px;
-    width: auto;
-    height: auto;
-  }
 `;
 
 const CenterPanel = styled.div`
