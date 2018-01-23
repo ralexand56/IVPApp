@@ -1,4 +1,4 @@
-import React, { StatelessComponent } from 'react';
+import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import actionCreators from '../../actions/ClientActions';
 import ThemeInterface from '../../theme';
@@ -18,7 +18,7 @@ const UploadButton = () => (
 const beforeUpload = async (
   file: { type: string; size: number; name: string },
   addSampleWork: typeof actionCreators.addSampleWork,
-  currentClient: Client,
+  currentClient: Client
 ) => {
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
@@ -57,58 +57,83 @@ interface Props {
   updateClient: typeof actionCreators.updateClient;
 }
 
-const SampleWork: StatelessComponent<Props> = ({
-  addSampleWork,
-  className,
-  currentClient,
-  deleteSampleLink,
-  isInEditMode,
-}) => (
-  <div className={className}>
-    {isInEditMode ? (
-      <div>
-        <div style={{ margin: 10 }}>
-          <Search
-            placeholder="add image link"
-            onSearch={val => addSampleWork(val, false, currentClient)}
-          />{' '}
-          or{' '}
-          <Upload
-            beforeUpload={file =>
-              beforeUpload(file, addSampleWork, currentClient)
-            }
-            name="avatar"
-            listType="text"
-            className="avatar-uploader"
-            showUploadList={false}
-          >
-            <UploadButton />
-          </Upload>
-        </div>
-        {currentClient.sampleLinks && (
-          <StringList
-            label="Image Sources"
-            linkList={renderLinkElements(
-              currentClient.sampleLinks,
-              currentClient,
-              deleteSampleLink,
+interface AppState {
+  value: string;
+}
+
+class SampleWork extends Component<Props, AppState> {
+  state: AppState= {value: ''};
+
+  clear = () => this.setState((prevState: AppState) => ({ value: '' }));
+
+  onChange = (value: string) =>
+    this.setState((prevState: AppState) => ({ value }));
+
+  render() {
+    const {
+      addSampleWork,
+      className,
+      currentClient,
+      deleteSampleLink,
+      isInEditMode
+    } = this.props;
+
+    return (
+      <div className={className}>
+        {isInEditMode ? (
+          <div>
+            <div style={{ margin: 10 }}>
+              <Search
+                value={this.state.value}
+                enterButton="ADD"
+                placeholder="new image link"
+                size="small"
+                onChange={e => this.onChange(e.currentTarget.value)}
+                onSearch={val => {
+                  addSampleWork(val, false, currentClient);
+                  this.clear();
+                }}
+              />
+              <br />
+              or <br />
+              <Upload
+                beforeUpload={file =>
+                  beforeUpload(file, addSampleWork, currentClient)
+                }
+                name="avatar"
+                listType="text"
+                className="avatar-uploader"
+                showUploadList={false}
+              >
+                <UploadButton />
+              </Upload>
+            </div>
+            {currentClient.sampleLinks && (
+              <StringList
+                label="Image Sources"
+                linkList={renderLinkElements(
+                  currentClient.sampleLinks,
+                  currentClient,
+                  deleteSampleLink
+                )}
+              />
             )}
-          />
+          </div>
+        ) : (
+          <Carousel showArrows={true} autoPlay={true} infiniteLoop={true}>
+            {currentClient.sampleLinks &&
+              renderImageLinks(currentClient.sampleLinks)}
+          </Carousel>
         )}
       </div>
-    ) : (
-      <Carousel showArrows={true} autoPlay={true} infiniteLoop={true}>
-        {currentClient.sampleLinks &&
-          renderImageLinks(currentClient.sampleLinks)}
-      </Carousel>
-    )}
-  </div>
-);
+    );
+  }
+}
 
 const renderLinkElements = (
   sampleLinks: SampleLink[],
   currentClient: Client,
-  deleteSampleLink: typeof actionCreators.deleteSampleLink,
+  deleteSampleLink: typeof actionCreators.deleteSampleLink
 ) =>
   sampleLinks.map(x => (
     <span key={x.id}>
@@ -124,7 +149,7 @@ const renderLinkElements = (
           size="small"
           ghost={true}
           style={{
-            margin: 5,
+            margin: 5
           }}
           type="primary"
         >

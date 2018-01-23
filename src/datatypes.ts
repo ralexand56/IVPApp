@@ -72,6 +72,8 @@ export interface Client {
   salutation?: number;
   company?: string;
   clientTypeId?: string;
+  emailList?: boolean;
+  mailList?: boolean;
   assets?: Asset[];
   comments?: Comment[];
   interactions?: Interaction[];
