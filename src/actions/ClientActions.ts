@@ -8,7 +8,7 @@ import {
   SampleLink,
   Tag,
   TagCategory,
-  User
+  User,
 } from '../datatypes';
 import { AppThunkAction, ApplicationState } from '../store';
 import firebase from 'firebase';
@@ -151,7 +151,10 @@ const actionCreators = {
     });
   },
 
-  deleteSampleLink: (id: string, client: Client): AppThunkAction<KnownAction> => (
+  deleteSampleLink: (
+    id: string,
+    client: Client,
+  ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
@@ -192,7 +195,7 @@ const actionCreators = {
         lastName: fullName[fullName.length - 1].trim(),
         clientTypeId: 'XWVplrztsYm7RQeFMWzt',
         note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
-        websites: [x.WEB.trim()],
+        websites: [{ name: x.WEB.trim(), alias: x.WEB.trim(), sort: 10 }],
         created: new Date(),
         modified: new Date(),
       };
@@ -322,7 +325,7 @@ const actionCreators = {
 
 export const addClient = async (
   dispatch: (action: KnownAction) => void,
-  newClient: Client
+  newClient: Client,
 ) => {
   const clientRef = await db.collection('clients').add(newClient);
   db
@@ -332,7 +335,7 @@ export const addClient = async (
   newClient.id = clientRef.id;
   dispatch({
     type: 'ADD_CLIENT',
-    newClient
+    newClient,
   });
 };
 
@@ -340,7 +343,7 @@ export const addComment = async (
   dispatch: (action: KnownAction) => void,
   newComment: Comment,
   client: Client,
-  user: User
+  user: User,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
   const newCommentRef = await clientRef.collection('comments').doc();
@@ -354,7 +357,7 @@ export const addComment = async (
   client.comments = comments;
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
@@ -376,16 +379,16 @@ export const addSampleWork = async (
   client.sampleLinks = sampleLinks;
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
 export const addTagCategory = async (
   dispatch: (action: KnownAction) => void,
-  name: string
+  name: string,
 ) => {
   const newTagCategory: TagCategory = {
-    name
+    name,
   };
   const categoriesRef = await db
     .collection('tagCategories')
@@ -398,16 +401,16 @@ export const addTagCategory = async (
 
   dispatch({
     type: 'ADD_TAG_CATEGORY',
-    tagCategory: newTagCategory
+    tagCategory: newTagCategory,
   });
 };
 
 export const addClientType = async (
   dispatch: (action: KnownAction) => void,
-  name: string
+  name: string,
 ) => {
   const newClientType: ClientType = {
-    name
+    name,
   };
   const clientTypesRef = await db.collection('clientTypes').add(newClientType);
   db
@@ -418,18 +421,18 @@ export const addClientType = async (
 
   dispatch({
     type: 'ADD_CLIENT_TYPE',
-    clientType: newClientType
+    clientType: newClientType,
   });
 };
 
 export const addTagToCategory = async (
   dispatch: (action: KnownAction) => void,
   name: string,
-  tagCategory: TagCategory
+  tagCategory: TagCategory,
 ) => {
   const newTag: Tag = {
     id: '',
-    name
+    name,
   };
   const tagCategoryRef = await db
     .collection('tagCategories')
@@ -444,7 +447,7 @@ export const addTagToCategory = async (
 
   dispatch({
     type: 'UPDATE_TAG_CATEGORY',
-    tagCategory
+    tagCategory,
   });
 };
 
@@ -452,7 +455,7 @@ export const toggleClientTag = async (
   dispatch: (action: KnownAction) => void,
   tagId: string,
   client: Client,
-  isAdd: boolean
+  isAdd: boolean,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
@@ -465,13 +468,13 @@ export const toggleClientTag = async (
 
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
 export const addUser = async (
   dispatch: (action: KnownAction) => void,
-  newUser: User
+  newUser: User,
 ) => {
   const userRef = await db.collection('users').add(newUser);
   db
@@ -482,14 +485,14 @@ export const addUser = async (
 
   dispatch({
     type: 'ADD_USER',
-    newUser
+    newUser,
   });
 };
 
 export const deleteComment = async (
   dispatch: (action: KnownAction) => void,
   id: string,
-  client: Client
+  client: Client,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
@@ -498,7 +501,7 @@ export const deleteComment = async (
 
   dispatch({
     type: 'UPDATE_CLIENT',
-    client
+    client,
   });
 };
 
@@ -509,7 +512,8 @@ export const deleteSampleLink = async (
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
 
-  client.sampleLinks = client.sampleLinks && client.sampleLinks.filter(x => x.id !== id);
+  client.sampleLinks =
+    client.sampleLinks && client.sampleLinks.filter(x => x.id !== id);
   clientRef.update(client);
 
   dispatch({
@@ -521,7 +525,7 @@ export const deleteSampleLink = async (
 export const setClients = async (dispatch: (action: KnownAction) => void) => {
   const usersRef = await db.collection('users').get();
   const users = await usersRef.docs.map((x: firebase.firestore.DocumentData) =>
-    x.data()
+    x.data(),
   );
 
   const clientRef = await db
@@ -531,13 +535,13 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
   const clients = await clientsRef.docs.map(
-    (x: firebase.firestore.DocumentData) => x.data()
+    (x: firebase.firestore.DocumentData) => x.data(),
   );
 
   clients.map(x => {
     x.comments &&
       x.comments.map(
-        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0])
+        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
       );
   });
 
@@ -550,34 +554,34 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
 
   dispatch({
     type: 'SET_FILTERED_CLIENTS',
-    filteredClients: clients
+    filteredClients: clients,
   });
 
   dispatch({
     type: 'SET_CLIENTS',
-    clients
+    clients,
   });
 };
 
 export const setClientTypes = async (
-  dispatch: (action: KnownAction) => void
+  dispatch: (action: KnownAction) => void,
 ) => {
   const clientTypesRef = await db.collection('clientTypes');
   const clientTypesList = await clientTypesRef.orderBy('name').get();
   const clientTypes: ClientType[] = await clientTypesList.docs.map(x =>
-    x.data()
+    x.data(),
   );
 
   dispatch({
     type: 'SET_CLIENT_TYPES',
-    clientTypes
+    clientTypes,
   });
 };
 
 export const setCurrentClient = async (
   dispatch: (action: KnownAction) => void,
   getState: () => ApplicationState,
-  clientId: string | undefined
+  clientId: string | undefined,
 ) => {
   const user = getState().clientSlice.currentUser;
   const userId = user ? user.id : undefined;
@@ -596,19 +600,19 @@ export const setCurrentClient = async (
 };
 
 export const setTagCategories = async (
-  dispatch: (action: KnownAction) => void
+  dispatch: (action: KnownAction) => void,
 ) => {
   const tagCategoriesRef = await db
     .collection('tagCategories')
     .orderBy('name', 'asc');
   const tagCategoriesList = await tagCategoriesRef.get();
   const tagCategories: TagCategory[] = await tagCategoriesList.docs.map(x =>
-    x.data()
+    x.data(),
   );
 
   dispatch({
     type: 'SET_TAG_CATEGORIES',
-    tagCategories
+    tagCategories,
   });
 };
 
@@ -619,18 +623,18 @@ export const setUsers = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('lastName', 'asc');
   const userListRef = await usersRef.get();
   const users: User[] = await userListRef.docs.map(
-    (x: firebase.firestore.DocumentData) => x.data()
+    (x: firebase.firestore.DocumentData) => x.data(),
   );
 
   dispatch({
     type: 'SET_USERS',
-    users
+    users,
   });
 };
 
 export const init = (
   dispatch: (action: KnownAction) => void,
-  getState: () => ApplicationState
+  getState: () => ApplicationState,
 ) => {
   setUsers(dispatch);
   setClients(dispatch);
@@ -641,7 +645,7 @@ export const init = (
 
 export const updateClient = async (
   dispatch: (action: KnownAction) => void,
-  client: Client
+  client: Client,
 ) => {
   const clientRef = await db.collection('clients').doc(client.id);
   clientRef.update(client);
@@ -649,7 +653,7 @@ export const updateClient = async (
 
 export const watchClientChanges = async (
   dispatch: (action: KnownAction) => void,
-  getState: () => ApplicationState
+  getState: () => ApplicationState,
 ) => {
   const user = getState().clientSlice.currentUser;
   const userId = user ? user.id : undefined;
@@ -662,7 +666,7 @@ export const watchClientChanges = async (
     snapShot.exists &&
       dispatch({
         type: 'SET_CURRENT_CLIENT',
-        clientId: snapShot.data().clientId
+        clientId: snapShot.data().clientId,
       });
   });
 };

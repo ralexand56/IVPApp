@@ -66,8 +66,8 @@ export interface Client {
   fax?: string;
   phone?: string;
   imgUrl?: string;
-  emails?: string[];
-  websites?: string[];
+  emails?: NameId[];
+  websites?: NameId[];
   title?: string;
   salutation?: number;
   company?: string;
@@ -106,6 +106,13 @@ export interface Interaction {
   id: number;
   body: string;
   created: Date;
+}
+
+export interface NameId {
+  id?: string;
+  name: string;
+  alias?: string;
+  sort: number;
 }
 
 export interface SampleLink {
