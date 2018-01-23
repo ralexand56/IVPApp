@@ -320,6 +320,7 @@ const actionCreators = {
     }),
 };
 
+// async ops
 export const addClient = async (
   dispatch: (action: KnownAction) => void,
   newClient: Client

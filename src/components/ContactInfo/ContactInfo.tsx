@@ -24,7 +24,7 @@ const ContactInfo: StatelessComponent<Props> = ({
   className,
   currentClient,
   isInEditMode,
-  updateClient,
+  updateClient
 }) => (
   <SlidingPanel title="Contact Info">
     <div className={className}>
@@ -35,10 +35,11 @@ const ContactInfo: StatelessComponent<Props> = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({
               ...currentClient,
-              phone: formatPhone(e.currentTarget.value),
+              phone: formatPhone(e.currentTarget.value)
             })
           }
           value={currentClient.phone}
@@ -51,10 +52,11 @@ const ContactInfo: StatelessComponent<Props> = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({
               ...currentClient,
-              fax: formatPhone(e.currentTarget.value),
+              fax: formatPhone(e.currentTarget.value)
             })
           }
           value={currentClient.fax}
@@ -68,7 +70,7 @@ const ContactInfo: StatelessComponent<Props> = ({
           </a>,
           <a key={2} href="mailto:ralexand56@live.com">
             {'dougie@informars.com'}
-          </a>,
+          </a>
         ]}
       />
       <StringList
@@ -79,7 +81,7 @@ const ContactInfo: StatelessComponent<Props> = ({
           </a>,
           <a key={2} href="http://www.cnet.com" target="_blank">
             {'http://www.cnet.com'}
-          </a>,
+          </a>
         ]}
       />
     </div>

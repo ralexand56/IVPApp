@@ -1,46 +1,91 @@
-import React, { StatelessComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Client, Comment, theme } from '../../datatypes';
+import { Client, Comment, theme, User } from '../../datatypes';
 // import CommentView from '../Comment';
-import { Avatar, Button, Icon, Popconfirm, Timeline } from 'antd';
+import { Avatar, Button, Icon, Input, Popconfirm, Timeline } from 'antd';
 import moment from 'moment';
 import actionCreators from '../../actions/ClientActions';
 import SlidingPanel from '../SlidingPanel';
 import ThemeInterface from '../../theme';
 
+const Search = Input.Search;
+
 interface Props {
+  addComment: typeof actionCreators.addComment;
   className?: string;
   children?: React.ReactChild;
+  currentUser?: User;
   theme?: ThemeInterface;
   comments?: Comment[];
   currentClient: Client;
   deleteComment: typeof actionCreators.deleteComment;
 }
 
-const Comments: StatelessComponent<Props> = ({
-  className,
-  children,
-  comments,
-  currentClient,
-  deleteComment,
-}) => (
-  <SlidingPanel title="Comments">
-    <div className={className}>
-      {comments ? (
-        <Timeline>
-          {renderComments(comments, currentClient, deleteComment)}
-        </Timeline>
-      ) : (
-        <span>No comments...</span>
-      )}{' '}
-    </div>
-  </SlidingPanel>
-);
+interface AppState {
+  value: string;
+}
+
+class Comments extends Component<Props, AppState> {
+  state: AppState = { value: '' };
+
+  clear = () => this.setState((prevState: AppState) => ({ value: '' }));
+
+  onChange = (value: string) =>
+    this.setState((prevState: AppState) => ({ value }));
+
+  render() {
+    const {
+      addComment,
+      className,
+      comments,
+      currentUser,
+      currentClient,
+      deleteComment
+    } = this.props;
+
+    return (
+      <SlidingPanel title="Comments">
+        <div className={className}>
+          {' '}
+          {currentUser && (
+            <Search
+              value={this.state.value}
+              enterButton="ADD"
+              placeholder="new comment"
+              size="small"
+              onChange={e => this.onChange(e.currentTarget.value)}
+              onSearch={val => {
+                addComment(
+                  {
+                    body: val,
+                    created: new Date(),
+                    userId: currentUser.id,
+                    user: currentUser
+                  },
+                  currentClient,
+                  currentUser
+                );
+                this.clear();
+              }}
+            />
+          )}
+          {comments ? (
+            <Timeline style={{ margin: 10 }}>
+              {renderComments(comments, currentClient, deleteComment)}
+            </Timeline>
+          ) : (
+            <span>No comments...</span>
+          )}{' '}
+        </div>
+      </SlidingPanel>
+    );
+  }
+}
 
 const renderComments = (
   comments: Comment[],
   currentClient: Client,
-  deleteComment: typeof actionCreators.deleteComment,
+  deleteComment: typeof actionCreators.deleteComment
 ) =>
   comments.sort((x, y) => (x.created > y.created ? -1 : 1)).map(x => (
     <Timeline.Item key={x.id}>

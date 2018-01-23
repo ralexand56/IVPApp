@@ -113,11 +113,21 @@ const Index: StatelessComponent<Props> = ({
             <SlidingPanel margin={margin} title="List Subscription">
               <ListSubscriptionPanel>
                 <HorizontalPanel>
-                  <Switch defaultChecked={true} />
+                  <Switch
+                    checked={currentClient.emailList}
+                    onChange={val =>
+                      updateClient({ ...currentClient, emailList: val })
+                    }
+                  />
                   <span style={{ margin: 3 }}>Email</span>
                 </HorizontalPanel>
                 <HorizontalPanel>
-                  <Switch />
+                  <Switch
+                    checked={currentClient.mailList}
+                    onChange={val =>
+                      updateClient({ ...currentClient, mailList: val })
+                    }
+                  />
                   <span style={{ margin: 3 }}>Mail</span>
                 </HorizontalPanel>
               </ListSubscriptionPanel>
@@ -180,6 +190,7 @@ const Info = ({
       >
         <Input
           defaultValue={currentClient.firstName}
+          size="small"
           onChange={e =>
             updateClient({
               ...currentClient,
@@ -193,6 +204,7 @@ const Info = ({
         txtValue={currentClient.lastName}
       >
         <Input
+          size="small"
           defaultValue={currentClient.lastName}
           onChange={e =>
             updateClient({
@@ -211,6 +223,7 @@ const Info = ({
         inline={true}
       >
         <Input
+          size="small"
           defaultValue={currentClient.title}
           onChange={e =>
             updateClient({
@@ -229,6 +242,7 @@ const Info = ({
         txtValue={currentClient.company}
       >
         <Input
+          size="small"
           defaultValue={currentClient.company}
           onChange={e =>
             updateClient({
@@ -263,6 +277,7 @@ const Address = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({
               ...currentClient,
@@ -282,6 +297,7 @@ const Address = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({
               ...currentClient,
@@ -301,6 +317,7 @@ const Address = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({ ...currentClient, city: e.currentTarget.value })
           }
@@ -314,6 +331,7 @@ const Address = ({
         inline={true}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({ ...currentClient, state: e.currentTarget.value })
           }
@@ -330,6 +348,7 @@ const Address = ({
         click={() => setClientEditMode(true)}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({ ...currentClient, country: e.currentTarget.value })
           }
@@ -344,6 +363,7 @@ const Address = ({
         click={() => setClientEditMode(true)}
       >
         <Input
+          size="small"
           onChange={e =>
             updateClient({ ...currentClient, zip: e.currentTarget.value })
           }

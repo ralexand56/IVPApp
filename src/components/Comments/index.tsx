@@ -10,14 +10,22 @@ type Props = ClientState & typeof actionCreators;
 
 class ContainerTemplate extends Component<Props, {}> {
   render() {
-    const { clients, currentClientId, deleteComment } = this.props;
+    const {
+      addComment,
+      clients,
+      currentClientId,
+      currentUser,
+      deleteComment
+    } = this.props;
 
     const currentClient =
       clients[clients.findIndex(x => x.id === currentClientId)];
 
     return (
       <Comments
+        addComment={addComment}
         currentClient={currentClient}
+        currentUser={currentUser}
         comments={currentClient.comments}
         deleteComment={deleteComment}
       />
@@ -27,5 +35,5 @@ class ContainerTemplate extends Component<Props, {}> {
 
 export default connect(
   (state: ApplicationState) => state.clientSlice,
-  actionCreators,
+  actionCreators
 )(ContainerTemplate);

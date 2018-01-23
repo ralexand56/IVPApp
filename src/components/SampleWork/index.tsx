@@ -7,8 +7,12 @@ import { ClientState } from '../../datatypes';
 import SampleWork from './SampleWork';
 
 type Props = ClientState & typeof actionCreators;
+interface AppState {
+  textInput: string;
+}
 
-class ContainerTemplate extends Component<Props, {}> {
+class ContainerTemplate extends Component<Props, AppState> {
+
   render() {
     const {
       addSampleWork,
@@ -19,6 +23,7 @@ class ContainerTemplate extends Component<Props, {}> {
       setClientEditMode,
       updateClient,
     } = this.props;
+
     const currentClient = currentClientId
       ? clients.find(x => x.id === currentClientId)
       : undefined;
@@ -40,5 +45,5 @@ class ContainerTemplate extends Component<Props, {}> {
 
 export default connect(
   (state: ApplicationState) => state.clientSlice,
-  actionCreators,
+  actionCreators
 )(ContainerTemplate);
