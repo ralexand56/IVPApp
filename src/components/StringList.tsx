@@ -8,7 +8,7 @@ interface Props {
   theme?: ThemeInterface;
   label?: string;
   list?: string[];
-  linkList?: JSX.Element[];
+  linkList?: JSX.Element[] | undefined;
   margin?: string;
 }
 

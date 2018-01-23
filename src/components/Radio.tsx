@@ -163,11 +163,11 @@ export default class Radio extends Component<Props, AppState> {
                             : null
                     }
                     <UnderLine
-                        activeLeft={this.items.length > 0
+                        activeLeft={(this.items.length > 0 && value)
                             ? this.items[this.props.items.findIndex(x => x.id === value)].offsetLeft
                             : 0
                         }
-                        activeWidth={this.items.length > 0
+                        activeWidth={(this.items.length > 0 && value)
                             ? this.items[this.props.items.findIndex(x => x.id === value)].offsetWidth
                             : 0
                         }

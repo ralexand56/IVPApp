@@ -14,6 +14,7 @@ class ContainerTemplate extends Component<Props, {}> {
       addSampleWork,
       clients,
       currentClientId,
+      deleteSampleLink,
       isInEditMode,
       setClientEditMode,
       updateClient,
@@ -27,6 +28,7 @@ class ContainerTemplate extends Component<Props, {}> {
         <SampleWork
           addSampleWork={addSampleWork}
           currentClient={currentClient}
+          deleteSampleLink={deleteSampleLink}
           isInEditMode={isInEditMode}
           setClientEditMode={setClientEditMode}
           updateClient={updateClient}

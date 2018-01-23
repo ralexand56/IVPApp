@@ -109,9 +109,9 @@ export interface Interaction {
 }
 
 export interface SampleLink {
-  id?: string;
-  src?: string;
-  isLocal?: boolean;
+  id: string;
+  src: string;
+  isLocal: boolean;
 }
 
 export interface User {

@@ -17,21 +17,21 @@ const actionCreators = {
   addComment: (
     cmt: Comment,
     client: Client,
-    currentUser: User
+    currentUser: User,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addComment(dispatch, cmt, client, currentUser);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Comment added...'
+      message: 'Comment added...',
     });
 
     dispatch({
       type: 'SET_COMMENT_TEXT',
-      newCommentText: ''
+      newCommentText: '',
     });
   },
 
@@ -41,19 +41,19 @@ const actionCreators = {
     client: Client,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addSampleWork(dispatch, linkText, isLocal, client);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Sample link added...'
+      message: 'Sample link added...',
     });
   },
 
   addClient: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const newClient: Client = {
       isActive: true,
@@ -62,111 +62,123 @@ const actionCreators = {
       lastName: 'Client',
       clientTypeId: 'XWVplrztsYm7RQeFMWzt',
       created: new Date(),
-      modified: new Date()
+      modified: new Date(),
     };
     addClient(dispatch, newClient);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   addClientType: (name: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addClientType(dispatch, name);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client type...'
+      message: 'Adding a client type...',
     });
   },
 
   addTagCategory: (name: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addTagCategory(dispatch, name);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   addTagToCategory: (
     name: string,
-    tagCategory: TagCategory
+    tagCategory: TagCategory,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addTagToCategory(dispatch, name, tagCategory);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a client...'
+      message: 'Adding a client...',
     });
   },
 
   toggleClientTag: (
     tagId: string,
     client: Client,
-    isAdd: boolean
+    isAdd: boolean,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     toggleClientTag(dispatch, tagId, client, isAdd);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding tag to client...'
+      message: 'Adding tag to client...',
     });
   },
 
   addUser: (usr: User): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     addUser(dispatch, usr);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Adding a user...'
+      message: 'Adding a user...',
     });
   },
 
   deleteComment: (id: string, client: Client): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     deleteComment(dispatch, id, client);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Comment deleted...'
+      message: 'Comment deleted...',
+    });
+  },
+
+  deleteSampleLink: (id: string, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    deleteSampleLink(dispatch, id, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Sample link deleted...',
     });
   },
 
   init: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     setUsers(dispatch);
     setClients(dispatch);
 
     dispatch({
       type: 'SET_MESSAGE',
-      message: 'Initializing...'
+      message: 'Initializing...',
     });
   },
 
   importClients: (): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const newClients = UserImport;
 
@@ -182,7 +194,7 @@ const actionCreators = {
         note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
         websites: [x.WEB.trim()],
         created: new Date(),
-        modified: new Date()
+        modified: new Date(),
       };
 
       // console.dir(newClient);
@@ -192,10 +204,10 @@ const actionCreators = {
 
   searchClients: (
     searchText: string,
-    clients: Client[]
+    clients: Client[],
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     const cats = getState()
       .clientSlice.tagCategories.filter(x => x.tags !== undefined)
@@ -223,7 +235,7 @@ const actionCreators = {
           x.company.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.phone &&
           x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
-        (x.tagIds !== undefined && findOne(x.tagIds, tags))
+        (x.tagIds !== undefined && findOne(x.tagIds, tags)),
     );
 
     //  x.tags && x.tags.findIndex(t => (t.name ? searchText
@@ -234,25 +246,25 @@ const actionCreators = {
 
     dispatch({
       type: 'SET_SEARCH_RESULTS_VISIBILITY',
-      isVisible: true
+      isVisible: true,
     });
 
     dispatch({
       type: 'SET_FILTERED_CLIENTS',
-      filteredClients
+      filteredClients,
     });
   },
 
   setSearchResultsVisibility: (isVisible: boolean) => ({
     type: 'SET_SEARCH_RESULTS_VISIBILITY',
-    isVisible
+    isVisible,
   }),
 
   setCurrentClient: (
-    clientId: string | undefined
+    clientId: string | undefined,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     clientId && dispatch({ type: 'SET_CURRENT_CLIENT', clientId: undefined });
 
@@ -261,31 +273,31 @@ const actionCreators = {
 
   setClientEditMode: (isInEditMode: boolean) => ({
     type: 'SET_CLIENT_EDIT_MODE',
-    isInEditMode
+    isInEditMode,
   }),
 
   setClientTab: (selectedClientTabId: number) => ({
     type: 'SET_CLIENT_TAB',
-    clientTabId: selectedClientTabId
+    clientTabId: selectedClientTabId,
   }),
 
   setInteractive: (isInteractive: boolean) => ({
     type: 'SET_INTERACTIVE',
-    isInteractive
+    isInteractive,
   }),
 
   updateClient: (
     client: Client,
-    isDelete: boolean = false
+    isDelete: boolean = false,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) => {
     updateClient(dispatch, client);
 
     dispatch({
       type: 'UPDATE_CLIENT',
-      client
+      client,
     });
 
     const filteredClients = getState().clientSlice.filteredClients;
@@ -294,18 +306,18 @@ const actionCreators = {
       filteredClients.length > 0 &&
       dispatch({
         type: 'SET_CURRENT_CLIENT',
-        clientId: filteredClients[0].id
+        clientId: filteredClients[0].id,
       });
   },
 
   updateCommentText: (newCommentText: string): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState
+    getState: () => ApplicationState,
   ) =>
     dispatch({
       type: 'SET_COMMENT_TEXT',
-      newCommentText
-    })
+      newCommentText,
+    }),
 };
 
 export const addClient = async (
@@ -352,7 +364,7 @@ export const addSampleWork = async (
   isLocal: boolean,
   client: Client,
 ) => {
-  const newSampleLink: SampleLink = { isLocal, src };
+  const newSampleLink: SampleLink = { isLocal, src, id: '' };
   const clientRef = await db.collection('clients').doc(client.id);
   const newSampleLinkRef = await clientRef.collection('sampleLinks').doc();
 
@@ -487,6 +499,22 @@ export const deleteComment = async (
   dispatch({
     type: 'UPDATE_CLIENT',
     client
+  });
+};
+
+export const deleteSampleLink = async (
+  dispatch: (action: KnownAction) => void,
+  id: string,
+  client: Client,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
+
+  client.sampleLinks = client.sampleLinks && client.sampleLinks.filter(x => x.id !== id);
+  clientRef.update(client);
+
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
   });
 };
 
