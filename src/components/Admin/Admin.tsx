@@ -9,7 +9,6 @@ const Search = Input.Search;
 
 interface Props {
   addClientType: typeof actionCreators.addClientType;
-  addTagCategory: typeof actionCreators.addTagCategory;
   addTagToCategory: typeof actionCreators.addTagToCategory;
   clientTypes: ClientType[];
   className?: string;
@@ -34,7 +33,6 @@ const Admin: StatelessComponent<Props> = props => (
     <HorizontalLayout>
       <Search
         placeholder="Add Tag Category..."
-        onSearch={(val: string) => props.addTagCategory(val)}
       />
       <Button>
         <Icon type="plus" />

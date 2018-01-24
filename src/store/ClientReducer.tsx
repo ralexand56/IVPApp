@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { defaultUser, ClientState, KnownAction } from '../datatypes';
+import { defaultUser, ClientState, KnownAction, TagItem } from '../datatypes';
 import { message } from 'antd';
 
 const unloadedState: ClientState = {
@@ -10,11 +10,13 @@ const unloadedState: ClientState = {
   currentClientId: undefined,
   currentUser: defaultUser,
   filteredClients: [],
-  isInEditMode: false,
+  isInEditMode: true,
   isInteractive: false,
   message: '',
   newCommentText: '',
   selectedClientTabId: 1,
+  majorTags: [],
+  minorTags: [],
   tagCategories: [],
   users: [],
 };
@@ -33,11 +35,27 @@ const reducer: Reducer<ClientState> = (
         isInEditMode: true,
       };
 
-    case 'ADD_TAG_CATEGORY':
-      return {
-        ...state,
-        tagCategories: [...state.tagCategories, action.tagCategory],
-      };
+    case 'ADD_TAG':
+      return action.isMinor
+        ? {
+            ...state,
+            minorTags: [...state.minorTags, action.tag].sort(
+              (a: TagItem, b: TagItem) =>
+               a.name && a.name.toLowerCase() > b.name!.toLowerCase() ? 1 : -1,
+            ),
+          }
+        : { ...state, majorTags: [...state.majorTags, action.tag] };
+
+    case 'SET_TAGS':
+      return action.isMinor
+        ? { ...state, minorTags: action.tags }
+        : { ...state, majorTags: action.tags };
+
+    // case 'ADD_TAG_CATEGORY':
+    //   return {
+    //     ...state,
+    //     tagCategories: [...state.tagCategories, action.tagCategory],
+    //   };
 
     case 'ADD_CLIENT_TYPE':
       return {
@@ -76,8 +94,8 @@ const reducer: Reducer<ClientState> = (
       message.success(action.message);
       return { ...state, message: action.message };
 
-    case 'SET_TAG_CATEGORIES':
-      return { ...state, tagCategories: action.tagCategories };
+    // case 'SET_TAG_CATEGORIES':
+    //   return { ...state, tagCategories: action.tagCategories };
 
     case 'SET_USERS':
       return { ...state, users: action.users };
@@ -93,13 +111,13 @@ const reducer: Reducer<ClientState> = (
           .filter(c => c.isActive),
       };
 
-    case 'UPDATE_TAG_CATEGORY':
-      return {
-        ...state,
-        tagCategories: state.tagCategories.map(
-          x => (x.id === action.tagCategory.id ? action.tagCategory : x),
-        ),
-      };
+    // case 'UPDATE_TAG_CATEGORY':
+    //   return {
+    //     ...state,
+    //     tagCategories: state.tagCategories.map(
+    //       x => (x.id === action.tagCategory.id ? action.tagCategory : x),
+    //     ),
+    //   };
 
     default:
       return state || unloadedState;

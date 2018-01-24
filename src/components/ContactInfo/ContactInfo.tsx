@@ -2,17 +2,22 @@ import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
 import { Client } from '../../datatypes';
 import EditableField from '../EditableField';
-import { Input } from 'antd';
+import { Input, Popconfirm, Button, Icon } from 'antd';
 import actionCreators from '../../actions/ClientActions';
-// import HorizontalPanel from '../HorizontalLayout';
 import StringList from '../StringList';
 import SlidingPanel from '../SlidingPanel';
 import ThemeInterface from '../../theme';
 import { formatPhone } from '../../datatypes';
+import AddEmail from './AddEmail';
+import AddLink from './AddLink';
 
 interface Props {
+  addEmail: typeof actionCreators.addEmail;
+  addLink: typeof actionCreators.addWebsite;
   className?: string;
   children?: React.ReactChild;
+  deleteEmail: typeof actionCreators.deleteEmail;
+  deleteLink: typeof actionCreators.deleteLink;
   theme?: ThemeInterface;
   isInEditMode: boolean;
   currentClient: Client;
@@ -21,10 +26,14 @@ interface Props {
 }
 
 const ContactInfo: StatelessComponent<Props> = ({
+  addEmail,
+  addLink,
   className,
   currentClient,
+  deleteEmail,
+  deleteLink,
   isInEditMode,
-  updateClient
+  updateClient,
 }) => (
   <SlidingPanel title="Contact Info">
     <div className={className}>
@@ -39,7 +48,7 @@ const ContactInfo: StatelessComponent<Props> = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              phone: formatPhone(e.currentTarget.value)
+              phone: formatPhone(e.currentTarget.value),
             })
           }
           value={currentClient.phone}
@@ -56,33 +65,97 @@ const ContactInfo: StatelessComponent<Props> = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              fax: formatPhone(e.currentTarget.value)
+              fax: formatPhone(e.currentTarget.value),
             })
           }
           value={currentClient.fax}
         />
       </EditableField>
+      {isInEditMode && (
+        <AddEmail
+          addEmail={addEmail}
+          isInEditMode={isInEditMode}
+          currentClient={currentClient}
+        />
+      )}
       <StringList
-        label="Emails (2)"
-        linkList={[
-          <a key={1} href="mailto:ralexand56@live.com">
-            {'douga@live.com'}
-          </a>,
-          <a key={2} href="mailto:ralexand56@live.com">
-            {'dougie@informars.com'}
-          </a>
-        ]}
+        label={`Emails (${
+          currentClient.emails ? currentClient.emails.length : 0
+        })`}
+        linkList={
+          currentClient.emails
+            ? currentClient.emails.map(x => (
+                <span key={x.id}>
+                  <a key={x.id} href={`mailto:${x.name}`}>
+                    {x.alias}
+                  </a>
+                  {isInEditMode && (
+                    <Popconfirm
+                      placement="top"
+                      title="Are you sure you want to delete the email link?"
+                      okText="Yes"
+                      cancelText="No"
+                      onConfirm={() => x.id && deleteEmail(x.id, currentClient)}
+                    >
+                      <Button
+                        size="small"
+                        ghost={true}
+                        style={{
+                          margin: 5,
+                        }}
+                        type="primary"
+                      >
+                        <Icon type="minus" />
+                      </Button>
+                    </Popconfirm>
+                  )}
+                </span>
+              ))
+            : []
+        }
       />
+      {isInEditMode && (
+        <AddLink
+          addLink={addLink}
+          isInEditMode={isInEditMode}
+          currentClient={currentClient}
+        />
+      )}
       <StringList
-        label="Links (2)"
-        linkList={[
-          <a key={1} href="http://www.google.com">
-            {'http://www.google.com'}
-          </a>,
-          <a key={2} href="http://www.cnet.com" target="_blank">
-            {'http://www.cnet.com'}
-          </a>
-        ]}
+        label={`Links (${
+          currentClient.websites ? currentClient.websites.length : 0
+        })`}
+        linkList={
+          currentClient.websites
+            ? currentClient.websites.map(x => (
+                <span key={x.id}>
+                  <a key={x.id} href={x.name} target="_blank">
+                    {x.alias}
+                  </a>
+                  {isInEditMode && (
+                    <Popconfirm
+                      placement="top"
+                      title="Are you sure you want to delete the link?"
+                      okText="Yes"
+                      cancelText="No"
+                      onConfirm={() => x.id && deleteLink(x.id, currentClient)}
+                    >
+                      <Button
+                        size="small"
+                        ghost={true}
+                        style={{
+                          margin: 5,
+                        }}
+                        type="primary"
+                      >
+                        <Icon type="minus" />
+                      </Button>
+                    </Popconfirm>
+                  )}
+                </span>
+              ))
+            : []
+        }
       />
     </div>
   </SlidingPanel>

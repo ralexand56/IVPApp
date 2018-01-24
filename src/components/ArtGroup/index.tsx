@@ -11,9 +11,12 @@ type Props = ClientState & typeof actionCreators;
 class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
+      addTag,
       clients,
       currentClientId,
       isInEditMode,
+      majorTags,
+      minorTags,
       setClientEditMode,
       updateClient,
     } = this.props;
@@ -24,8 +27,11 @@ class ContainerTemplate extends Component<Props, {}> {
     return (
       currentClient && (
         <ArtGroup
+          addTag={addTag}
           currentClient={currentClient}
           isInEditMode={isInEditMode}
+          majorTags={majorTags}
+          minorTags={minorTags}
           setClientEditMode={setClientEditMode}
           updateClient={updateClient}
         />

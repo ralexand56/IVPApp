@@ -13,7 +13,6 @@ class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
       addClientType,
-      addTagCategory,
       addTagToCategory,
       clientTypes,
       importClients,
@@ -24,7 +23,6 @@ class ContainerTemplate extends Component<Props, {}> {
       <ErrorBoundary>
         <Admin
           addClientType={addClientType}  
-          addTagCategory={addTagCategory}
           addTagToCategory={addTagToCategory}
           clientTypes={clientTypes}
           importClients={importClients}

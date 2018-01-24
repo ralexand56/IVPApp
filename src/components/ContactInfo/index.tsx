@@ -11,8 +11,12 @@ type Props = ClientState & typeof actionCreators;
 class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
+      addEmail,
+      addWebsite,
       clients,
       currentClientId,
+      deleteEmail,
+      deleteLink,
       isInEditMode,
       setClientEditMode,
       updateClient,
@@ -24,7 +28,11 @@ class ContainerTemplate extends Component<Props, {}> {
     return (
       currentClient && (
         <ContactInfo
+          addEmail={addEmail}
+          addLink={addWebsite}
           currentClient={currentClient}
+          deleteEmail={deleteEmail}
+          deleteLink={deleteLink}
           isInEditMode={isInEditMode}
           setClientEditMode={setClientEditMode}
           updateClient={updateClient}

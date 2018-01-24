@@ -10,7 +10,7 @@ import { Button, Icon, Input, message, Popconfirm, Upload } from 'antd';
 const Search = Input.Search;
 
 const UploadButton = () => (
-  <Button type="primary" ghost={true}>
+  <Button type="primary" ghost={true} size="small">
     <Icon type="upload" />Upload Image
   </Button>
 );
@@ -18,7 +18,7 @@ const UploadButton = () => (
 const beforeUpload = async (
   file: { type: string; size: number; name: string },
   addSampleWork: typeof actionCreators.addSampleWork,
-  currentClient: Client
+  currentClient: Client,
 ) => {
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
@@ -62,7 +62,7 @@ interface AppState {
 }
 
 class SampleWork extends Component<Props, AppState> {
-  state: AppState= {value: ''};
+  state: AppState = { value: '' };
 
   clear = () => this.setState((prevState: AppState) => ({ value: '' }));
 
@@ -75,38 +75,44 @@ class SampleWork extends Component<Props, AppState> {
       className,
       currentClient,
       deleteSampleLink,
-      isInEditMode
+      isInEditMode,
     } = this.props;
 
     return (
       <div className={className}>
         {isInEditMode ? (
-          <div>
+          <div style={{ width: '100%' }}>
             <div style={{ margin: 10 }}>
-              <Search
-                value={this.state.value}
-                enterButton="ADD"
-                placeholder="new image link"
-                size="small"
-                onChange={e => this.onChange(e.currentTarget.value)}
-                onSearch={val => {
-                  addSampleWork(val, false, currentClient);
-                  this.clear();
-                }}
-              />
-              <br />
-              or <br />
-              <Upload
-                beforeUpload={file =>
-                  beforeUpload(file, addSampleWork, currentClient)
-                }
-                name="avatar"
-                listType="text"
-                className="avatar-uploader"
-                showUploadList={false}
-              >
-                <UploadButton />
-              </Upload>
+              <div style={{ width: '100%' }}>
+                {' '}
+                <Search
+                  style={{ width: '100%' }}
+                  value={this.state.value}
+                  enterButton={<Icon type="plus" />}
+                  placeholder="new image link"
+                  size="small"
+                  onChange={e => this.onChange(e.currentTarget.value)}
+                  onSearch={val => {
+                    addSampleWork(val, false, currentClient);
+                    this.clear();
+                  }}
+                />
+              </div>
+              <div>or</div>
+              <div>
+                {' '}
+                <Upload
+                  beforeUpload={file =>
+                    beforeUpload(file, addSampleWork, currentClient)
+                  }
+                  name="avatar"
+                  listType="text"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                >
+                  <UploadButton />
+                </Upload>
+              </div>
             </div>
             {currentClient.sampleLinks && (
               <StringList
@@ -114,16 +120,17 @@ class SampleWork extends Component<Props, AppState> {
                 linkList={renderLinkElements(
                   currentClient.sampleLinks,
                   currentClient,
-                  deleteSampleLink
+                  deleteSampleLink,
                 )}
               />
             )}
           </div>
-        ) : (
+        ) : currentClient.sampleLinks && currentClient.sampleLinks.length > 0 ? (
           <Carousel showArrows={true} autoPlay={true} infiniteLoop={true}>
-            {currentClient.sampleLinks &&
-              renderImageLinks(currentClient.sampleLinks)}
+            {renderImageLinks(currentClient.sampleLinks)}
           </Carousel>
+        ) : (
+          <span>No images</span>
         )}
       </div>
     );
@@ -133,7 +140,7 @@ class SampleWork extends Component<Props, AppState> {
 const renderLinkElements = (
   sampleLinks: SampleLink[],
   currentClient: Client,
-  deleteSampleLink: typeof actionCreators.deleteSampleLink
+  deleteSampleLink: typeof actionCreators.deleteSampleLink,
 ) =>
   sampleLinks.map(x => (
     <span key={x.id}>
@@ -149,7 +156,7 @@ const renderLinkElements = (
           size="small"
           ghost={true}
           style={{
-            margin: 5
+            margin: 5,
           }}
           type="primary"
         >
@@ -162,6 +169,7 @@ const renderLinkElements = (
 const StyledSampleWork = styled(SampleWork)`
   display: flex;
   width: 100%;
+  color: ${props => props.theme.headingBackground2 || 'black'};
   font-size: 0.9em;
   justify-content: ${props => (props.isInEditMode ? 'flex-start' : 'center')};
   img {

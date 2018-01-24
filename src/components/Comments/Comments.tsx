@@ -50,7 +50,7 @@ class Comments extends Component<Props, AppState> {
           {currentUser && (
             <Search
               value={this.state.value}
-              enterButton="ADD"
+              enterButton={<Icon type="plus"/>}
               placeholder="new comment"
               size="small"
               onChange={e => this.onChange(e.currentTarget.value)}

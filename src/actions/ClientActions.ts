@@ -4,9 +4,10 @@ import {
   Comment,
   db,
   KnownAction,
+  NameId,
   UserImport,
   SampleLink,
-  Tag,
+  TagItem,
   TagCategory,
   User,
 } from '../datatypes';
@@ -32,6 +33,37 @@ const actionCreators = {
     dispatch({
       type: 'SET_COMMENT_TEXT',
       newCommentText: '',
+    });
+  },
+
+  addEmail: (email: NameId, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    addEmail(dispatch, email, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Email added to client...',
+    });
+  },
+
+  addWebsite: (link: NameId, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    link.name =
+      link.name.toLowerCase().startsWith('http') ||
+      link.name.toLowerCase().startsWith('https') ||
+      link.name.toLowerCase().startsWith('ftp')
+        ? link.name
+        : `http://${link.name}`;
+
+    addWebsite(dispatch, link, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Link added to client...',
     });
   },
 
@@ -84,16 +116,21 @@ const actionCreators = {
     });
   },
 
-  addTagCategory: (name: string): AppThunkAction<KnownAction> => (
+  addTag: (
+    name: string,
+    isMinor: boolean = false,
+  ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
-    addTagCategory(dispatch, name);
+    if (name.trim() !== '') {
+      addTag(dispatch, name.trim(), isMinor);
 
-    dispatch({
-      type: 'SET_MESSAGE',
-      message: 'Adding a client...',
-    });
+      dispatch({
+        type: 'SET_MESSAGE',
+        message: 'Adding a tag...',
+      });
+    }
   },
 
   addTagToCategory: (
@@ -108,6 +145,30 @@ const actionCreators = {
     dispatch({
       type: 'SET_MESSAGE',
       message: 'Adding a client...',
+    });
+  },
+
+  deleteEmail: (id: string, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    deleteEmail(dispatch, id, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Email deleted...',
+    });
+  },
+
+  deleteLink: (id: string, client: Client): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    deleteLink(dispatch, id, client);
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Email deleted...',
     });
   },
 
@@ -212,11 +273,11 @@ const actionCreators = {
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
-    const cats = getState()
-      .clientSlice.tagCategories.filter(x => x.tags !== undefined)
-      .map(y => y.tags || []);
+    // const cats = getState()
+    //   .clientSlice.tagCategories.filter(x => x.tags !== undefined)
+    //   .map(y => y.tags || []);
 
-    const tags = cats.reduce((x, y) => x.concat(y), []).map(c => c.id);
+    // const tags = cats.reduce((x, y) => x.concat(y), []).map(c => c.id);
 
     const filteredClients = clients.filter(
       x =>
@@ -237,8 +298,7 @@ const actionCreators = {
         (x.company &&
           x.company.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.phone &&
-          x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
-        (x.tagIds !== undefined && findOne(x.tagIds, tags)),
+          x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1),
     );
 
     //  x.tags && x.tags.findIndex(t => (t.name ? searchText
@@ -362,6 +422,46 @@ export const addComment = async (
   });
 };
 
+export const addEmail = async (
+  dispatch: (action: KnownAction) => void,
+  newEmail: NameId,
+  client: Client,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
+  const newEmailRef = await clientRef.collection('emails').doc();
+
+  newEmail.id = newEmailRef.id;
+
+  const emails = [...(client.emails || []), newEmail];
+  clientRef.update({ emails: emails });
+
+  client.emails = emails;
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
+  });
+};
+
+export const addWebsite = async (
+  dispatch: (action: KnownAction) => void,
+  newLink: NameId,
+  client: Client,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
+  const newLinkRef = await clientRef.collection('websites').doc();
+
+  newLink.id = newLinkRef.id;
+
+  const websites = [...(client.websites || []), newLink];
+  clientRef.update({ websites: websites });
+
+  client.websites = websites;
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
+  });
+};
+
 export const addSampleWork = async (
   dispatch: (action: KnownAction) => void,
   src: string,
@@ -384,26 +484,26 @@ export const addSampleWork = async (
   });
 };
 
-export const addTagCategory = async (
+export const addTag = async (
   dispatch: (action: KnownAction) => void,
   name: string,
+  isMinor: boolean,
 ) => {
-  const newTagCategory: TagCategory = {
+  const catCollection = isMinor ? 'minorTags' : 'majorTags';
+  const newTag: TagItem = {
     name,
   };
-  const categoriesRef = await db
-    .collection('tagCategories')
-    .add(newTagCategory);
+
+  const categoriesRef = await db.collection(catCollection).add(newTag);
+
   db
-    .collection('tagCategories')
+    .collection(catCollection)
     .doc(categoriesRef.id)
     .update({ id: categoriesRef.id });
-  newTagCategory.id = categoriesRef.id;
 
-  dispatch({
-    type: 'ADD_TAG_CATEGORY',
-    tagCategory: newTagCategory,
-  });
+  newTag.id = categoriesRef.id;
+
+  dispatch({ type: 'ADD_TAG', tag: newTag, isMinor });
 };
 
 export const addClientType = async (
@@ -431,7 +531,7 @@ export const addTagToCategory = async (
   name: string,
   tagCategory: TagCategory,
 ) => {
-  const newTag: Tag = {
+  const newTag: TagItem = {
     id: '',
     name,
   };
@@ -506,6 +606,38 @@ export const deleteComment = async (
   });
 };
 
+export const deleteEmail = async (
+  dispatch: (action: KnownAction) => void,
+  id: string,
+  client: Client,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
+
+  client.emails = client.emails && client.emails.filter(x => x.id !== id);
+  clientRef.update(client);
+
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
+  });
+};
+
+export const deleteLink = async (
+  dispatch: (action: KnownAction) => void,
+  id: string,
+  client: Client,
+) => {
+  const clientRef = await db.collection('clients').doc(client.id);
+
+  client.websites = client.websites && client.websites.filter(x => x.id !== id);
+  clientRef.update(client);
+
+  dispatch({
+    type: 'UPDATE_CLIENT',
+    client,
+  });
+};
+
 export const deleteSampleLink = async (
   dispatch: (action: KnownAction) => void,
   id: string,
@@ -546,13 +678,6 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
       );
   });
 
-  // clients &&
-  // clients.length > 0 &&
-  // dispatch({
-  //   type: 'SET_CURRENT_CLIENT',
-  //   clientId: clients[0].id,
-  // });
-
   dispatch({
     type: 'SET_FILTERED_CLIENTS',
     filteredClients: clients,
@@ -561,6 +686,19 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
   dispatch({
     type: 'SET_CLIENTS',
     clients,
+  });
+};
+
+export const setTags = async (dispatch: (action: KnownAction) => void, isMinor: boolean) => {
+  const tagType = isMinor ? 'minorTags' : 'majorTags';
+  const tagsRef = await db.collection(tagType);
+  const tagsList = await tagsRef.orderBy('name').get();
+  const tags: TagItem[] = await tagsList.docs.map(x => x.data());
+
+  dispatch({
+    type: 'SET_TAGS',
+    tags,
+    isMinor,
   });
 };
 
@@ -640,6 +778,8 @@ export const init = (
   setUsers(dispatch);
   setClients(dispatch);
   setClientTypes(dispatch);
+  setTags(dispatch, true);
+  setTags(dispatch, false);
   setTagCategories(dispatch);
   watchClientChanges(dispatch, getState);
 };
@@ -680,10 +820,10 @@ export const watchClientChanges = async (
 //   });
 // };
 
-const findOne = (haystack: string[], arr: string[]) => {
-  return arr.some(v => {
-    return haystack.indexOf(v) >= 0;
-  });
-};
+// const findOne = (haystack: string[], arr: string[]) => {
+//   return arr.some(v => {
+//     return haystack.indexOf(v) >= 0;
+//   });
+// };
 
 export default actionCreators;
