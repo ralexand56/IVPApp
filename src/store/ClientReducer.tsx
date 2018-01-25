@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { defaultUser, ClientState, KnownAction, TagItem } from '../datatypes';
+import { defaultUser, ClientState, KnownAction, tagSort } from '../datatypes';
 import { message } from 'antd';
 
 const unloadedState: ClientState = {
@@ -15,6 +15,7 @@ const unloadedState: ClientState = {
   message: '',
   newCommentText: '',
   selectedClientTabId: 1,
+  affiliations: [],
   majorTags: [],
   minorTags: [],
   tagCategories: [],
@@ -26,6 +27,12 @@ const reducer: Reducer<ClientState> = (
   action: KnownAction,
 ) => {
   switch (action.type) {
+    case 'ADD_AFFILIATION':
+      return {
+        ...state,
+        affiliations: [...state.minorTags, action.affiliation].sort(tagSort),
+      };
+
     case 'ADD_CLIENT':
       return {
         ...state,
@@ -39,10 +46,7 @@ const reducer: Reducer<ClientState> = (
       return action.isMinor
         ? {
             ...state,
-            minorTags: [...state.minorTags, action.tag].sort(
-              (a: TagItem, b: TagItem) =>
-               a.name && a.name.toLowerCase() > b.name!.toLowerCase() ? 1 : -1,
-            ),
+            minorTags: [...state.minorTags, action.tag].sort(tagSort),
           }
         : { ...state, majorTags: [...state.majorTags, action.tag] };
 
@@ -50,12 +54,6 @@ const reducer: Reducer<ClientState> = (
       return action.isMinor
         ? { ...state, minorTags: action.tags }
         : { ...state, majorTags: action.tags };
-
-    // case 'ADD_TAG_CATEGORY':
-    //   return {
-    //     ...state,
-    //     tagCategories: [...state.tagCategories, action.tagCategory],
-    //   };
 
     case 'ADD_CLIENT_TYPE':
       return {
@@ -65,6 +63,9 @@ const reducer: Reducer<ClientState> = (
 
     case 'SET_SEARCH_RESULTS_VISIBILITY':
       return { ...state, searchResultsIsVisible: action.isVisible };
+
+    case 'SET_AFFILIATIONS':
+      return { ...state, affiliations: action.affiliations };
 
     case 'SET_CLIENTS':
       return { ...state, clients: action.clients };

@@ -10,6 +10,7 @@ import {
   TagItem,
   TagCategory,
   User,
+  tagSort,
 } from '../datatypes';
 import { AppThunkAction, ApplicationState } from '../store';
 import firebase from 'firebase';
@@ -116,21 +117,85 @@ const actionCreators = {
     });
   },
 
+  addAffiliation: (newAffiliation: TagItem): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding an affiliation...',
+    });
+
+    dispatch({ type: 'ADD_AFFILIATION', affiliation: newAffiliation });
+  },
+
   addTag: (
-    name: string,
+    newTag: TagItem,
     isMinor: boolean = false,
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
-    if (name.trim() !== '') {
-      addTag(dispatch, name.trim(), isMinor);
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: 'Adding a tag...',
+    });
 
-      dispatch({
-        type: 'SET_MESSAGE',
-        message: 'Adding a tag...',
-      });
+    dispatch({ type: 'ADD_TAG', tag: newTag, isMinor });
+  },
+
+  addAffiliationToClient: (
+    affiliation: TagItem,
+    client: Client,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    const affiliations: TagItem[] =
+      client.affiliations !== undefined ? client.affiliations : [];
+
+    client.affiliations = [...affiliations, affiliation];
+
+    updateClient(dispatch, client);
+
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: `${affiliation.name} tag added to client...`,
+    });
+  },
+
+  addTagToClient: (
+    tag: TagItem,
+    client: Client,
+    isMinor: boolean = false,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    if (isMinor) {
+      const minorTags: TagItem[] = client.minorTags ? client.minorTags : [];
+      client.minorTags = [...minorTags, tag];
+    } else {
+      const majorTags: TagItem[] = client.majorTags ? client.majorTags : [];
+      client.majorTags = [...majorTags, tag];
     }
+
+    updateClient(dispatch, client);
+
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: `${tag.name} tag added to client...`,
+    });
   },
 
   addTagToCategory: (
@@ -323,6 +388,53 @@ const actionCreators = {
     isVisible,
   }),
 
+  setClientAffiliations: (
+    affiliations: TagItem[],
+    client: Client,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    client.affiliations = affiliations.sort(tagSort);
+
+    updateClient(dispatch, client);
+
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: `Client affiliation updated...`,
+    });
+  },
+
+  setClientTags: (
+    tags: TagItem[],
+    client: Client,
+    isMinor: boolean = false,
+  ): AppThunkAction<KnownAction> => (
+    dispatch: (action: KnownAction) => void,
+    getState: () => ApplicationState,
+  ) => {
+    isMinor
+      ? (client.minorTags = tags.sort(tagSort))
+      : (client.majorTags = tags.sort(tagSort));
+
+    updateClient(dispatch, client);
+
+    dispatch({
+      type: 'UPDATE_CLIENT',
+      client,
+    });
+
+    dispatch({
+      type: 'SET_MESSAGE',
+      message: `Client tags updated...`,
+    });
+  },
+
   setCurrentClient: (
     clientId: string | undefined,
   ): AppThunkAction<KnownAction> => (
@@ -484,26 +596,53 @@ export const addSampleWork = async (
   });
 };
 
-export const addTag = async (
-  dispatch: (action: KnownAction) => void,
-  name: string,
-  isMinor: boolean,
-) => {
-  const catCollection = isMinor ? 'minorTags' : 'majorTags';
-  const newTag: TagItem = {
-    name,
-  };
+export const addAffiliationToFireStore = async (name: string) => {
+  if (name.trim() !== '') {
+    const newAffiliation: TagItem = {
+      name,
+    };
 
-  const categoriesRef = await db.collection(catCollection).add(newTag);
+    const affiliationRef = await db
+      .collection('affiliations')
+      .add(newAffiliation);
 
-  db
-    .collection(catCollection)
-    .doc(categoriesRef.id)
-    .update({ id: categoriesRef.id });
+    db
+      .collection('affiliations')
+      .doc(affiliationRef.id)
+      .update({ id: affiliationRef.id });
 
-  newTag.id = categoriesRef.id;
+    newAffiliation.id = affiliationRef.id;
 
-  dispatch({ type: 'ADD_TAG', tag: newTag, isMinor });
+    // dispatch({ type: 'ADD_TAG', tag: newTag, isMinor });
+
+    return newAffiliation;
+  }
+
+  return null;
+};
+
+export const addTagToFireStore = async (name: string, isMinor: boolean) => {
+  if (name.trim() !== '') {
+    const catCollection = isMinor ? 'minorTags' : 'majorTags';
+    const newTag: TagItem = {
+      name,
+    };
+
+    const categoriesRef = await db.collection(catCollection).add(newTag);
+
+    db
+      .collection(catCollection)
+      .doc(categoriesRef.id)
+      .update({ id: categoriesRef.id });
+
+    newTag.id = categoriesRef.id;
+
+    // dispatch({ type: 'ADD_TAG', tag: newTag, isMinor });
+
+    return newTag;
+  }
+
+  return null;
 };
 
 export const addClientType = async (
@@ -689,7 +828,10 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
   });
 };
 
-export const setTags = async (dispatch: (action: KnownAction) => void, isMinor: boolean) => {
+export const setTags = async (
+  dispatch: (action: KnownAction) => void,
+  isMinor: boolean,
+) => {
   const tagType = isMinor ? 'minorTags' : 'majorTags';
   const tagsRef = await db.collection(tagType);
   const tagsList = await tagsRef.orderBy('name').get();
@@ -699,6 +841,19 @@ export const setTags = async (dispatch: (action: KnownAction) => void, isMinor: 
     type: 'SET_TAGS',
     tags,
     isMinor,
+  });
+};
+
+export const setAffiliations = async (
+  dispatch: (action: KnownAction) => void,
+) => {
+  const affiliationRef = await db.collection('affiliations');
+  const affiliationList = await affiliationRef.orderBy('name').get();
+  const affiliations: TagItem[] = await affiliationList.docs.map(x => x.data());
+
+  dispatch({
+    type: 'SET_AFFILIATIONS',
+    affiliations,
   });
 };
 
@@ -802,8 +957,6 @@ export const watchClientChanges = async (
   const currentClientRef = await db.collection('currentClientIds').doc(userId);
 
   currentClientRef.onSnapshot(snapShot => {
-    // console.dir(snapShot);
-
     snapShot.exists &&
       dispatch({
         type: 'SET_CURRENT_CLIENT',

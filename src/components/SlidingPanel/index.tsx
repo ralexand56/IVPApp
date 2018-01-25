@@ -7,6 +7,7 @@ import { HeaderStyle } from '../../datatypes';
 
 interface Props {
   background?: string;
+  border?: string;
   children?: React.ReactChild | Element[];
   className?: string;
   color?: string;
@@ -128,6 +129,7 @@ class Pop extends Component<Props, {}> {
 }
 
 const StyledPop = styled(Pop)`
+  border: ${props => props.border || 'initial'};
   background: ${props =>
     props.background ||
     'white' ||

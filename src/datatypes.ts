@@ -1,3 +1,4 @@
+import { TagItem } from './datatypes';
 import { keyframes } from 'styled-components';
 import ThemeInterface from './theme';
 import firebase from 'firebase';
@@ -43,6 +44,7 @@ export interface ClientState {
   majorTags: TagItem[];
   minorTags: TagItem[];
   newCommentText: string;
+  affiliations: TagItem[];
   searchResultsIsVisible: boolean;
   selectedClientTabId: number;
   message: string;
@@ -75,6 +77,9 @@ export interface Client {
   clientTypeId?: string;
   emailList?: boolean;
   mailList?: boolean;
+  affiliations?: TagItem[];
+  majorTags?: TagItem[];
+  minorTags?: TagItem[];
   assets?: Asset[];
   comments?: Comment[];
   interactions?: Interaction[];
@@ -146,11 +151,8 @@ export interface TagItem {
   name?: string;
 }
 
-// export interface Tag {
-//   id: string;
-//   category?: TagCategory;
-//   name?: string;
-// }
+export const tagSort = (a: TagItem, b: TagItem) =>
+  a.name && a.name.toLowerCase() > b.name!.toLowerCase() ? 1 : -1;
 
 export const validateEmail = (inputText: string) => {
   const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -167,6 +169,7 @@ export const validateUrl = (inputText: string) => {
 };
 
 export type KnownAction =
+  | AddAffiliationAction
   | AddClientAction
   | AddSampleLinkAction
   | AddTagCategoryAction
@@ -175,6 +178,7 @@ export type KnownAction =
   | AddUserAction
   | DeleteCommentAction
   | InitAction
+  | SetAffiliationsAction
   | SetFilteredClientsAction
   | SetClientEditModeAction
   | SetClientTabAction
@@ -190,6 +194,11 @@ export type KnownAction =
   | SetUsersAction
   | UpdateClientAction
   | UpdateTagCategory;
+
+export interface AddAffiliationAction {
+  type: 'ADD_AFFILIATION';
+  affiliation: TagItem;
+}
 
 export interface AddClientAction {
   type: 'ADD_CLIENT';
@@ -225,6 +234,11 @@ export interface AddUserAction {
 export interface DeleteCommentAction {
   type: 'DELETE_COMMENT';
   id: string;
+}
+
+export interface SetAffiliationsAction {
+  type: 'SET_AFFILIATIONS';
+  affiliations: TagItem[];
 }
 
 export interface SetClientsAction {

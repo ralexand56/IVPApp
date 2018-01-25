@@ -13,6 +13,7 @@ class ContainerTemplate extends Component<Props, {}> {
     const {
       addClient,
       clients,
+      clientTypes,
       currentClientId,
       isInEditMode,
       isInteractive,
@@ -28,6 +29,7 @@ class ContainerTemplate extends Component<Props, {}> {
     return (
       <App
         addClient={addClient}
+        clientTypes={clientTypes}
         currentClient={currentClient}
         isInEditMode={isInEditMode}
         isInteractive={isInteractive}

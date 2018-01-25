@@ -1,12 +1,12 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
 import ThemeInterface from '../../theme';
-import { Client } from '../../datatypes';
+import { Client, ClientType } from '../../datatypes';
 import ContactInfo from '../ContactInfo';
 import HorizontalPanel from '../HorizontalLayout';
 import SlidingPanel from '../SlidingPanel';
 import EditableField from '../EditableField';
-import { Button, Icon, Input, Switch } from 'antd';
+import { Button, Icon, Input, Select, Switch } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import Radio from '../Radio';
 import ArtGroup from '../ArtGroup';
@@ -14,9 +14,12 @@ import Comments from '../Comments';
 import SampleWork from '../SampleWork';
 // import Slider from 'react-slick';
 
+const Option = Select.Option;
+
 interface Props {
   className?: string;
   isInEditMode: boolean;
+  clientTypes: ClientType[];
   currentClient: Client;
   children?: React.ReactChild;
   addClient: typeof actionCreators.addClient;
@@ -33,11 +36,12 @@ const margin = '0.1em';
 const Index: StatelessComponent<Props> = ({
   addClient,
   className,
+  clientTypes,
   currentClient,
   isInEditMode,
   setClientEditMode,
   setCurrentClient,
-  updateClient
+  updateClient,
 }) => {
   return (
     <div className={className}>
@@ -87,6 +91,7 @@ const Index: StatelessComponent<Props> = ({
           <Column1>
             <SlidingPanel margin={margin} title="info">
               <Info
+                clientTypes={clientTypes}
                 currentClient={currentClient}
                 isInEditMode={isInEditMode}
                 setClientEditMode={setClientEditMode}
@@ -151,108 +156,144 @@ const ListSubscriptionPanel = styled.div`
 `;
 
 const Info = ({
+  clientTypes,
   currentClient,
   isInEditMode,
   setClientEditMode,
-  updateClient
+  updateClient,
 }: {
+  clientTypes: ClientType[];
   currentClient: Client;
   isInEditMode: boolean;
   setClientEditMode: typeof actionCreators.setClientEditMode;
   updateClient: typeof actionCreators.updateClient;
 }) => (
   <InfoPanel>
-    <HorizontalPanel>
-      <EditableField
-        isInEditMode={isInEditMode}
-        txtValue={
-          currentClient.salutation ? Salutations[currentClient.salutation] : ''
-        }
-      >
-        <Radio
-          items={[
-            { id: 1, name: 'Mr.' },
-            { id: 2, name: 'Mrs.' },
-            { id: 3, name: 'Ms.' }
-          ]}
-          onChange={(id: number) =>
-            updateClient({
-              ...currentClient,
-              salutation: id
-            })
+    <div style={{ flex: 1 }}>
+      {' '}
+      <HorizontalPanel>
+        <EditableField
+          isInEditMode={isInEditMode}
+          txtValue={
+            currentClient.salutation
+              ? Salutations[currentClient.salutation]
+              : ''
           }
-          value={currentClient.salutation || undefined}
-        />
-      </EditableField>
-      <EditableField
-        isInEditMode={isInEditMode}
-        txtValue={currentClient.firstName}
+        >
+          <Radio
+            items={[
+              { id: 1, name: 'Mr.' },
+              { id: 2, name: 'Mrs.' },
+              { id: 3, name: 'Ms.' },
+            ]}
+            onChange={(id: number) =>
+              updateClient({
+                ...currentClient,
+                salutation: id,
+              })
+            }
+            value={currentClient.salutation || undefined}
+          />
+        </EditableField>
+        <EditableField
+          isInEditMode={isInEditMode}
+          txtValue={currentClient.firstName}
+        >
+          <Input
+            defaultValue={currentClient.firstName}
+            size="small"
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                firstName: e.currentTarget.value,
+              })
+            }
+          />
+        </EditableField>
+        <EditableField
+          isInEditMode={isInEditMode}
+          txtValue={currentClient.lastName}
+        >
+          <Input
+            size="small"
+            defaultValue={currentClient.lastName}
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                lastName: e.currentTarget.value,
+              })
+            }
+          />
+        </EditableField>
+      </HorizontalPanel>{' '}
+      <HorizontalPanel>
+        <EditableField
+          isInEditMode={isInEditMode}
+          label="Title"
+          txtValue={currentClient.title}
+          inline={true}
+        >
+          <Input
+            size="small"
+            defaultValue={currentClient.title}
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                title: e.currentTarget.value,
+              })
+            }
+          />
+        </EditableField>
+      </HorizontalPanel>
+      <HorizontalPanel>
+        <EditableField
+          isInEditMode={isInEditMode}
+          label="Company"
+          inline={true}
+          txtValue={currentClient.company}
+        >
+          <Input
+            size="small"
+            defaultValue={currentClient.company}
+            onChange={e =>
+              updateClient({
+                ...currentClient,
+                company: e.currentTarget.value,
+              })
+            }
+          />
+        </EditableField>
+      </HorizontalPanel>
+    </div>
+    <div style={{ flex: 1, height: '100%', border: '0px solid red' }}>
+      <SlidingPanel
+        title="Client Group"
+        color="#64c1a1"
+        border="1px solid #64c1a1"
       >
-        <Input
-          defaultValue={currentClient.firstName}
-          size="small"
-          onChange={e =>
-            updateClient({
-              ...currentClient,
-              firstName: e.currentTarget.value
-            })
+        <EditableField
+          txtValue={
+            clientTypes.find(x => x.id === currentClient.clientTypeId)!.name
           }
-        />
-      </EditableField>
-      <EditableField
-        isInEditMode={isInEditMode}
-        txtValue={currentClient.lastName}
-      >
-        <Input
-          size="small"
-          defaultValue={currentClient.lastName}
-          onChange={e =>
-            updateClient({
-              ...currentClient,
-              lastName: e.currentTarget.value
-            })
-          }
-        />
-      </EditableField>
-    </HorizontalPanel>{' '}
-    <HorizontalPanel>
-      <EditableField
-        isInEditMode={isInEditMode}
-        label="Title"
-        txtValue={currentClient.title}
-        inline={true}
-      >
-        <Input
-          size="small"
-          defaultValue={currentClient.title}
-          onChange={e =>
-            updateClient({
-              ...currentClient,
-              title: e.currentTarget.value
-            })
-          }
-        />
-      </EditableField>
-    </HorizontalPanel>
-    <HorizontalPanel>
-      <EditableField
-        isInEditMode={isInEditMode}
-        label="Company"
-        inline={true}
-        txtValue={currentClient.company}
-      >
-        <Input
-          size="small"
-          defaultValue={currentClient.company}
-          onChange={e =>
-            updateClient({
-              ...currentClient,
-              company: e.currentTarget.value
-            })
-          }
-        />
-      </EditableField>
-    </HorizontalPanel>
+          isInEditMode={isInEditMode}
+        >
+          <>
+            <Select
+              style={{ width: 150 }}
+              value={currentClient.clientTypeId}
+              onChange={val =>
+                updateClient({
+                  ...currentClient,
+                  clientTypeId: val.toString(),
+                })
+              }
+            >
+              {clientTypes.map(x => <Option key={x.id}>{x.name}</Option>)}
+            </Select>
+          </>
+        </EditableField>
+      </SlidingPanel>
+    </div>
   </InfoPanel>
 );
 
@@ -260,7 +301,7 @@ const Address = ({
   currentClient,
   isInEditMode,
   setClientEditMode,
-  updateClient
+  updateClient,
 }: {
   currentClient: Client;
   isInEditMode: boolean;
@@ -281,7 +322,7 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address1: e.currentTarget.value
+              address1: e.currentTarget.value,
             })
           }
           value={currentClient.address1}
@@ -301,7 +342,7 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address2: e.currentTarget.value
+              address2: e.currentTarget.value,
             })
           }
           value={currentClient.address2}
@@ -382,8 +423,12 @@ const AddressPanel = styled.div`
 
 const InfoPanel = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
   padding: 5;
+  width: 100%;
+  color: ${props => props.theme.headingBackground2 || 'black'};
+  font-size: 0.9em;
 `;
 
 const CenterPanel = styled.div`

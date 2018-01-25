@@ -12,12 +12,14 @@ class ContainerTemplate extends Component<Props, {}> {
   render() {
     const {
       addTag,
+      addTagToClient,
       clients,
       currentClientId,
       isInEditMode,
       majorTags,
       minorTags,
       setClientEditMode,
+      setClientTags,
       updateClient,
     } = this.props;
     const currentClient = currentClientId
@@ -28,11 +30,13 @@ class ContainerTemplate extends Component<Props, {}> {
       currentClient && (
         <ArtGroup
           addTag={addTag}
+          addTagToClient={addTagToClient}
           currentClient={currentClient}
           isInEditMode={isInEditMode}
           majorTags={majorTags}
           minorTags={minorTags}
           setClientEditMode={setClientEditMode}
+          setClientTags={setClientTags}
           updateClient={updateClient}
         />
       )

@@ -3,7 +3,7 @@ import './App.css';
 import AppHeader from '../AppHeader';
 import ClientList from '../ClientList';
 // import ClientInfo from '../ClientInfo';
-import { Client } from '../../datatypes';
+import { Client, ClientType } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
 import { Affix, Switch } from 'antd';
 import ClientMobileLayout from '../ClientMobileLayout';
@@ -11,6 +11,7 @@ import ClientDesktopLayout from '../ClientDesktopLayout';
 
 interface Props {
   addClient: typeof actionCreators.addClient;
+  clientTypes: ClientType[];
   currentClient: Client | undefined;
   setCurrentClient: typeof actionCreators.setCurrentClient;
   setClientEditMode: typeof actionCreators.setClientEditMode;
@@ -24,6 +25,7 @@ export default class App extends Component<Props, {}> {
   render() {
     const {
       addClient,
+      clientTypes,
       currentClient,
       isInEditMode,
       isInteractive,
@@ -40,6 +42,7 @@ export default class App extends Component<Props, {}> {
           <>
             <ClientDesktopLayout
               addClient={addClient}
+              clientTypes={clientTypes}
               isInEditMode={isInEditMode}
               currentClient={currentClient}
               setClientEditMode={setClientEditMode}
