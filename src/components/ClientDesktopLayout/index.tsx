@@ -1,17 +1,18 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
 import ThemeInterface from '../../theme';
-import { Client, ClientType } from '../../datatypes';
+import { Client, ClientType, State } from '../../datatypes';
 import ContactInfo from '../ContactInfo';
 import HorizontalPanel from '../HorizontalLayout';
 import SlidingPanel from '../SlidingPanel';
 import EditableField from '../EditableField';
-import { Button, Icon, Input, Select, Switch } from 'antd';
+import { Button, Icon, Input, Select, Switch, Popconfirm } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import Radio from '../Radio';
 import ArtGroup from '../ArtGroup';
 import Comments from '../Comments';
 import SampleWork from '../SampleWork';
+import HorizontalLayout from '../HorizontalLayout';
 // import Slider from 'react-slick';
 
 const Option = Select.Option;
@@ -25,6 +26,7 @@ interface Props {
   addClient: typeof actionCreators.addClient;
   setClientEditMode: typeof actionCreators.setClientEditMode;
   setCurrentClient: typeof actionCreators.setCurrentClient;
+  stateList: State[];
   theme?: ThemeInterface;
   updateClient: typeof actionCreators.updateClient;
 }
@@ -41,105 +43,134 @@ const Index: StatelessComponent<Props> = ({
   isInEditMode,
   setClientEditMode,
   setCurrentClient,
+  stateList,
   updateClient,
 }) => {
   return (
-    <div className={className}>
-      <CenterPanel>
-        <ActionHeader>
-          <Button
-            style={{ margin: 3 }}
-            size="small"
-            ghost={true}
-            onClick={() => addClient()}
-          >
-            <span style={{ margin: 3 }}>
-              <Icon type="plus" />
-            </span>
-          </Button>
-          {!isInEditMode ? (
+    <div
+      id="parent"
+      className={className}
+      onClick={e => setCurrentClient(undefined)}
+    >
+      <div
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
+        {' '}
+        <CenterPanel>
+          <ActionHeader>
             <Button
               style={{ margin: 3 }}
               size="small"
               ghost={true}
-              onClick={() => setClientEditMode(true)}
+              onClick={() => addClient()}
             >
               <span style={{ margin: 3 }}>
-                <Icon type="edit" />
+                <Icon type="plus" />
               </span>
             </Button>
-          ) : (
+            {!isInEditMode ? (
+              <Button
+                style={{ margin: 3 }}
+                size="small"
+                ghost={true}
+                onClick={() => setClientEditMode(true)}
+              >
+                <span style={{ margin: 3 }}>
+                  <Icon type="edit" />
+                </span>
+              </Button>
+            ) : (
+              <Button
+                style={{ margin: 3 }}
+                size="small"
+                ghost={true}
+                onClick={() => setClientEditMode(false)}
+              >
+                <span style={{ margin: 3 }}>Done</span>
+              </Button>
+            )}
+            <Popconfirm
+              placement="top"
+              title="Are you sure you want to remove the client?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => updateClient({ ...currentClient, isActive: false })}
+            >
+              <Button
+                size="small"
+                ghost={true}
+                style={{ margin: 5 }}
+                type="primary"
+              >
+                <Icon type="delete" />
+              </Button>
+            </Popconfirm>
             <Button
               style={{ margin: 3 }}
               size="small"
               ghost={true}
-              onClick={() => setClientEditMode(false)}
+              onClick={() => setCurrentClient(undefined)}
             >
-              <span style={{ margin: 3 }}>Done</span>
+              <Icon type="double-left" />Back to Client List
             </Button>
-          )}
-          <Button
-            style={{ margin: 3 }}
-            size="small"
-            ghost={true}
-            onClick={() => setCurrentClient(undefined)}
-          >
-            <Icon type="double-left" />Back to Client List
-          </Button>
-        </ActionHeader>
-        <MainPanel>
-          <Column1>
-            <SlidingPanel margin={margin} title="info">
-              <Info
-                clientTypes={clientTypes}
-                currentClient={currentClient}
-                isInEditMode={isInEditMode}
-                setClientEditMode={setClientEditMode}
-                updateClient={updateClient}
-              />
-            </SlidingPanel>
-            <SlidingPanel margin={margin} title="Address">
-              <Address
-                currentClient={currentClient}
-                isInEditMode={isInEditMode}
-                setClientEditMode={setClientEditMode}
-                updateClient={updateClient}
-              />
-            </SlidingPanel>
-            <ArtGroup />
-            <ContactInfo />
-            <Comments />
-          </Column1>
-          <Column2>
-            <SlidingPanel margin={margin} title="Sample Work">
-              <SampleWork />
-            </SlidingPanel>
-            <SlidingPanel margin={margin} title="Additional Tags" />
-            <SlidingPanel margin={margin} title="List Subscription">
-              <ListSubscriptionPanel>
-                <HorizontalPanel>
-                  <Switch
-                    checked={currentClient.emailList}
-                    onChange={val =>
-                      updateClient({ ...currentClient, emailList: val })
-                    }
-                  />
-                  <span style={{ margin: 3 }}>Email</span>
-                </HorizontalPanel>
-                <HorizontalPanel>
-                  <Switch
-                    checked={currentClient.mailList}
-                    onChange={val =>
-                      updateClient({ ...currentClient, mailList: val })
-                    }
-                  />
-                  <span style={{ margin: 3 }}>Mail</span>
-                </HorizontalPanel>
-              </ListSubscriptionPanel>
-            </SlidingPanel>
-          </Column2>
-        </MainPanel>
-      </CenterPanel>
+          </ActionHeader>
+          <MainPanel>
+            <Column1>
+              <SlidingPanel margin={margin} title="info">
+                <Info
+                  clientTypes={clientTypes}
+                  currentClient={currentClient}
+                  isInEditMode={isInEditMode}
+                  setClientEditMode={setClientEditMode}
+                  updateClient={updateClient}
+                />
+              </SlidingPanel>
+              <SlidingPanel margin={margin} title="Address">
+                <Address
+                  currentClient={currentClient}
+                  isInEditMode={isInEditMode}
+                  setClientEditMode={setClientEditMode}
+                  stateList={stateList}
+                  updateClient={updateClient}
+                />
+              </SlidingPanel>
+              <ArtGroup />
+              <ContactInfo />
+              <Comments />
+            </Column1>
+            <Column2>
+              <SlidingPanel margin={margin} title="Sample Work">
+                <SampleWork />
+              </SlidingPanel>
+              <SlidingPanel margin={margin} title="Additional Tags" />
+              <SlidingPanel margin={margin} title="List Subscription">
+                <ListSubscriptionPanel>
+                  <HorizontalPanel>
+                    <Switch
+                      checked={currentClient.emailList}
+                      onChange={val =>
+                        updateClient({ ...currentClient, emailList: val })
+                      }
+                    />
+                    <span style={{ margin: 3 }}>Email</span>
+                  </HorizontalPanel>
+                  <HorizontalPanel>
+                    <Switch
+                      checked={currentClient.mailList}
+                      onChange={val =>
+                        updateClient({ ...currentClient, mailList: val })
+                      }
+                    />
+                    <span style={{ margin: 3 }}>Mail</span>
+                  </HorizontalPanel>
+                </ListSubscriptionPanel>
+              </SlidingPanel>
+            </Column2>
+          </MainPanel>
+        </CenterPanel>
+      </div>
     </div>
   );
 };
@@ -171,30 +202,28 @@ const Info = ({
   <InfoPanel>
     <div style={{ flex: 1 }}>
       {' '}
-      <HorizontalPanel>
-        <EditableField
-          isInEditMode={isInEditMode}
-          txtValue={
-            currentClient.salutation
-              ? Salutations[currentClient.salutation]
-              : ''
+      <EditableField
+        isInEditMode={isInEditMode}
+        txtValue={
+          currentClient.salutation ? Salutations[currentClient.salutation] : ''
+        }
+      >
+        <Radio
+          items={[
+            { id: 1, name: 'Mr.' },
+            { id: 2, name: 'Mrs.' },
+            { id: 3, name: 'Ms.' },
+          ]}
+          onChange={(id: number) =>
+            updateClient({
+              ...currentClient,
+              salutation: id,
+            })
           }
-        >
-          <Radio
-            items={[
-              { id: 1, name: 'Mr.' },
-              { id: 2, name: 'Mrs.' },
-              { id: 3, name: 'Ms.' },
-            ]}
-            onChange={(id: number) =>
-              updateClient({
-                ...currentClient,
-                salutation: id,
-              })
-            }
-            value={currentClient.salutation || undefined}
-          />
-        </EditableField>
+          value={currentClient.salutation || undefined}
+        />
+      </EditableField>
+      <HorizontalLayout>
         <EditableField
           isInEditMode={isInEditMode}
           txtValue={currentClient.firstName}
@@ -225,7 +254,7 @@ const Info = ({
             }
           />
         </EditableField>
-      </HorizontalPanel>{' '}
+      </HorizontalLayout>
       <HorizontalPanel>
         <EditableField
           isInEditMode={isInEditMode}
@@ -301,11 +330,13 @@ const Address = ({
   currentClient,
   isInEditMode,
   setClientEditMode,
+  stateList,
   updateClient,
 }: {
   currentClient: Client;
   isInEditMode: boolean;
   setClientEditMode: typeof actionCreators.setClientEditMode;
+  stateList: State[];
   updateClient: typeof actionCreators.updateClient;
 }) => (
   <AddressPanel>
@@ -371,13 +402,16 @@ const Address = ({
         isInEditMode={isInEditMode}
         inline={true}
       >
-        <Input
+        <Select
           size="small"
-          onChange={e =>
-            updateClient({ ...currentClient, state: e.currentTarget.value })
-          }
           value={currentClient.state}
-        />
+          style={{ width: 60 }}
+          onChange={e =>
+            updateClient({ ...currentClient, state: e.toString() })
+          }
+        >
+          {stateList.map(x => <Option key={x.id}>{x.id}</Option>)}
+        </Select>
       </EditableField>
     </HorizontalPanel>
     <HorizontalPanel>
@@ -439,6 +473,7 @@ const CenterPanel = styled.div`
   font-size: 1em;
   padding: 0em;
   width: 1072px;
+  height: 100%;
 `;
 
 const MainPanel = styled.div`

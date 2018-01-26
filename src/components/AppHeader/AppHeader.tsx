@@ -2,7 +2,7 @@ import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
 import { Affix, Avatar, Input } from 'antd';
 import actionCreators from '../../actions/ClientActions';
-import { Client, User } from '../../datatypes';
+import { Client, User, ClientType } from '../../datatypes';
 import SlidingPanel from '../SlidingPanel';
 // import ThemeInterface from '../theme';
 
@@ -44,9 +44,11 @@ const Search = Input.Search;
 
 interface Props {
   clients: Client[];
+  clientTypes: ClientType[];
   backgroundColor?: string;
   currentUser?: User;
   className?: string;
+  filteredClients: Client[];
   foregroundColor?: string;
   isInteractive: boolean;
   message: string;
@@ -60,8 +62,10 @@ const AppHeader: StatelessComponent<Props> = ({
   backgroundColor,
   className,
   clients,
+  clientTypes,
   currentUser,
   extractPanelIsShowing,
+  filteredClients,
   isInteractive,
   message,
   searchClients,
@@ -79,9 +83,14 @@ const AppHeader: StatelessComponent<Props> = ({
               height="46"
               style={{ padding: 10 }}
             />
+            <span style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}>
+              Search results({filteredClients.length})
+            </span>
             <Search
               placeholder="search..."
-              onSearch={(value: string) => searchClients(value, clients)}
+              onSearch={(value: string) =>
+                searchClients(value, clients, clientTypes)
+              }
               style={{ flex: 1 }}
             />
             {currentUser && (
@@ -91,7 +100,6 @@ const AppHeader: StatelessComponent<Props> = ({
               />
             )}
           </Header>
-
           <DesktopHeader>
             <LogoHeader>
               <img
@@ -102,11 +110,17 @@ const AppHeader: StatelessComponent<Props> = ({
               />
               IVP Public Art Client Manager
             </LogoHeader>
-
             <SearchHeader>
+              <span
+                style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}
+              >
+                Clients({filteredClients.length})
+              </span>
               <Search
                 placeholder="search..."
-                onSearch={(value: string) => searchClients(value, clients)}
+                onSearch={(value: string) =>
+                  searchClients(value, clients, clientTypes)
+                }
               />
               {currentUser && (
                 <Avatar

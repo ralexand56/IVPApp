@@ -20,6 +20,7 @@ class ContainerTemplate extends Component<Props, {}> {
       setClientEditMode,
       setCurrentClient,
       setInteractive,
+      stateList,
       updateClient,
     } = this.props;
     const currentClient = currentClientId
@@ -36,6 +37,7 @@ class ContainerTemplate extends Component<Props, {}> {
         setCurrentClient={setCurrentClient}
         setClientEditMode={setClientEditMode}
         setInteractive={setInteractive}
+        stateList={stateList}
         updateClient={updateClient}
       />
     );

@@ -15,6 +15,76 @@ import {
 import { AppThunkAction, ApplicationState } from '../store';
 import firebase from 'firebase';
 
+const checkClientType = (
+  searchTxt: string,
+  c: Client,
+  clientTypes: ClientType[],
+) => {
+  if (!c.clientTypeId) {
+    return false;
+  }
+
+  const fndClientType: ClientType | undefined = clientTypes.find(
+    x => x.id === c.clientTypeId,
+  );
+
+  if (!fndClientType) {
+    return false;
+  }
+
+  return fndClientType.name!.toLowerCase().indexOf(searchTxt) > -1
+    ? true
+    : false;
+};
+
+const checkMajorTags = (searchTxt: string, c: Client) =>
+  c.majorTags &&
+  c.majorTags
+    .filter(y => y.name !== undefined)
+    .find(x => x.name!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
+const checkMinorTags = (searchTxt: string, c: Client) =>
+  c.minorTags &&
+  c.minorTags
+    .filter(y => y.name !== undefined)
+    .find(x => x.name!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
+const checkLinks = (searchTxt: string, c: Client) =>
+  c.websites &&
+  c.websites
+    .filter(y => y.name !== undefined)
+    .find(x => x.name!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
+const checkEmails = (searchTxt: string, c: Client) =>
+  c.emails &&
+  c.emails
+    .filter(y => y.name !== undefined)
+    .find(x => x.name!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
+const checkAffiliations = (searchTxt: string, c: Client) =>
+  c.affiliations &&
+  c.affiliations
+    .filter(y => y.name !== undefined)
+    .find(x => x.name!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
+const checkComments = (searchTxt: string, c: Client) =>
+  c.comments &&
+  c.comments
+    .filter(y => y.body !== undefined)
+    .find(x => x.body!.toLowerCase().indexOf(searchTxt) > -1) !== undefined
+    ? true
+    : false;
+
 const actionCreators = {
   addComment: (
     cmt: Comment,
@@ -326,7 +396,6 @@ const actionCreators = {
         modified: new Date(),
       };
 
-      // console.dir(newClient);
       addClient(dispatch, newClient);
     });
   },
@@ -334,15 +403,12 @@ const actionCreators = {
   searchClients: (
     searchText: string,
     clients: Client[],
+    clientTypes: ClientType[],
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState,
   ) => {
-    // const cats = getState()
-    //   .clientSlice.tagCategories.filter(x => x.tags !== undefined)
-    //   .map(y => y.tags || []);
-
-    // const tags = cats.reduce((x, y) => x.concat(y), []).map(c => c.id);
+    dispatch({ type: 'SET_CURRENT_CLIENT', clientId: undefined });
 
     const filteredClients = clients.filter(
       x =>
@@ -360,10 +426,19 @@ const actionCreators = {
           x.country.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.title &&
           x.title.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        (x.state &&
+          x.state.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.company &&
           x.company.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
         (x.phone &&
-          x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1),
+          x.phone.toLowerCase().indexOf(searchText.toLowerCase()) > -1) ||
+        checkClientType(searchText, x, clientTypes) ||
+        checkComments(searchText, x) ||
+        checkMajorTags(searchText, x) ||
+        checkMinorTags(searchText, x) ||
+        checkLinks(searchText, x) ||
+        checkEmails(searchText, x) ||
+        checkAffiliations(searchText, x),
     );
 
     //  x.tags && x.tags.findIndex(t => (t.name ? searchText

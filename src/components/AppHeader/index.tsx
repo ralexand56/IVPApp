@@ -18,7 +18,9 @@ class ContainerTemplate extends Component<Props, {}> {
     render() {
         const {
             clients,
+            clientTypes,
             currentUser,
+            filteredClients,
             isInteractive,
             message,
             searchResultsIsVisible,
@@ -30,9 +32,11 @@ class ContainerTemplate extends Component<Props, {}> {
         return (
             <AppHeader
                 clients={clients}    
+                clientTypes={clientTypes}
                 backgroundColor={theme.headingBackground1}    
                 currentUser={currentUser}
                 extractPanelIsShowing={searchResultsIsVisible}
+                filteredClients={filteredClients}
                 isInteractive={isInteractive}
                 message={message}
                 searchClients={searchClients}

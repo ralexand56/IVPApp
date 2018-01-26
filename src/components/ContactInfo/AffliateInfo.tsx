@@ -128,7 +128,7 @@ const AffliateInfo: StatelessComponent<Props> = ({
       currentClient.affiliations.length > 0 ? (
         <>
           {currentClient.affiliations.map(x => (
-            <Tag key={x.id} style={{ margin: 3 }} color="blue">
+            <Tag key={x.id} style={{ margin: 3 }} color="magenta">
               {x.name}
             </Tag>
           ))}

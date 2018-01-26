@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 import { Client, ClientType } from '../../datatypes';
 import ThemeInterface from '../../theme';
 import { ColumnProps } from 'antd/lib/table';
-import { Avatar, Table } from 'antd';
+import { Avatar, Table, Tag } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 
 interface Props {
@@ -21,11 +21,15 @@ const ClientList: StatelessComponent<Props> = props => {
 
   const Columns: ColumnProps<Client>[] = [
     {
-      dataIndex: 'imgUrl',
-      key: 'imgUrl',
+      dataIndex: 'sampleLinks',
+      key: 'sampleLinks',
       render: (i: string, c: Client) => (
         <Avatar
-          src={c.imgUrl ? `./images/${c.imgUrl}` : ''}
+          src={
+            c.sampleLinks && c.sampleLinks.length > 0
+              ? `${c.sampleLinks[0].src}`
+              : ''
+          }
           shape="square"
           icon="user"
         />
@@ -53,8 +57,42 @@ const ClientList: StatelessComponent<Props> = props => {
         </span>
       ),
     },
-    { title: 'Art Type' },
-    { title: 'Tags' },
+    {
+      title: 'Art Type',
+      dataIndex: 'majorTags',
+      key: 'majorTags',
+      render: (i: string, c: Client) =>
+        c.majorTags &&
+        c.majorTags.slice(0, 2).map(x => (
+          <Tag key={x.id} style={{ margin: 3 }} color="blue">
+            {x.name}
+          </Tag>
+        )),
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'minorTags',
+      key: 'minorTags',
+      render: (i: string, c: Client) =>
+        c.minorTags &&
+        c.minorTags.slice(0, 2).map(x => (
+          <Tag key={x.id} style={{ margin: 3 }} color="magenta">
+            {x.name}
+          </Tag>
+        )),
+    },
+    {
+      title: 'Affiliations',
+      dataIndex: 'affiliations',
+      key: 'affiliations',
+      render: (i: string, c: Client) =>
+        c.affiliations &&
+        c.affiliations.slice(0, 2).map(x => (
+          <Tag key={x.id} style={{ margin: 3 }} color="blue">
+            {x.name}
+          </Tag>
+        )),
+    },
     {
       title: 'Location',
       render: (i: string, c: Client) => (

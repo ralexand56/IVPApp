@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import AppHeader from '../AppHeader';
 import ClientList from '../ClientList';
-// import ClientInfo from '../ClientInfo';
-import { Client, ClientType } from '../../datatypes';
+import { Client, ClientType, State } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
 import { Affix, Switch } from 'antd';
 import ClientMobileLayout from '../ClientMobileLayout';
@@ -18,6 +17,7 @@ interface Props {
   setInteractive: typeof actionCreators.setInteractive;
   isInEditMode: boolean;
   isInteractive: boolean;
+  stateList: State[];
   updateClient: typeof actionCreators.updateClient;
 }
 
@@ -32,31 +32,34 @@ export default class App extends Component<Props, {}> {
       setClientEditMode,
       setCurrentClient,
       setInteractive,
+      stateList,
       updateClient,
     } = this.props;
     return (
       <div>
         <AppHeader />
         <ClientList />
-        {currentClient && (
-          <>
-            <ClientDesktopLayout
-              addClient={addClient}
-              clientTypes={clientTypes}
-              isInEditMode={isInEditMode}
-              currentClient={currentClient}
-              setClientEditMode={setClientEditMode}
-              setCurrentClient={setCurrentClient}
-              updateClient={updateClient}
-            />
-            <ClientMobileLayout currentClient={currentClient} />
-          </>
-          // <ClientInfo
-          //   currentClient={currentClient}
-          //   showClient={!isInteractive && currentClient !== undefined}
-          //   setCurrentClient={setCurrentClient}
-          // />
-        )}
+        {currentClient &&
+          !isInteractive && (
+            <>
+              <ClientDesktopLayout
+                addClient={addClient}
+                clientTypes={clientTypes}
+                isInEditMode={isInEditMode}
+                currentClient={currentClient}
+                setClientEditMode={setClientEditMode}
+                setCurrentClient={setCurrentClient}
+                stateList={stateList}
+                updateClient={updateClient}
+              />
+              <ClientMobileLayout currentClient={currentClient} />
+            </>
+            // <ClientInfo
+            //   currentClient={currentClient}
+            //   showClient={!isInteractive && currentClient !== undefined}
+            //   setCurrentClient={setCurrentClient}
+            // />
+          )}
         {InteractiveSwitch(isInteractive, setInteractive)}
       </div>
     );

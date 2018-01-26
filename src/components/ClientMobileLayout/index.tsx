@@ -11,7 +11,7 @@ interface Props {
 const Index: StatelessComponent<Props> = ({ className, currentClient }) => {
   return (
     <div className={className}>
-      <span>Mobile</span>
+      <span>Mobile Coming Soon</span>
     </div>
   );
 };

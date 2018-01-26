@@ -36,7 +36,9 @@ class Index extends Component<Props, AppState> {
         {
           name: value,
           alias: aliasValue ? aliasValue : value,
-          sort: currentClient.websites ? currentClient.websites.length * 10 : 10,
+          sort: currentClient.websites
+            ? currentClient.websites.length * 10
+            : 10,
         },
         currentClient,
       );
@@ -57,26 +59,27 @@ class Index extends Component<Props, AppState> {
 
     return (
       <div className={className}>
+        <Search
+          value={value}
+          onChange={e => this.onChange(e.currentTarget.value)}
+          onSearch={val => this.handleAddEmail()}
+          placeholder="new link..."
+          enterButton={<Icon type="link" />}
+          size="small"
+        />{' '}
         <InputGroup size="small" compact={true}>
-          <Search
-            style={{ width: '60%' }}
-            value={value}
-            onChange={e => this.onChange(e.currentTarget.value)}
-            onSearch={val => this.handleAddEmail()}
-            placeholder="new link..."
-            enterButton={<Icon type="link" />}
-            size="small"
-          />
-          <Search
-            style={{ width: '30%' }}
+          <Input
+            style={{ width: '85%' }}
             value={aliasValue}
             onChange={e => this.onChangeAlias(e.currentTarget.value)}
-            onSearch={val => this.handleAddEmail()}
             placeholder="optional alias..."
-            enterButton={<Icon type="info" />}
             size="small"
           />
-          <Button size="small" disabled={!validateUrl(value)}>
+          <Button
+            style={{ width: '15%' }}
+            size="small"
+            disabled={!validateUrl(value)}
+          >
             <Icon type="plus" />
           </Button>
         </InputGroup>
@@ -86,8 +89,8 @@ class Index extends Component<Props, AppState> {
 }
 
 const StyledIndex = styled(Index)`
-  display: flex;
-  margin: 7px;
+  display: block;
+  margin: 5px;
 `;
 
 export default StyledIndex;

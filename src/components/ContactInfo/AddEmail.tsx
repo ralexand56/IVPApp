@@ -57,26 +57,27 @@ class Index extends Component<Props, AppState> {
 
     return (
       <div className={className}>
+        <Search
+          value={value}
+          onChange={e => this.onChange(e.currentTarget.value)}
+          onSearch={val => this.handleAddEmail()}
+          placeholder="new email..."
+          enterButton={<Icon type="mail" />}
+          size="small"
+        />
         <InputGroup size="small" compact={true}>
-          <Search
-            style={{ width: '45%' }}
-            value={value}
-            onChange={e => this.onChange(e.currentTarget.value)}
-            onSearch={val => this.handleAddEmail()}
-            placeholder="new email..."
-            enterButton={<Icon type="mail" />}
-            size="small"
-          />
-          <Search
-            style={{ width: '45%' }}
+          <Input
+            style={{ width: '85%' }}
             value={aliasValue}
             onChange={e => this.onChangeAlias(e.currentTarget.value)}
-            onSearch={val => this.handleAddEmail()}
             placeholder="optional alias..."
-            enterButton={<Icon type="info" />}
             size="small"
           />
-          <Button size="small" disabled={!validateEmail(value)}>
+          <Button
+            style={{ width: '15%' }}
+            size="small"
+            disabled={!validateEmail(value)}
+          >
             <Icon type="plus" />
           </Button>
         </InputGroup>
@@ -87,7 +88,8 @@ class Index extends Component<Props, AppState> {
 
 const StyledIndex = styled(Index)`
   display: flex;
-  margin: 7px;
+  flex-direction: column;
+  margin: 3px;
 `;
 
 export default StyledIndex;

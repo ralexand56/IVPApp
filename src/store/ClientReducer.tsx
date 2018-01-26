@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { defaultUser, ClientState, KnownAction, tagSort } from '../datatypes';
+import { defaultUser, ClientState, KnownAction, tagSort, stateList } from '../datatypes';
 import { message } from 'antd';
 
 const unloadedState: ClientState = {
@@ -10,7 +10,7 @@ const unloadedState: ClientState = {
   currentClientId: undefined,
   currentUser: defaultUser,
   filteredClients: [],
-  isInEditMode: true,
+  isInEditMode: false,
   isInteractive: false,
   message: '',
   newCommentText: '',
@@ -18,6 +18,7 @@ const unloadedState: ClientState = {
   affiliations: [],
   majorTags: [],
   minorTags: [],
+  stateList: stateList,
   tagCategories: [],
   users: [],
 };
