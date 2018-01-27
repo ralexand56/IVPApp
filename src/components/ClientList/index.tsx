@@ -15,7 +15,9 @@ class ContainerTemplate extends Component<Props, {}> {
       clientTypes,
       currentClientId,
       filteredClients,
+      isInteractive,
       setCurrentClient,
+      setInteractive,
     } = this.props;
 
     return (
@@ -23,8 +25,10 @@ class ContainerTemplate extends Component<Props, {}> {
         clients={clients}
         clientTypes={clientTypes}
         currentClientId={currentClientId}
+        isInteractive={isInteractive}
         filteredClients={filteredClients}
         setCurrentClient={setCurrentClient}
+        setInteractive={setInteractive}
       />
     );
   }

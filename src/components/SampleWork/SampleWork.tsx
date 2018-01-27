@@ -18,7 +18,7 @@ const UploadButton = () => (
 const beforeUpload = async (
   file: { type: string; size: number; name: string },
   addSampleWork: typeof actionCreators.addSampleWork,
-  currentClient: Client,
+  currentClient: Client
 ) => {
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
@@ -39,7 +39,10 @@ const beforeUpload = async (
 
 const renderImageLinks = (sampleLinks: SampleLink[]) => {
   return sampleLinks.map(x => (
-    <div key={x.id}>
+    <div
+      key={x.id}
+      style={{ background: 'white', height: '100%', color: 'black' }}
+    >
       <img src={x.src} />
     </div>
   ));
@@ -75,7 +78,7 @@ class SampleWork extends Component<Props, AppState> {
       className,
       currentClient,
       deleteSampleLink,
-      isInEditMode,
+      isInEditMode
     } = this.props;
 
     return (
@@ -120,13 +123,19 @@ class SampleWork extends Component<Props, AppState> {
                 linkList={renderLinkElements(
                   currentClient.sampleLinks,
                   currentClient,
-                  deleteSampleLink,
+                  deleteSampleLink
                 )}
               />
             )}
           </div>
-        ) : currentClient.sampleLinks && currentClient.sampleLinks.length > 0 ? (
-          <Carousel showArrows={true} autoPlay={true} infiniteLoop={true}>
+        ) : currentClient.sampleLinks &&
+        currentClient.sampleLinks.length > 0 ? (
+          <Carousel
+            emulateTouch={true}
+            showArrows={true}
+            autoPlay={true}
+            infiniteLoop={false}
+          >
             {renderImageLinks(currentClient.sampleLinks)}
           </Carousel>
         ) : (
@@ -140,7 +149,7 @@ class SampleWork extends Component<Props, AppState> {
 const renderLinkElements = (
   sampleLinks: SampleLink[],
   currentClient: Client,
-  deleteSampleLink: typeof actionCreators.deleteSampleLink,
+  deleteSampleLink: typeof actionCreators.deleteSampleLink
 ) =>
   sampleLinks.map(x => (
     <span key={x.id}>
@@ -156,7 +165,7 @@ const renderLinkElements = (
           size="small"
           ghost={true}
           style={{
-            margin: 5,
+            margin: 5
           }}
           type="primary"
         >
@@ -173,6 +182,7 @@ const StyledSampleWork = styled(SampleWork)`
   font-size: 0.9em;
   justify-content: ${props => (props.isInEditMode ? 'flex-start' : 'center')};
   img {
+    background: 'white';
     display: flex;
     max-width: 290px;
     max-height: 270px;

@@ -417,7 +417,7 @@ const Address = ({
     <HorizontalPanel>
       <EditableField
         label="Country"
-        txtValue={currentClient.country}
+        txtValue={currentClient.country || 'US'}
         isInEditMode={isInEditMode}
         inline={true}
         click={() => setClientEditMode(true)}
@@ -502,7 +502,7 @@ const ActionHeader = styled.div`
 `;
 
 const StyledIndex = styled(Index)`
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(134, 114, 144, 0.7);
   display: flex;
   font-size: 1.2em;
   justify-content: center;

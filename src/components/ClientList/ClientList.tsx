@@ -3,7 +3,7 @@ import styled from '../../styled-components';
 import { Client, ClientType } from '../../datatypes';
 import ThemeInterface from '../../theme';
 import { ColumnProps } from 'antd/lib/table';
-import { Avatar, Table, Tag } from 'antd';
+import { Avatar, Switch, Table, Tag } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 
 interface Props {
@@ -12,12 +12,21 @@ interface Props {
   clientTypes: ClientType[];
   currentClientId: string | undefined;
   filteredClients: Client[];
+  isInteractive: boolean;
   setCurrentClient: typeof actionCreators.setCurrentClient;
+  setInteractive: typeof actionCreators.setInteractive;
   theme?: ThemeInterface;
 }
 
 const ClientList: StatelessComponent<Props> = props => {
-  const { clientTypes, currentClientId, filteredClients, setCurrentClient } = props;
+  const {
+    clientTypes,
+    currentClientId,
+    filteredClients,
+    isInteractive,
+    setCurrentClient,
+    setInteractive
+  } = props;
   // console.dir(clientTypes);
 
   const Columns: ColumnProps<Client>[] = [
@@ -34,15 +43,16 @@ const ClientList: StatelessComponent<Props> = props => {
           shape="square"
           icon="user"
         />
-      ),
+      )
     },
     {
       title: 'Name',
+      key: 'Name',
       render: (i: string, c: Client) => (
         <span>
           {c.firstName} {c.lastName}
         </span>
-      ),
+      )
     },
     {
       title: 'Group',
@@ -51,12 +61,11 @@ const ClientList: StatelessComponent<Props> = props => {
       render: (i: string, c: Client) => (
         <span>
           {clientTypes.length > 0 && c.clientTypeId
-            ? clientTypes[
-                clientTypes.findIndex(x => x.id === c.clientTypeId)
-              ].name
+            ? clientTypes[clientTypes.findIndex(x => x.id === c.clientTypeId)]
+                .name
             : ''}
         </span>
-      ),
+      )
     },
     {
       title: 'Art Type',
@@ -68,7 +77,7 @@ const ClientList: StatelessComponent<Props> = props => {
           <Tag key={x.id} style={{ margin: 3 }} color="blue">
             {x.name}
           </Tag>
-        )),
+        ))
     },
     {
       title: 'Tags',
@@ -80,7 +89,7 @@ const ClientList: StatelessComponent<Props> = props => {
           <Tag key={x.id} style={{ margin: 3 }} color="magenta">
             {x.name}
           </Tag>
-        )),
+        ))
     },
     {
       title: 'Affiliations',
@@ -92,26 +101,37 @@ const ClientList: StatelessComponent<Props> = props => {
           <Tag key={x.id} style={{ margin: 3 }} color="blue">
             {x.name}
           </Tag>
-        )),
+        ))
     },
     {
       title: 'Location',
+      key: 'Location',
       render: (i: string, c: Client) => (
         <span>
-          {c.state}
-          {c.state && c.country ? ', ' : ''} {c.country}
+          {c.state && `${c.state}, `}
+          {c.country ? `${c.country}` : 'US'}
         </span>
-      ),
-    },
+      )
+    }
   ];
 
   return (
     <div className={props.className}>
       <Table
+        size="small"
         dataSource={filteredClients}
         columns={Columns}
+        pagination={false}
         onRow={(c: Client) => ({ onClick: () => setCurrentClient(c.id) })}
         rowKey="id"
+        footer={() => (
+          <Switch
+            onChange={e => setInteractive(e)}
+            checked={isInteractive}
+            checkedChildren="Interactive"
+            unCheckedChildren="Non-Interactive"
+          />
+        )}
         rowClassName={(rec: Client, ind: number) =>
           rec.id === currentClientId
             ? 'selectedColor'
@@ -124,9 +144,8 @@ const ClientList: StatelessComponent<Props> = props => {
 
 const StyledClientList = styled(ClientList)`
   background: ${props => props.theme.bodyBackground || 'white'};
-  display: block;
   height: 100%;
-  padding-top: 60px;
+  padding-top: 65px;
   overflow-y: auto;
 `;
 

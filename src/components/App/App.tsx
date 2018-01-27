@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import './App.css';
+import styled from 'styled-components';
 import AppHeader from '../AppHeader';
 import ClientList from '../ClientList';
 import { Client, ClientType, State } from '../../datatypes';
 import actionCreators from '../../actions/ClientActions';
-import { Affix, Switch } from 'antd';
+// import { Affix, Switch } from 'antd';
 import ClientMobileLayout from '../ClientMobileLayout';
 import ClientDesktopLayout from '../ClientDesktopLayout';
 
 interface Props {
   addClient: typeof actionCreators.addClient;
+  className?: string;
   clientTypes: ClientType[];
   currentClient: Client | undefined;
   setCurrentClient: typeof actionCreators.setCurrentClient;
@@ -21,22 +22,22 @@ interface Props {
   updateClient: typeof actionCreators.updateClient;
 }
 
-export default class App extends Component<Props, {}> {
+export class App extends Component<Props, {}> {
   render() {
     const {
       addClient,
       clientTypes,
+      className,
       currentClient,
       isInEditMode,
       isInteractive,
       setClientEditMode,
       setCurrentClient,
-      setInteractive,
       stateList,
       updateClient,
     } = this.props;
     return (
-      <div>
+      <div className={className}>
         <AppHeader />
         <ClientList />
         {currentClient &&
@@ -60,22 +61,29 @@ export default class App extends Component<Props, {}> {
             //   setCurrentClient={setCurrentClient}
             // />
           )}
-        {InteractiveSwitch(isInteractive, setInteractive)}
       </div>
     );
   }
 }
 
-const InteractiveSwitch = (
-  isInteractive: boolean,
-  setInteractive: typeof actionCreators.setInteractive,
-) => (
-  <Affix offsetBottom={0} style={{ position: 'absolute', right: 0 }}>
-    <Switch
-      onChange={e => setInteractive(e)}
-      checked={isInteractive}
-      checkedChildren="Interactive"
-      unCheckedChildren="Non-Interactive"
-    />
-  </Affix>
-);
+// const InteractiveSwitch = (
+//   isInteractive: boolean,
+//   setInteractive: typeof actionCreators.setInteractive,
+// ) => (
+//   <Affix offsetBottom={0} style={{ position: 'absolute', left: 0 }}>
+//     <Switch
+//       onChange={e => setInteractive(e)}
+//       checked={isInteractive}
+//       checkedChildren="Interactive"
+//       unCheckedChildren="Non-Interactive"
+//     />
+//   </Affix>
+// );
+
+const StyledApp = styled(App)`
+  border: 0px solid red;
+  height: 100%;
+`;
+
+        // {InteractiveSwitch(isInteractive, setInteractive)}
+export default StyledApp;

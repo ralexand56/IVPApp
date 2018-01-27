@@ -1,9 +1,9 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Affix, Avatar, Input } from 'antd';
+import { Avatar, Input } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import { Client, User, ClientType } from '../../datatypes';
-import SlidingPanel from '../SlidingPanel';
+// import SlidingPanel from '../SlidingPanel';
 // import ThemeInterface from '../theme';
 
 const Header = styled.span`
@@ -11,7 +11,7 @@ const Header = styled.span`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border: 0px solid;
+  border: 1px solid;
 
   @media (max-width: 700px) {
     display: flex;
@@ -70,76 +70,74 @@ const AppHeader: StatelessComponent<Props> = ({
   message,
   searchClients,
   setPanelVisibility,
-  setInteractive,
+  setInteractive
 }: Props) => {
   return (
-    <Affix>
-      <SlidingPanel isOpen={true}>
-        <div className={className}>
-          <Header>
-            <img
-              src="./images/logo.png"
-              width="50"
-              height="46"
-              style={{ padding: 10 }}
+    <div className={className}>
+      <Header>
+        <img
+          src="./images/logo.png"
+          width="50"
+          height="46"
+          style={{ padding: 10 }}
+        />
+        <span style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}>
+          Search results({filteredClients.length})
+        </span>
+        <Search
+          placeholder="search..."
+          onSearch={(value: string) =>
+            searchClients(value, clients, clientTypes)
+          }
+          style={{ flex: 1 }}
+        />
+        {currentUser && (
+          <Avatar
+            style={{ margin: 5 }}
+            src={`./images/${currentUser.imgSrc}` || ''}
+          />
+        )}
+      </Header>
+      <DesktopHeader>
+        <LogoHeader>
+          <img
+            src="./images/logo.png"
+            width="50"
+            height="46"
+            style={{ padding: 10 }}
+          />
+          IVP Public Art Client Manager
+        </LogoHeader>
+        <SearchHeader>
+          <span style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}>
+            Clients({filteredClients.length})
+          </span>
+          <Search
+            placeholder="search..."
+            onSearch={(value: string) =>
+              searchClients(value, clients, clientTypes)
+            }
+          />
+          {currentUser && (
+            <Avatar
+              style={{ margin: 5 }}
+              src={`./images/${currentUser.imgSrc}` || ''}
             />
-            <span style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}>
-              Search results({filteredClients.length})
-            </span>
-            <Search
-              placeholder="search..."
-              onSearch={(value: string) =>
-                searchClients(value, clients, clientTypes)
-              }
-              style={{ flex: 1 }}
-            />
-            {currentUser && (
-              <Avatar
-                style={{ margin: 5 }}
-                src={`./images/${currentUser.imgSrc}` || ''}
-              />
-            )}
-          </Header>
-          <DesktopHeader>
-            <LogoHeader>
-              <img
-                src="./images/logo.png"
-                width="50"
-                height="46"
-                style={{ padding: 10 }}
-              />
-              IVP Public Art Client Manager
-            </LogoHeader>
-            <SearchHeader>
-              <span
-                style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}
-              >
-                Clients({filteredClients.length})
-              </span>
-              <Search
-                placeholder="search..."
-                onSearch={(value: string) =>
-                  searchClients(value, clients, clientTypes)
-                }
-              />
-              {currentUser && (
-                <Avatar
-                  style={{ margin: 5 }}
-                  src={`./images/${currentUser.imgSrc}` || ''}
-                />
-              )}
-            </SearchHeader>
-          </DesktopHeader>
-        </div>
-      </SlidingPanel>
-    </Affix>
+          )}
+        </SearchHeader>
+      </DesktopHeader>
+    </div>
   );
 };
 
 const StyledAppHeader = styled(AppHeader)`
   background: ${props => props.backgroundColor || 'gray'};
   color: white;
+  border: 0px solid red;
   display: flex;
+  position: absolute;
+  top: 0;
+  z-index: 1;
   justify-content: space-between;
   align-items: center;
   font-size: 1.5em;
