@@ -17,7 +17,8 @@ interface Props {
 }
 
 const ClientList: StatelessComponent<Props> = props => {
-  const { currentClientId, filteredClients, setCurrentClient } = props;
+  const { clientTypes, currentClientId, filteredClients, setCurrentClient } = props;
+  // console.dir(clientTypes);
 
   const Columns: ColumnProps<Client>[] = [
     {
@@ -49,9 +50,9 @@ const ClientList: StatelessComponent<Props> = props => {
       key: 'clientTypeId',
       render: (i: string, c: Client) => (
         <span>
-          {c.clientTypeId
-            ? props.clientTypes[
-                props.clientTypes.findIndex(x => x.id === c.clientTypeId)
+          {clientTypes.length > 0 && c.clientTypeId
+            ? clientTypes[
+                clientTypes.findIndex(x => x.id === c.clientTypeId)
               ].name
             : ''}
         </span>

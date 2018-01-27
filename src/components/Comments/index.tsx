@@ -20,7 +20,7 @@ class ContainerTemplate extends Component<Props, {}> {
 
     const currentClient =
       clients[clients.findIndex(x => x.id === currentClientId)];
-
+    // console.dir(currentClient);
     return (
       <Comments
         addComment={addComment}

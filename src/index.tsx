@@ -13,7 +13,7 @@ import { ThemeProvider } from 'styled-components';
 import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
-import { init } from './actions/ClientActions';
+import { init, } from './actions/ClientActions';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 // import 'slick-carousel/slick/slick.css';
 // import 'slick-carousel/slick/slick-theme.css';
@@ -24,6 +24,10 @@ initializeDB();
 
 const store = configureStore();
 init(store.dispatch, store.getState);
+
+// const user = store.getState().clientSlice.currentUser;
+// console.dir(user);
+// user && importClients(user);
 
 ReactDOM.render(
   <AppContainer>

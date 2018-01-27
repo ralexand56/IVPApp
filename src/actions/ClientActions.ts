@@ -375,31 +375,6 @@ const actionCreators = {
     });
   },
 
-  importClients: (): AppThunkAction<KnownAction> => (
-    dispatch: (action: KnownAction) => void,
-    getState: () => ApplicationState,
-  ) => {
-    const newClients = UserImport;
-
-    newClients.map(x => {
-      let fullName = x.ARTISTS.trim().split(' ');
-
-      let newClient: Client = {
-        isActive: true,
-        id: '',
-        firstName: fullName[0].trim(),
-        lastName: fullName[fullName.length - 1].trim(),
-        clientTypeId: 'XWVplrztsYm7RQeFMWzt',
-        note: `${x.Medium.trim()} | ${x.Notes.trim()}`,
-        websites: [{ name: x.WEB.trim(), alias: x.WEB.trim(), sort: 10 }],
-        created: new Date(),
-        modified: new Date(),
-      };
-
-      addClient(dispatch, newClient);
-    });
-  },
-
   searchClients: (
     searchText: string,
     clients: Client[],
@@ -580,7 +555,11 @@ export const addClient = async (
     .collection('clients')
     .doc(clientRef.id)
     .update({ id: clientRef.id });
-  newClient.id = clientRef.id;
+
+  if ((newClient.id = '')) {
+    newClient.id = clientRef.id;
+  }
+
   dispatch({
     type: 'ADD_CLIENT',
     newClient,
@@ -870,10 +849,10 @@ export const deleteSampleLink = async (
 };
 
 export const setClients = async (dispatch: (action: KnownAction) => void) => {
-  const usersRef = await db.collection('users').get();
-  const users = await usersRef.docs.map((x: firebase.firestore.DocumentData) =>
-    x.data(),
-  );
+  // const usersRef = await db.collection('users').get();
+  // const users = await usersRef.docs.map((x: firebase.firestore.DocumentData) =>
+  //   x.data(),
+  // );
 
   const clientRef = await db
     .collection('clients')
@@ -885,12 +864,12 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     (x: firebase.firestore.DocumentData) => x.data(),
   );
 
-  clients.map(x => {
-    x.comments &&
-      x.comments.map(
-        (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
-      );
-  });
+  // clients.map(x => {
+  //   x.comments &&
+  //     x.comments.map(
+  //       (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
+  //     );
+  // });
 
   dispatch({
     type: 'SET_FILTERED_CLIENTS',
@@ -998,6 +977,62 @@ export const setUsers = async (dispatch: (action: KnownAction) => void) => {
   dispatch({
     type: 'SET_USERS',
     users,
+  });
+};
+
+export const importClients = (user: User) => {
+  const newClients = UserImport;
+
+  newClients.map(async x => {
+    let fullName = x.ARTISTS.trim().split(' ');
+
+    let newClient: Client = {
+      isActive: true,
+      id: '',
+      firstName: fullName[0].trim(),
+      lastName: fullName[fullName.length - 1].trim(),
+      clientTypeId: 'emCjHShxZD2sSkvoIlHa',
+      created: new Date(),
+      modified: new Date(),
+    };
+
+    const clientRef = await db.collection('clients').add(newClient);
+    db
+      .collection('clients')
+      .doc(clientRef.id)
+      .update({ id: clientRef.id });
+
+    if ((newClient.id = '')) {
+      newClient.id = clientRef.id;
+    }
+
+    // const newclientRef = await db.collection('clients').doc(clientRef.id);
+    if (x.Medium.trim() !== '' || x.Notes.trim() !== '') {
+      const comments = [
+        {
+          id: await clientRef.collection('comments').doc().id,
+          body: `${x.Medium.trim()} | ${x.Notes.trim()}`,
+          created: new Date(),
+          user: user,
+        },
+      ];
+      clientRef.update({ comments: comments });
+    }
+
+    if (x.WEB.trim() !== '') {
+      const websites = [
+        {
+          id: await clientRef.collection('websites').doc().id,
+          name: x.WEB.trim(),
+          alias: x.WEB.trim(),
+          sort: 10,
+        },
+      ];
+
+      clientRef.update({ websites: websites });
+    }
+
+    // addClient(dispatch, newClient);
   });
 };
 
