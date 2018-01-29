@@ -43,7 +43,7 @@ const renderImageLinks = (sampleLinks: SampleLink[]) => {
       key={x.id}
       style={{ background: 'white', height: '100%', color: 'black' }}
     >
-      <img src={x.src} />
+      <img src={x.src} style={{width: 'auto', height: 'auto'}} />
     </div>
   ));
 };
