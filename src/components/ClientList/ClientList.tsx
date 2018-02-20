@@ -1,6 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Client, ClientType } from '../../datatypes';
+import { Client, ClientType, clientTypeSort } from '../../datatypes';
 import ThemeInterface from '../../theme';
 import { ColumnProps } from 'antd/lib/table';
 import { Avatar, Switch, Table, Tag } from 'antd';
@@ -27,7 +27,6 @@ const ClientList: StatelessComponent<Props> = props => {
     setCurrentClient,
     setInteractive
   } = props;
-  // console.dir(clientTypes);
 
   const Columns: ColumnProps<Client>[] = [
     {
@@ -38,7 +37,7 @@ const ClientList: StatelessComponent<Props> = props => {
           src={
             c.sampleLinks && c.sampleLinks.length > 0
               ? `${c.sampleLinks[0].src}`
-              : ''
+              : ``
           }
           shape="square"
           icon="user"
@@ -48,6 +47,8 @@ const ClientList: StatelessComponent<Props> = props => {
     {
       title: 'Name',
       key: 'Name',
+      sorter: (a, b) =>
+        a.firstName && b.firstName && a.firstName < b.firstName ? -1 : 1,
       render: (i: string, c: Client) => (
         <span>
           {c.firstName} {c.lastName}
@@ -58,6 +59,7 @@ const ClientList: StatelessComponent<Props> = props => {
       title: 'Group',
       dataIndex: 'clientTypeId',
       key: 'clientTypeId',
+      sorter: (a, b) => clientTypeSort(a, b, clientTypes),
       render: (i: string, c: Client) => (
         <span>
           {clientTypes.length > 0 && c.clientTypeId

@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "dependencies": {
-    "react-slick": "^0.16.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@atlaskit/avatar": "^8.3.3",
     "@atlaskit/comment": "^2.6.7",
@@ -14,8 +12,8 @@
     "@types/jest": "^20.0.8",
     "@types/node": "^8.0.51",
     "@types/numeral": "0.0.22",
-    "@types/react": "^16.0.25",
-    "@types/react-dom": "^16.0.3",
+    "@types/react": "^16.0.38",
+    "@types/react-dom": "^16.0.4",
     "@types/react-hot-loader": "^3.0.1",
     "@types/react-redux": "^5.0.13",
     "@types/react-slick": "^0.15.0",
@@ -42,7 +40,7 @@
     "moment": "^2.19.2",
     "numeral": "^2.0.6",
     "object-assign": "4.1.1",
-    "popmotion": "^8.1.7",
+    "popmotion": "^8.1.11",
     "popmotion-react": "^2.1.0",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
