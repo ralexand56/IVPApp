@@ -22,7 +22,7 @@ require('firebase/firestore');
 
 initializeDB();
 
-const store = configureStore();
+export const store = configureStore();
 init(store.dispatch, store.getState);
 
 // const user = store.getState().clientSlice.currentUser;

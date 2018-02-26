@@ -46,6 +46,7 @@ const handleAddComment = (
   currentUser: User,
 ) => {
   const newComment: Comment = {
+    id: '',
     body,
     created: new Date(),
     userId: currentUser ? currentUser.id : '',

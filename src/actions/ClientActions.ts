@@ -167,7 +167,8 @@ const actionCreators = {
       created: new Date(),
       modified: new Date()
     };
-    addClient(dispatch, newClient);
+    setCurrentClient(dispatch, getState, undefined);
+    addClient(dispatch, getState, newClient);
 
     dispatch({
       type: 'SET_MESSAGE',
@@ -491,7 +492,8 @@ const actionCreators = {
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState
   ) => {
-    clientId && dispatch({ type: 'SET_CURRENT_CLIENT', clientId: undefined });
+    // clientId && dispatch({ type: 'SET_CURRENT_CLIENT', clientId: undefined });
+    // console.dir(clientId);
 
     setCurrentClient(dispatch, getState, clientId);
   },
@@ -548,22 +550,26 @@ const actionCreators = {
 // async ops
 export const addClient = async (
   dispatch: (action: KnownAction) => void,
+  getState: () => ApplicationState,
   newClient: Client
 ) => {
+
   const clientRef = await db.collection('clients').add(newClient);
   db
     .collection('clients')
     .doc(clientRef.id)
     .update({ id: clientRef.id });
 
-  if ((newClient.id = '')) {
-    newClient.id = clientRef.id;
-  }
+  newClient.id = clientRef.id;
 
   dispatch({
     type: 'ADD_CLIENT',
     newClient
   });
+
+  setClients(dispatch);
+
+  setCurrentClient(dispatch, getState, newClient.id);
 };
 
 export const addComment = async (
@@ -862,7 +868,7 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
     .orderBy('lastName', 'asc');
   const clientsRef = await clientRef.get();
   const clients = await clientsRef.docs.map(
-    (x: firebase.firestore.DocumentData) =>  ({ ...x.data(), id: x.id })
+    (x: firebase.firestore.DocumentData) => ({ ...x.data(), id: x.id })
   );
 
   // console.dir(clients);
@@ -918,8 +924,8 @@ export const setClientTypes = async (
 ) => {
   const clientTypesRef = await db.collection('clientTypes');
   const clientTypesList = await clientTypesRef.orderBy('name').get();
-  const clientTypes = await clientTypesList.docs.map((x: firebase.firestore.DocumentData) =>
-    x.data()
+  const clientTypes = await clientTypesList.docs.map(
+    (x: firebase.firestore.DocumentData) => x.data()
   );
 
   dispatch({
@@ -1069,10 +1075,12 @@ export const watchClientChanges = async (
   const currentClientRef = await db.collection('currentClientIds').doc(userId);
 
   currentClientRef.onSnapshot(snapShot => {
+    const clientId = snapShot.data().clientId;
+
     snapShot.exists &&
       dispatch({
         type: 'SET_CURRENT_CLIENT',
-        clientId: snapShot.data().clientId
+        clientId
       });
   });
 };

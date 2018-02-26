@@ -109,7 +109,7 @@ export interface Asset {
 }
 
 export interface Comment {
-  id?: string;
+  id: string;
   body: string;
   created: Date;
   userId?: string;

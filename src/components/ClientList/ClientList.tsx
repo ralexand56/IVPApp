@@ -111,7 +111,7 @@ const ClientList: StatelessComponent<Props> = props => {
       render: (i: string, c: Client) => (
         <span>
           {c.state && `${c.state}, `}
-          {c.country ? `${c.country}` : 'US'}
+          {c.country ? `${c.country}` : 'USA'}
         </span>
       )
     }

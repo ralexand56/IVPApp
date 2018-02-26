@@ -1,6 +1,6 @@
 import React, { StatelessComponent } from 'react';
 import styled from '../../styled-components';
-import { Avatar, Input } from 'antd';
+import { Avatar, Input, Button, Icon } from 'antd';
 import actionCreators from '../../actions/ClientActions';
 import { Client, User, ClientType } from '../../datatypes';
 // import SlidingPanel from '../SlidingPanel';
@@ -52,24 +52,26 @@ interface Props {
   foregroundColor?: string;
   isInteractive: boolean;
   message: string;
-  extractPanelIsShowing: boolean;
+  searchResultsIsVisible: boolean;
+  addClient: () => void;
   searchClients: typeof actionCreators.searchClients;
   setInteractive: typeof actionCreators.setInteractive;
-  setPanelVisibility: typeof actionCreators.setSearchResultsVisibility;
+  setSearchResultsVisibility: typeof actionCreators.setSearchResultsVisibility;
 }
 
 const AppHeader: StatelessComponent<Props> = ({
+  addClient,
   backgroundColor,
   className,
   clients,
   clientTypes,
   currentUser,
-  extractPanelIsShowing,
+  searchResultsIsVisible,
   filteredClients,
   isInteractive,
   message,
   searchClients,
-  setPanelVisibility,
+  setSearchResultsVisibility,
   setInteractive
 }: Props) => {
   return (
@@ -109,6 +111,9 @@ const AppHeader: StatelessComponent<Props> = ({
           IVP Public Art Client Manager
         </LogoHeader>
         <SearchHeader>
+        <Button ghost={true} onClick={() => addClient()}>
+          <Icon type="plus" />
+        </Button>
           <span style={{ fontSize: '0.7em', margin: 5, fontStyle: 'italic' }}>
             Clients({filteredClients.length})
           </span>
@@ -131,7 +136,7 @@ const AppHeader: StatelessComponent<Props> = ({
 };
 
 const StyledAppHeader = styled(AppHeader)`
-  background: ${props => props.backgroundColor || 'gray'};
+  background: ${props => props.theme.headingBackground1 || 'gray'};
   color: white;
   border: 0px solid red;
   display: flex;

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Client, Comment, theme, User } from '../../datatypes';
+import { Client, Comment, User } from '../../datatypes';
 // import CommentView from '../Comment';
-import { Avatar, Button, Icon, Input, Popconfirm, Timeline } from 'antd';
-import moment from 'moment';
+// import { Avatar, Button, Icon, Popconfirm, Timeline } from 'antd';
+// import moment from 'moment';
 import actionCreators from '../../actions/ClientActions';
 import SlidingPanel from '../SlidingPanel';
 import ThemeInterface from '../../theme';
+import TextArea from 'antd/lib/input/TextArea';
+import CommentItem from '../Comment';
 
-const Search = Input.Search;
+// const Search = Input.Search;
 
 interface Props {
   addComment: typeof actionCreators.addComment;
@@ -43,36 +45,41 @@ class Comments extends Component<Props, AppState> {
       deleteComment
     } = this.props;
 
+    // const {value} = this.state;
+
+    // const suffix = value ? <Icon type="close-circle" onClick={this.clear} /> : null;
+
     return (
       <SlidingPanel title="Comments">
         <div className={className}>
           {' '}
           {currentUser && (
-            <Search
+            <TextArea
+              autosize={true}
               value={this.state.value}
-              enterButton={<Icon type="plus"/>}
               placeholder="new comment"
-              size="small"
-              onChange={e => this.onChange(e.currentTarget.value)}
-              onSearch={val => {
-                addComment(
-                  {
-                    body: val,
-                    created: new Date(),
-                    userId: currentUser.id,
-                    user: currentUser
-                  },
-                  currentClient,
-                  currentUser
-                );
-                this.clear();
+              onKeyPress={e => {
+                if (e.charCode === 13) {
+                  addComment(
+                    {
+                      id: '',
+                      body: this.state.value,
+                      created: new Date(),
+                      userId: currentUser.id,
+                      user: currentUser
+                    },
+                    currentClient,
+                    currentUser
+                  );
+                  this.clear();
+                  e.preventDefault();
+                }
               }}
+              onChange={e => this.onChange(e.currentTarget.value)}
             />
           )}
           {comments ? (
-            <Timeline style={{ margin: 10 }}>
-              {renderComments(comments, currentClient, deleteComment)}
-            </Timeline>
+            renderComments(comments, currentClient, deleteComment)
           ) : (
             <span>No comments...</span>
           )}{' '}
@@ -87,35 +94,9 @@ const renderComments = (
   currentClient: Client,
   deleteComment: typeof actionCreators.deleteComment
 ) =>
-  comments.sort((x, y) => (x.created > y.created ? -1 : 1)).map(x => (
-    <Timeline.Item key={x.id}>
-      <span>
-        {x.body}
-        <small style={{ color: theme.headingBackground2 }}>
-          - {moment(x.created).fromNow()}
-        </small>
-        <Avatar style={{ background: theme.headingBackground2 }} size="small">
-          {`${x.user.firstName.charAt(0).toUpperCase()}${x.user.lastName
-            .charAt(0)
-            .toUpperCase()}`}
-        </Avatar>
-        <Popconfirm
-          placement="top"
-          title="Are you sure you want to delete comment?"
-          onConfirm={() => x.id && deleteComment(x.id, currentClient)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button
-            size="small"
-            style={{ color: theme.headingBackground2, margin: 5 }}
-          >
-            <Icon type="minus" />
-          </Button>
-        </Popconfirm>
-      </span>
-    </Timeline.Item>
-  ));
+  comments
+    .sort((x, y) => (x.created > y.created ? -1 : 1))
+    .map(x => <CommentItem key={x.id} comment={x} />);
 
 const StyledComments = styled(Comments)`
   display: flex;

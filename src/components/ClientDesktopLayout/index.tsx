@@ -13,7 +13,6 @@ import ArtGroup from '../ArtGroup';
 import Comments from '../Comments';
 import SampleWork from '../SampleWork';
 import HorizontalLayout from '../HorizontalLayout';
-// import Slider from 'react-slick';
 
 const Option = Select.Option;
 
@@ -44,7 +43,7 @@ const Index: StatelessComponent<Props> = ({
   setClientEditMode,
   setCurrentClient,
   stateList,
-  updateClient,
+  updateClient
 }) => {
   return (
     <div
@@ -96,7 +95,9 @@ const Index: StatelessComponent<Props> = ({
               title="Are you sure you want to remove the client?"
               okText="Yes"
               cancelText="No"
-              onConfirm={() => updateClient({ ...currentClient, isActive: false })}
+              onConfirm={() =>
+                updateClient({ ...currentClient, isActive: false })
+              }
             >
               <Button
                 size="small"
@@ -191,7 +192,7 @@ const Info = ({
   currentClient,
   isInEditMode,
   setClientEditMode,
-  updateClient,
+  updateClient
 }: {
   clientTypes: ClientType[];
   currentClient: Client;
@@ -212,12 +213,12 @@ const Info = ({
           items={[
             { id: 1, name: 'Mr.' },
             { id: 2, name: 'Mrs.' },
-            { id: 3, name: 'Ms.' },
+            { id: 3, name: 'Ms.' }
           ]}
           onChange={(id: number) =>
             updateClient({
               ...currentClient,
-              salutation: id,
+              salutation: id
             })
           }
           value={currentClient.salutation || undefined}
@@ -225,6 +226,7 @@ const Info = ({
       </EditableField>
       <HorizontalLayout>
         <EditableField
+          label="First"
           isInEditMode={isInEditMode}
           txtValue={currentClient.firstName}
         >
@@ -234,12 +236,13 @@ const Info = ({
             onChange={e =>
               updateClient({
                 ...currentClient,
-                firstName: e.currentTarget.value,
+                firstName: e.currentTarget.value
               })
             }
           />
         </EditableField>
         <EditableField
+          label="Last"
           isInEditMode={isInEditMode}
           txtValue={currentClient.lastName}
         >
@@ -249,7 +252,7 @@ const Info = ({
             onChange={e =>
               updateClient({
                 ...currentClient,
-                lastName: e.currentTarget.value,
+                lastName: e.currentTarget.value
               })
             }
           />
@@ -268,7 +271,7 @@ const Info = ({
             onChange={e =>
               updateClient({
                 ...currentClient,
-                title: e.currentTarget.value,
+                title: e.currentTarget.value
               })
             }
           />
@@ -287,7 +290,7 @@ const Info = ({
             onChange={e =>
               updateClient({
                 ...currentClient,
-                company: e.currentTarget.value,
+                company: e.currentTarget.value
               })
             }
           />
@@ -313,7 +316,7 @@ const Info = ({
               onChange={val =>
                 updateClient({
                   ...currentClient,
-                  clientTypeId: val.toString(),
+                  clientTypeId: val.toString()
                 })
               }
             >
@@ -331,7 +334,7 @@ const Address = ({
   isInEditMode,
   setClientEditMode,
   stateList,
-  updateClient,
+  updateClient
 }: {
   currentClient: Client;
   isInEditMode: boolean;
@@ -353,7 +356,7 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address1: e.currentTarget.value,
+              address1: e.currentTarget.value
             })
           }
           value={currentClient.address1}
@@ -373,7 +376,7 @@ const Address = ({
           onChange={e =>
             updateClient({
               ...currentClient,
-              address2: e.currentTarget.value,
+              address2: e.currentTarget.value
             })
           }
           value={currentClient.address2}
@@ -417,7 +420,7 @@ const Address = ({
     <HorizontalPanel>
       <EditableField
         label="Country"
-        txtValue={currentClient.country || 'US'}
+        txtValue={currentClient.country || 'USA'}
         isInEditMode={isInEditMode}
         inline={true}
         click={() => setClientEditMode(true)}

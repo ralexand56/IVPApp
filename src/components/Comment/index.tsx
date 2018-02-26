@@ -29,6 +29,7 @@ class ContainerTemplate extends Component<Props, {}> {
 
         return (
             <CommentView
+                key={comment.id}
                 comment={comment}
                 currentClient={clients[clients.findIndex(x => x.id === currentClientId)]}
                 deleteComment={deleteComment}
