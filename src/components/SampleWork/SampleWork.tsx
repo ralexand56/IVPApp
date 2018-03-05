@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Carousel } from 'react-responsive-carousel';
+import Carousel from '../Carousel';
 import actionCreators from '../../actions/ClientActions';
 import ThemeInterface from '../../theme';
 import styled from '../../styled-components';
@@ -17,6 +17,7 @@ const UploadButton = () => (
 
 const beforeUpload = async (
   file: { type: string; size: number; name: string },
+  caption: string,
   addSampleWork: typeof actionCreators.addSampleWork,
   currentClient: Client
 ) => {
@@ -31,22 +32,27 @@ const beforeUpload = async (
       .child(`images/${file.name}`)
       .put(file);
 
-    addSampleWork(await imgRef.ref.getDownloadURL(), true, currentClient);
+    addSampleWork(
+      await imgRef.ref.getDownloadURL(),
+      caption,
+      true,
+      currentClient
+    );
   }
 
   return isLt2M;
 };
 
-const renderImageLinks = (sampleLinks: SampleLink[]) => {
-  return sampleLinks.map(x => (
-    <div
-      key={x.id}
-      style={{ background: 'white', height: '100%', color: 'black' }}
-    >
-      <img src={x.src} style={{width: 'auto', height: 'auto'}} />
-    </div>
-  ));
-};
+// const renderImageLinks = (sampleLinks: SampleLink[]) => {
+//   return sampleLinks.map(x => (
+//     <div
+//       key={x.id}
+//       style={{ background: 'white', height: '100%', color: 'black' }}
+//     >
+//       <img src={x.src} style={{width: 'auto', height: 'auto'}} />
+//     </div>
+//   ));
+// };
 
 interface Props {
   className?: string;
@@ -62,15 +68,20 @@ interface Props {
 
 interface AppState {
   value: string;
+  caption: string;
 }
 
 class SampleWork extends Component<Props, AppState> {
-  state: AppState = { value: '' };
+  state: AppState = { value: '', caption: '' };
 
-  clear = () => this.setState((prevState: AppState) => ({ value: '' }));
+  clear = () =>
+    this.setState((prevState: AppState) => ({ value: '', caption: '' }));
 
   onChange = (value: string) =>
     this.setState((prevState: AppState) => ({ value }));
+
+  onCaptionChange = (caption: string) =>
+    this.setState((prevState: AppState) => ({ caption }));
 
   render() {
     const {
@@ -87,7 +98,12 @@ class SampleWork extends Component<Props, AppState> {
           <div style={{ width: '100%' }}>
             <div style={{ margin: 10 }}>
               <div style={{ width: '100%' }}>
-                {' '}
+                <Input
+                  placeholder="optional caption..."
+                  value={this.state.caption}
+                  onChange={e => this.onCaptionChange(e.currentTarget.value)}
+                  size="small"
+                />
                 <Search
                   style={{ width: '100%' }}
                   value={this.state.value}
@@ -96,7 +112,12 @@ class SampleWork extends Component<Props, AppState> {
                   size="small"
                   onChange={e => this.onChange(e.currentTarget.value)}
                   onSearch={val => {
-                    addSampleWork(val, false, currentClient);
+                    addSampleWork(
+                      val,
+                      this.state.caption,
+                      false,
+                      currentClient
+                    );
                     this.clear();
                   }}
                 />
@@ -106,7 +127,12 @@ class SampleWork extends Component<Props, AppState> {
                 {' '}
                 <Upload
                   beforeUpload={file =>
-                    beforeUpload(file, addSampleWork, currentClient)
+                    beforeUpload(
+                      file,
+                      this.state.caption,
+                      addSampleWork,
+                      currentClient
+                    )
                   }
                   name="avatar"
                   listType="text"
@@ -130,14 +156,7 @@ class SampleWork extends Component<Props, AppState> {
           </div>
         ) : currentClient.sampleLinks &&
         currentClient.sampleLinks.length > 0 ? (
-          <Carousel
-            emulateTouch={true}
-            showArrows={true}
-            autoPlay={true}
-            infiniteLoop={false}
-          >
-            {renderImageLinks(currentClient.sampleLinks)}
-          </Carousel>
+          <Carousel sampleLinks={currentClient.sampleLinks} />
         ) : (
           <span>No images</span>
         )}

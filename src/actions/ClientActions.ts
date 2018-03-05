@@ -140,13 +140,14 @@ const actionCreators = {
 
   addSampleWork: (
     linkText: string,
+    caption: string,
     isLocal: boolean,
     client: Client
   ): AppThunkAction<KnownAction> => (
     dispatch: (action: KnownAction) => void,
     getState: () => ApplicationState
   ) => {
-    addSampleWork(dispatch, linkText, isLocal, client);
+    addSampleWork(dispatch, linkText, caption, isLocal, client);
 
     dispatch({
       type: 'SET_MESSAGE',
@@ -637,10 +638,11 @@ export const addWebsite = async (
 export const addSampleWork = async (
   dispatch: (action: KnownAction) => void,
   src: string,
+  caption: string,
   isLocal: boolean,
   client: Client
 ) => {
-  const newSampleLink: SampleLink = { isLocal, src, id: '' };
+  const newSampleLink: SampleLink = { isLocal, src, id: '', caption };
   const clientRef = await db.collection('clients').doc(client.id);
   const newSampleLinkRef = await clientRef.collection('sampleLinks').doc();
 
@@ -878,6 +880,18 @@ export const setClients = async (dispatch: (action: KnownAction) => void) => {
   //       (y: Comment) => (y.user = users.filter(z => z.id === y.userId)[0]),
   //     );
   // });
+
+  // clients.map((x: Client) => {
+  //   const first = x.lastName;
+  //   const last = x.firstName;
+
+  //   x.firstName = first;
+  //   x.lastName = last;
+
+  //   updateClient(dispatch, x);
+  // });
+
+  // updateClient(dispatch, clients[0]);
 
   dispatch({
     type: 'SET_FILTERED_CLIENTS',

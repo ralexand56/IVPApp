@@ -47,8 +47,12 @@ const ClientList: StatelessComponent<Props> = props => {
     {
       title: 'Name',
       key: 'Name',
-      sorter: (a, b) =>
-        a.firstName && b.firstName && a.firstName < b.firstName ? -1 : 1,
+      sorter: (a, b) => {
+        const fullNameA = `${a.firstName} ${a.lastName}`;
+        const fullNameB = `${b.firstName} ${b.lastName}`;
+        
+        return fullNameA.toLowerCase().localeCompare(fullNameB.toLowerCase());
+      },
       render: (i: string, c: Client) => (
         <span>
           {c.firstName} {c.lastName}

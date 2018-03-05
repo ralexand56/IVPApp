@@ -13,7 +13,7 @@ import { ThemeProvider } from 'styled-components';
 import './index.css';
 import configureStore from './configureStore';
 import { theme, initializeDB } from './datatypes';
-import { init, } from './actions/ClientActions';
+import { init } from './actions/ClientActions';
 // import 'react-responsive-carousel/lib/styles/carousel.min.css';
 // import 'slick-carousel/slick/slick.css';
 // import 'slick-carousel/slick/slick-theme.css';
@@ -37,7 +37,7 @@ ReactDOM.render(
       </ThemeProvider>
     </Provider>
   </AppContainer>,
-  document.getElementById('root') as HTMLElement,
+  document.getElementById('root') as HTMLElement
 );
 
 registerServiceWorker();

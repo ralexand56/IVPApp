@@ -133,6 +133,7 @@ export interface SampleLink {
   id: string;
   src: string;
   isLocal: boolean;
+  caption?: string;
 }
 
 export interface User {
